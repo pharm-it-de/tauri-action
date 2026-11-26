@@ -5952,7 +5952,7 @@ const Context = __importStar(__nccwpck_require__(83077));
 const Utils = __importStar(__nccwpck_require__(28399));
 // octokit + plugins
 const core_1 = __nccwpck_require__(11772);
-const plugin_rest_endpoint_methods_1 = __nccwpck_require__(16363);
+const plugin_rest_endpoint_methods_1 = __nccwpck_require__(66316);
 const plugin_paginate_rest_1 = __nccwpck_require__(68633);
 exports.context = new Context.Context();
 const baseUrl = Utils.getApiBaseUrl();
@@ -9455,7 +9455,7 @@ exports.requestLog = requestLog;
 
 /***/ }),
 
-/***/ 16363:
+/***/ 66316:
 /***/ ((module) => {
 
 
@@ -84639,11 +84639,15 @@ var external_node_path_ = __nccwpck_require__(76760);
 // EXTERNAL MODULE: ./src/inputs.ts + 1 modules
 var inputs = __nccwpck_require__(53900);
 // EXTERNAL MODULE: ./src/utils.ts + 145 modules
-var utils = __nccwpck_require__(25749);
+var utils = __nccwpck_require__(17756);
 ;// CONCATENATED MODULE: ./src/runner.ts
 
 
 class Runner {
+    // Could be "npm", "yarn", "pnpm", "bun", "cargo", "path/to/tauri-cli/binary" or "tauri"
+    bin;
+    // could be ["tauri"], ["run", "tauri"], ["some package.json script"], ["run", "some package.json script"] or []
+    tauriScript;
     constructor(bin, tauriScript) {
         this.bin = bin;
         this.tauriScript = tauriScript || [];
@@ -85116,7 +85120,7 @@ __nccwpck_require__.a(module, async (__webpack_handle_async_dependencies__, __we
 /* harmony import */ var _upload_release_assets__WEBPACK_IMPORTED_MODULE_6__ = __nccwpck_require__(21103);
 /* harmony import */ var _upload_version_json__WEBPACK_IMPORTED_MODULE_7__ = __nccwpck_require__(46715);
 /* harmony import */ var _upload_workflow_artifacts__WEBPACK_IMPORTED_MODULE_8__ = __nccwpck_require__(34689);
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_9__ = __nccwpck_require__(25749);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_9__ = __nccwpck_require__(17756);
 
 
 
@@ -85371,7 +85375,7 @@ const updaterJsonPreferNsis = core.getBooleanInput('updaterJsonPreferNsis');
 /* harmony import */ var node_fs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__nccwpck_require__.n(node_fs__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(84903);
 /* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__nccwpck_require__.n(_actions_github__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(25749);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(17756);
 /* harmony import */ var _inputs__WEBPACK_IMPORTED_MODULE_3__ = __nccwpck_require__(53900);
 
 
@@ -85450,7 +85454,7 @@ async function uploadAssets(releaseId, assets, retryAttempts) {
 /* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__nccwpck_require__.n(_actions_github__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _inputs__WEBPACK_IMPORTED_MODULE_3__ = __nccwpck_require__(53900);
 /* harmony import */ var _upload_release_assets__WEBPACK_IMPORTED_MODULE_4__ = __nccwpck_require__(21103);
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_5__ = __nccwpck_require__(25749);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_5__ = __nccwpck_require__(17756);
 
 
 
@@ -85700,7 +85704,7 @@ async function uploadVersionJSON(version, notes, tagName, releaseId, artifacts, 
 /* harmony import */ var _actions_artifact__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__nccwpck_require__.n(_actions_artifact__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var globby__WEBPACK_IMPORTED_MODULE_4__ = __nccwpck_require__(26116);
 /* harmony import */ var _inputs__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(53900);
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __nccwpck_require__(25749);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __nccwpck_require__(17756);
 
 
 
@@ -85727,7 +85731,7 @@ async function uploadWorkflowArtifacts(artifacts) {
 
 /***/ }),
 
-/***/ 25749:
+/***/ 17756:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 
@@ -85758,7 +85762,7 @@ var external_node_fs_ = __nccwpck_require__(73024);
 // EXTERNAL MODULE: external "node:path"
 var external_node_path_ = __nccwpck_require__(76760);
 var external_node_path_default = /*#__PURE__*/__nccwpck_require__.n(external_node_path_);
-;// CONCATENATED MODULE: ./node_modules/.pnpm/smol-toml@1.5.2/node_modules/smol-toml/dist/error.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/smol-toml@1.9.1/node_modules/smol-toml/dist/error.js
 /*!
  * Copyright (c) Squirrel Chat et al., All rights reserved.
  * SPDX-License-Identifier: BSD-3-Clause
@@ -85787,11 +85791,11 @@ var external_node_path_default = /*#__PURE__*/__nccwpck_require__.n(external_nod
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 function getLineColFromPtr(string, ptr) {
-    let lines = string.slice(0, ptr).split(/\r\n|\n|\r/g);
+    let lines = string.slice(0, ptr).split(/\r?\n/);
     return [lines.length, lines.pop().length + 1];
 }
 function makeCodeBlock(string, line, column) {
-    let lines = string.split(/\r\n|\n|\r/g);
+    let lines = string.split(/\r?\n/);
     let codeblock = '';
     let numberLen = (Math.log10(line + 1) | 0) + 1;
     for (let i = line - 1; i <= line + 1; i++) {
@@ -85821,9 +85825,13 @@ class TomlError extends Error {
         this.column = column;
         this.codeblock = codeblock;
     }
+    /** @internal */
+    static x(message, ctx, ptr) {
+        throw new TomlError(message, { toml: ctx.s, ptr: ptr ?? ctx.p });
+    }
 }
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/smol-toml@1.5.2/node_modules/smol-toml/dist/util.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/smol-toml@1.9.1/node_modules/smol-toml/dist/primitive.js
 /*!
  * Copyright (c) Squirrel Chat et al., All rights reserved.
  * SPDX-License-Identifier: BSD-3-Clause
@@ -85852,86 +85860,131 @@ class TomlError extends Error {
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-function isEscaped(str, ptr) {
-    let i = 0;
-    while (str[ptr - ++i] === '\\')
-        ;
-    return --i && (i % 2);
-}
-function indexOfNewline(str, start = 0, end = str.length) {
-    let idx = str.indexOf('\n', start);
-    if (str[idx - 1] === '\r')
-        idx--;
-    return idx <= end ? idx : -1;
-}
-function skipComment(str, ptr) {
-    for (let i = ptr; i < str.length; i++) {
-        let c = str[i];
-        if (c === '\n')
-            return i;
-        if (c === '\r' && str[i + 1] === '\n')
-            return i + 1;
-        if ((c < '\x20' && c !== '\t') || c === '\x7f') {
-            throw new TomlError('control characters are not allowed in comments', {
-                toml: str,
-                ptr: ptr,
-            });
+/** @internal */
+function parseString(ctx) {
+    let startPtr = ctx.p;
+    let c = ctx.s.charCodeAt(ctx.p++);
+    let first = c;
+    let isLiteral = c === 0x27; /* ' */
+    let isMultiline = c === ctx.s.charCodeAt(ctx.p) && c === ctx.s.charCodeAt(ctx.p + 1);
+    if (isMultiline) {
+        // Trim initial newline
+        if ((c = ctx.s.charCodeAt(ctx.p += 2)) === 0xa /* \n */)
+            ctx.p++;
+        else if (c === 0xd /* \r */ && ctx.s.charCodeAt(ctx.p + 1) === 0xa /* \n */)
+            ctx.p += 2;
+    }
+    // For the record: it is not worth it to use a fast-path for literal strings using `indexOf`.
+    // Doing a char-by-char iteration ends up dispatching less instructions, for the same wall-clock runtime.
+    let parsed = '';
+    let sliceStart = ctx.p;
+    // states:
+    //   0 - decoding
+    //   1 - decoding escape
+    //   2 - whitespace escape (no newline encountered yet, must fail on non-whitespace)
+    //   3 - whitespace escape (newline encountered, allowed to transition back to normal decode)
+    let state = 0;
+    for (; ctx.p < ctx.s.length; ctx.p++) {
+        c = ctx.s.charCodeAt(ctx.p);
+        // Deal with newlines first, since that simplifies control character checking and handling across all states
+        if (isMultiline && (c === 0xa /* \n */ || (c === 0xd /* \r */ && ctx.s.charCodeAt(ctx.p + 1) === 0xa /* \n */))) {
+            state = state && 3;
+        }
+        // Control characters are banned in TOML, so we throw an error if we encounter them
+        else if ((c < 0x20 && c !== 0x9 /* \t */) || c === 0x7f) {
+            TomlError.x('control characters are not allowed in strings', ctx);
+        }
+        // The string might terminate while we're parsing through a newline escape.
+        // It must have encountered a newline; otherwise, it'll simply fail in another branch.
+        else if ((!state || state === 3) && c === first && (!isMultiline || (ctx.s.charCodeAt(ctx.p + 1) === first && ctx.s.charCodeAt(ctx.p + 2) === first))) {
+            if (isMultiline) {
+                // If the string ends with 4-5 quotes, then the first 1-2 are part of the string
+                if (ctx.s.charCodeAt(ctx.p + 3) === first)
+                    ctx.p++;
+                if (ctx.s.charCodeAt(ctx.p + 3) === first)
+                    ctx.p++;
+            }
+            // If we're in a newline escape still, then there's nothing to add.
+            if (!state) {
+                // Avoid a useless concat operation if the string can be used as-is.
+                let s = ctx.s.slice(sliceStart, ctx.p);
+                parsed = parsed ? parsed + s : s;
+            }
+            ctx.p += isMultiline ? 3 : 1;
+            return parsed;
+        }
+        // Baseline state; keep moving forward unless an escape sequence starts
+        else if (!state) {
+            if (!isLiteral && c === 0x5c /* \ */) {
+                parsed += ctx.s.slice(sliceStart, (sliceStart = ctx.p));
+                state = 1;
+            }
+        }
+        else if (state === 1) {
+            if (c === 0x78 /* x */ || c === 0x75 /* u */ || c === 0x55 /* U */) { // Unicode escape
+                let errPtr = ctx.p++ - 1;
+                let value = 0;
+                let len = c === 0x78 /* x */ ? 2 : c === 0x75 /* u */ ? 4 : 8;
+                for (let j = 0; j < len; j++, ctx.p++) {
+                    let hex = ctx.s.charCodeAt(ctx.p);
+                    let digit = 
+                    /* 0-9 */ hex >= 0x30 && hex <= 0x39 ? hex - 0x30 :
+                        /* A-F */ hex >= 0x41 && hex <= 0x46 ? hex - 0x41 + 10 :
+                            /* a-f */ hex >= 0x61 && hex <= 0x66 ? hex - 0x61 + 10 : -1;
+                    if (digit < 0)
+                        TomlError.x('invalid non-hex character in unicode escape', ctx);
+                    value = (value << 4) | digit;
+                }
+                // Because JS does bitwise on signed 32bit integers, all 0xfzzzzzzz values are actually seen as negative
+                if (value < 0 || value > 0x10ffff || (value >= 0xd800 && value <= 0xdfff)) {
+                    TomlError.x('invalid unicode escape', ctx, errPtr);
+                }
+                parsed += String.fromCodePoint(value);
+                sliceStart = ctx.p--;
+                state = 0;
+            }
+            // Newline escape sequence. We only need to care about spaces and tabs; newlines are dealt with earlier
+            else if (isMultiline && (c === 0x20 || c === 0x9 /* \t */)) {
+                state = 2;
+            }
+            // Basic escape sequence
+            else {
+                if (c === 0x62 /* b */)
+                    parsed += '\b';
+                else if (c === 0x74 /* t */)
+                    parsed += '\t';
+                else if (c === 0x6e /* n */)
+                    parsed += '\n';
+                else if (c === 0x66 /* f */)
+                    parsed += '\f';
+                else if (c === 0x72 /* r */)
+                    parsed += '\r';
+                else if (c === 0x65 /* e */)
+                    parsed += '\x1b';
+                else if (c === 0x22 /* " */)
+                    parsed += '"';
+                else if (c === 0x5c /* \ */)
+                    parsed += '\\';
+                else
+                    TomlError.x('unrecognised escape sequence', ctx);
+                sliceStart = ctx.p + 1;
+                state = 0;
+            }
+        }
+        // Newline escape continuation: keep moving forward until the first non-whitespace char
+        else if (c !== 0x20 && c !== 0x9 /* \t */) {
+            if (state === 2)
+                TomlError.x('invalid escape: only line-ending whitespace may be escaped', ctx, sliceStart);
+            // State cannot be zero, or we'd have branched earlier already.
+            // If it's a backslash, immediately transition to the escape state so it can be processed.
+            state = !isLiteral && c === 0x5c /* \ */ ? 1 : 0;
+            sliceStart = ctx.p;
         }
     }
-    return str.length;
-}
-function skipVoid(str, ptr, banNewLines, banComments) {
-    let c;
-    while ((c = str[ptr]) === ' ' || c === '\t' || (!banNewLines && (c === '\n' || c === '\r' && str[ptr + 1] === '\n')))
-        ptr++;
-    return banComments || c !== '#'
-        ? ptr
-        : skipVoid(str, skipComment(str, ptr), banNewLines);
-}
-function skipUntil(str, ptr, sep, end, banNewLines = false) {
-    if (!end) {
-        ptr = indexOfNewline(str, ptr);
-        return ptr < 0 ? str.length : ptr;
-    }
-    for (let i = ptr; i < str.length; i++) {
-        let c = str[i];
-        if (c === '#') {
-            i = indexOfNewline(str, i);
-        }
-        else if (c === sep) {
-            return i + 1;
-        }
-        else if (c === end || (banNewLines && (c === '\n' || (c === '\r' && str[i + 1] === '\n')))) {
-            return i;
-        }
-    }
-    throw new TomlError('cannot find end of structure', {
-        toml: str,
-        ptr: ptr
-    });
-}
-function getStringEnd(str, seek) {
-    let first = str[seek];
-    let target = first === str[seek + 1] && str[seek + 1] === str[seek + 2]
-        ? str.slice(seek, seek + 3)
-        : first;
-    seek += target.length - 1;
-    do
-        seek = str.indexOf(target, ++seek);
-    while (seek > -1 && first !== "'" && isEscaped(str, seek));
-    if (seek > -1) {
-        seek += target.length;
-        if (target.length > 1) {
-            if (str[seek] === first)
-                seek++;
-            if (str[seek] === first)
-                seek++;
-        }
-    }
-    return seek;
+    TomlError.x('unfinished string', ctx, startPtr);
 }
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/smol-toml@1.5.2/node_modules/smol-toml/dist/date.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/smol-toml@1.9.1/node_modules/smol-toml/dist/date.js
 /*!
  * Copyright (c) Squirrel Chat et al., All rights reserved.
  * SPDX-License-Identifier: BSD-3-Clause
@@ -85959,38 +86012,67 @@ function getStringEnd(str, seek) {
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-let DATE_TIME_RE = /^(\d{4}-\d{2}-\d{2})?[T ]?(?:(\d{2}):\d{2}:\d{2}(?:\.\d+)?)?(Z|[-+]\d{2}:\d{2})?$/i;
+let DATE_TIME_RE = /^(\d{4}-\d{2}-\d{2})?[Tt ]?(?:(\d{2}):\d{2}(?::\d{2}(?:\.\d+)?)?)?(Z|z|[-+]\d{2}:\d{2})?$/i;
 class TomlDate extends Date {
     #hasDate = false;
     #hasTime = false;
     #offset = null;
-    constructor(date) {
+    constructor(date, fasttype, unsafeDelim) {
         let hasDate = true;
         let hasTime = true;
         let offset = 'Z';
+        let c;
         if (typeof date === 'string') {
-            let match = date.match(DATE_TIME_RE);
-            if (match) {
-                if (!match[1]) {
-                    hasDate = false;
-                    date = `0000-01-01T${date}`;
+            if (fasttype)
+                prep: {
+                    // Date-time
+                    if (fasttype < 3) {
+                        if (+date.slice(11, 13) > 23) {
+                            date = '';
+                            break prep;
+                        }
+                        // Local
+                        if (fasttype === 2) {
+                            offset = null;
+                            date += 'Z';
+                        }
+                        // Offset; keep track of offset if not Z
+                        else if ((c = date.charCodeAt(date.length - 1)) !== 0x5a /* Z */ && c !== 0x7a /* z */) {
+                            offset = date.slice(date.length - 6);
+                        }
+                        if (unsafeDelim)
+                            date = date.slice(0, 10) + 'T' + date.slice(11);
+                    }
+                    // Time
+                    else if (fasttype === 4) {
+                        date = +date.slice(0, 2) > 23 ? '' : `0000-01-01T${date}Z`;
+                    }
+                    hasDate = fasttype !== 4;
+                    hasTime = fasttype !== 3;
                 }
-                hasTime = !!match[2];
-                // Make sure to use T instead of a space. Breaks in case of extreme values otherwise.
-                hasTime && date[10] === ' ' && (date = date.replace(' ', 'T'));
-                // Do not allow rollover hours.
-                if (match[2] && +match[2] > 23) {
-                    date = '';
+            else {
+                let match = date.match(DATE_TIME_RE);
+                if (match) {
+                    if (!match[1]) {
+                        hasDate = false;
+                        date = `0000-01-01T${date}`;
+                    }
+                    hasTime = !!match[2];
+                    // Make sure to use T instead of a space. Breaks in case of extreme values otherwise.
+                    hasTime && date[10] === ' ' && (date = date.replace(' ', 'T'));
+                    // Do not allow rollover hours.
+                    if (match[2] && +match[2] > 23) {
+                        date = '';
+                    }
+                    else {
+                        offset = match[3] || null;
+                        if (!offset && hasTime)
+                            date += 'Z';
+                    }
                 }
                 else {
-                    offset = match[3] || null;
-                    date = date.toUpperCase();
-                    if (!offset && hasTime)
-                        date += 'Z';
+                    date = '';
                 }
-            }
-            else {
-                date = '';
             }
         }
         super(date);
@@ -86027,7 +86109,7 @@ class TomlDate extends Date {
         if (this.#offset === null)
             return iso.slice(0, -1);
         // Offset DateTime
-        if (this.#offset === 'Z')
+        if (this.#offset === 'Z' || this.#offset === 'z')
             return iso;
         // This part is quite annoying: JS strips the original timezone from the ISO string representation
         // Instead of using a "modified" date and "Z", we restore the representation "as authored"
@@ -86060,187 +86142,7 @@ class TomlDate extends Date {
     }
 }
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/smol-toml@1.5.2/node_modules/smol-toml/dist/primitive.js
-/*!
- * Copyright (c) Squirrel Chat et al., All rights reserved.
- * SPDX-License-Identifier: BSD-3-Clause
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- * 3. Neither the name of the copyright holder nor the names of its contributors
- *    may be used to endorse or promote products derived from this software without
- *    specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
-
-
-let INT_REGEX = /^((0x[0-9a-fA-F](_?[0-9a-fA-F])*)|(([+-]|0[ob])?\d(_?\d)*))$/;
-let FLOAT_REGEX = /^[+-]?\d(_?\d)*(\.\d(_?\d)*)?([eE][+-]?\d(_?\d)*)?$/;
-let LEADING_ZERO = /^[+-]?0[0-9_]/;
-let ESCAPE_REGEX = /^[0-9a-f]{4,8}$/i;
-let ESC_MAP = {
-    b: '\b',
-    t: '\t',
-    n: '\n',
-    f: '\f',
-    r: '\r',
-    '"': '"',
-    '\\': '\\',
-};
-function parseString(str, ptr = 0, endPtr = str.length) {
-    let isLiteral = str[ptr] === '\'';
-    let isMultiline = str[ptr++] === str[ptr] && str[ptr] === str[ptr + 1];
-    if (isMultiline) {
-        endPtr -= 2;
-        if (str[ptr += 2] === '\r')
-            ptr++;
-        if (str[ptr] === '\n')
-            ptr++;
-    }
-    let tmp = 0;
-    let isEscape;
-    let parsed = '';
-    let sliceStart = ptr;
-    while (ptr < endPtr - 1) {
-        let c = str[ptr++];
-        if (c === '\n' || (c === '\r' && str[ptr] === '\n')) {
-            if (!isMultiline) {
-                throw new TomlError('newlines are not allowed in strings', {
-                    toml: str,
-                    ptr: ptr - 1,
-                });
-            }
-        }
-        else if ((c < '\x20' && c !== '\t') || c === '\x7f') {
-            throw new TomlError('control characters are not allowed in strings', {
-                toml: str,
-                ptr: ptr - 1,
-            });
-        }
-        if (isEscape) {
-            isEscape = false;
-            if (c === 'u' || c === 'U') {
-                // Unicode escape
-                let code = str.slice(ptr, (ptr += (c === 'u' ? 4 : 8)));
-                if (!ESCAPE_REGEX.test(code)) {
-                    throw new TomlError('invalid unicode escape', {
-                        toml: str,
-                        ptr: tmp,
-                    });
-                }
-                try {
-                    parsed += String.fromCodePoint(parseInt(code, 16));
-                }
-                catch {
-                    throw new TomlError('invalid unicode escape', {
-                        toml: str,
-                        ptr: tmp,
-                    });
-                }
-            }
-            else if (isMultiline && (c === '\n' || c === ' ' || c === '\t' || c === '\r')) {
-                // Multiline escape
-                ptr = skipVoid(str, ptr - 1, true);
-                if (str[ptr] !== '\n' && str[ptr] !== '\r') {
-                    throw new TomlError('invalid escape: only line-ending whitespace may be escaped', {
-                        toml: str,
-                        ptr: tmp,
-                    });
-                }
-                ptr = skipVoid(str, ptr);
-            }
-            else if (c in ESC_MAP) {
-                // Classic escape
-                parsed += ESC_MAP[c];
-            }
-            else {
-                throw new TomlError('unrecognized escape sequence', {
-                    toml: str,
-                    ptr: tmp,
-                });
-            }
-            sliceStart = ptr;
-        }
-        else if (!isLiteral && c === '\\') {
-            tmp = ptr - 1;
-            isEscape = true;
-            parsed += str.slice(sliceStart, tmp);
-        }
-    }
-    return parsed + str.slice(sliceStart, endPtr - 1);
-}
-function parseValue(value, toml, ptr, integersAsBigInt) {
-    // Constant values
-    if (value === 'true')
-        return true;
-    if (value === 'false')
-        return false;
-    if (value === '-inf')
-        return -Infinity;
-    if (value === 'inf' || value === '+inf')
-        return Infinity;
-    if (value === 'nan' || value === '+nan' || value === '-nan')
-        return NaN;
-    // Avoid FP representation of -0
-    if (value === '-0')
-        return integersAsBigInt ? 0n : 0;
-    // Numbers
-    let isInt = INT_REGEX.test(value);
-    if (isInt || FLOAT_REGEX.test(value)) {
-        if (LEADING_ZERO.test(value)) {
-            throw new TomlError('leading zeroes are not allowed', {
-                toml: toml,
-                ptr: ptr,
-            });
-        }
-        value = value.replace(/_/g, '');
-        let numeric = +value;
-        if (isNaN(numeric)) {
-            throw new TomlError('invalid number', {
-                toml: toml,
-                ptr: ptr,
-            });
-        }
-        if (isInt) {
-            if ((isInt = !Number.isSafeInteger(numeric)) && !integersAsBigInt) {
-                throw new TomlError('integer value cannot be represented losslessly', {
-                    toml: toml,
-                    ptr: ptr,
-                });
-            }
-            if (isInt || integersAsBigInt === true)
-                numeric = BigInt(value);
-        }
-        return numeric;
-    }
-    const date = new TomlDate(value);
-    if (!date.isValid()) {
-        throw new TomlError('invalid value', {
-            toml: toml,
-            ptr: ptr,
-        });
-    }
-    return date;
-}
-
-;// CONCATENATED MODULE: ./node_modules/.pnpm/smol-toml@1.5.2/node_modules/smol-toml/dist/extract.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/smol-toml@1.9.1/node_modules/smol-toml/dist/extract.js
 /*!
  * Copyright (c) Squirrel Chat et al., All rights reserved.
  * SPDX-License-Identifier: BSD-3-Clause
@@ -86272,86 +86174,329 @@ function parseValue(value, toml, ptr, integersAsBigInt) {
 
 
 
-function sliceAndTrimEndOf(str, startPtr, endPtr, allowNewLines) {
-    let value = str.slice(startPtr, endPtr);
-    let commentIdx = value.indexOf('#');
-    if (commentIdx > -1) {
-        // The call to skipComment allows to "validate" the comment
-        // (absence of control characters)
-        skipComment(str, commentIdx);
-        value = value.slice(0, commentIdx);
-    }
-    let trimmed = value.trimEnd();
-    if (!allowNewLines) {
-        let newlineIdx = value.indexOf('\n', trimmed.length);
-        if (newlineIdx > -1) {
-            throw new TomlError('newlines are not allowed in inline tables', {
-                toml: str,
-                ptr: startPtr + newlineIdx
-            });
-        }
-    }
-    return [trimmed, commentIdx];
+function isDigit(char, base = 10) {
+    return base === 16
+        ? (char > 0x2f && char < 0x3a) || (char > 0x40 && char < 0x47) || (char > 0x60 && char < 0x67)
+        : (char > 0x2f && char < 0x30 + base);
 }
-function extractValue(str, ptr, end, depth, integersAsBigInt) {
-    if (depth === 0) {
-        throw new TomlError('document contains excessively nested structures. aborting.', {
-            toml: str,
-            ptr: ptr
-        });
+function isEndOfValue(char, delim) {
+    // Whitespace -- we're permissive on `\r` for performance; it'll be dealt with later anyway
+    return char === 0x20 || char === 0x9 /* \t */ || char === 0xa /* \n */ || char === 0xd /* \r */ ||
+        // Structure end or next value delimiter
+        (delim && (char === delim || char === 0x2c /* , */)) ||
+        // Comment
+        char === 0x23; /* # */
+}
+/** @internal */
+function extractValue(ctx, end) {
+    let errPtr = ctx.p;
+    let c = ctx.s.charCodeAt(ctx.p);
+    // Structs
+    if (c === 0x5b /* [ */ || c === 0x7b /* { */) {
+        ctx.d-- || TomlError.x('document contains excessively nested structures. aborting.', ctx);
+        let value = c === 0x5b /* [ */
+            ? parseArray(ctx)
+            : parseInlineTable(ctx);
+        ctx.d++;
+        return value;
     }
-    let c = str[ptr];
-    if (c === '[' || c === '{') {
-        let [value, endPtr] = c === '['
-            ? parseArray(str, ptr, depth, integersAsBigInt)
-            : parseInlineTable(str, ptr, depth, integersAsBigInt);
-        let newPtr = end ? skipUntil(str, endPtr, ',', end) : endPtr;
-        if (endPtr - newPtr && end === '}') {
-            let nextNewLine = indexOfNewline(str, endPtr, newPtr);
-            if (nextNewLine > -1) {
-                throw new TomlError('newlines are not allowed in inline tables', {
-                    toml: str,
-                    ptr: nextNewLine
-                });
-            }
+    // Strings
+    if (c === 0x22 /* " */ || c === 0x27 /* ' */) {
+        return parseString(ctx);
+    }
+    // Booleans
+    // We can fast-path because the first character is enough to know the only possible value
+    if (c === 0x74 /* t */) { // Only possible valid value is `true`
+        if (ctx.s.charCodeAt(++ctx.p) !== 0x72 || ctx.s.charCodeAt(++ctx.p) !== 0x75 || ctx.s.charCodeAt(++ctx.p) !== 0x65)
+            TomlError.x('invalid value', ctx, errPtr);
+        return ctx.p++, true;
+    }
+    if (c === 0x66 /* f */) { // Only possible valid value is `false`
+        if (ctx.s.charCodeAt(++ctx.p) !== 0x61 || ctx.s.charCodeAt(++ctx.p) !== 0x6c || ctx.s.charCodeAt(++ctx.p) !== 0x73 || ctx.s.charCodeAt(++ctx.p) !== 0x65)
+            TomlError.x('invalid value', ctx, errPtr);
+        return ctx.p++, false;
+    }
+    if (c === 0x2b /* + */ || c === 0x2d /* - */) {
+        return parseNumber(ctx, ctx.p, ctx.s.charCodeAt(++ctx.p), 0x2c - c, end);
+    }
+    // Rough heuristic, but `parseDate` falls back to number parsing if it's a false positive.
+    // e.g.: `a = 1\n-------------- = 1` would match this heuristic, but gracefully fallback to numbers.
+    if (ctx.s.charCodeAt(ctx.p + 4) === 0x2d /* - */ && ctx.s.charCodeAt(ctx.p + 7) === 0x2d /* - */) {
+        return parseDate(ctx, c, end);
+    }
+    // Same logic as above; `parseTime` falls back to number parsing if it's a false positive.
+    if (ctx.s.charCodeAt(ctx.p + 2) === 0x3a /* : */) {
+        return parseTime(ctx, c, end);
+    }
+    return parseNumber(ctx, ctx.p, c, 0, end);
+}
+// State:
+// 0: init
+// 1: integer
+// 2: fractional dot
+// 3: fractional
+// 4: exponent letter
+// 5: exponent
+// 6: exponent sign
+// 7: exponent with sign
+// >9: underscore; see below
+//     -> 12: was integer
+//     -> 14: was fractional
+//     -> 16: was exponent
+// states 2-5, 14, 16 are ONLY permitted iif base === 10
+function parseNumber(ctx, startPtr, startChr, sign, endChr) {
+    let c = startChr;
+    let state = 0;
+    let hasUnderscores = false;
+    // (+/-)inf
+    if (c === 0x69 /* i */) {
+        if (ctx.s.charCodeAt(++ctx.p) !== 0x6e || ctx.s.charCodeAt(++ctx.p) !== 0x66)
+            TomlError.x('invalid value', ctx, startPtr);
+        return ctx.p++, (sign || 1) / 0;
+    }
+    // (+/-)nan
+    if (c === 0x6e /* n */) {
+        if (ctx.s.charCodeAt(++ctx.p) !== 0x61 || ctx.s.charCodeAt(++ctx.p) !== 0x6e)
+            TomlError.x('invalid value', ctx, startPtr);
+        return ctx.p++, NaN;
+    }
+    // Leading zero
+    // Only allowed cases: `0<EOV>`, `0.(...)`, `0e(...)`, `0x(...)`, `0b(...)`, `0o(...)`
+    // FWIW, `0e(...)` is a stupid case, but it's not banned per-se so we have to parse it
+    if (c === 0x30 /* 0 */) {
+        if (++ctx.p >= ctx.s.length || isEndOfValue(c = ctx.s.charCodeAt(ctx.p), endChr))
+            return ctx.bi === true ? 0n : 0; // note: conveniently deals with `-0`
+        if (!sign) {
+            if (c === 0x78 /* x */)
+                return parseIntegerBaseN(ctx, startPtr, 16, endChr);
+            else if (c === 0x62 /* b */)
+                return parseIntegerBaseN(ctx, startPtr, 2, endChr);
+            else if (c === 0x6f /* o */)
+                return parseIntegerBaseN(ctx, startPtr, 8, endChr);
         }
-        return [value, newPtr];
+        if (c === 0x2e /* . */)
+            state = 2;
+        else if (c === 0x65 /* e */ || c === 0x45 /* E */)
+            state = 4;
+        else
+            TomlError.x('illegal leading zero', ctx, startPtr);
     }
-    let endPtr;
-    if (c === '"' || c === "'") {
-        endPtr = getStringEnd(str, ptr);
-        let parsed = parseString(str, ptr, endPtr);
-        if (end) {
-            endPtr = skipVoid(str, endPtr, end !== ']');
-            if (str[endPtr] && str[endPtr] !== ',' && str[endPtr] !== end && str[endPtr] !== '\n' && str[endPtr] !== '\r') {
-                throw new TomlError('unexpected character encountered', {
-                    toml: str,
-                    ptr: endPtr,
-                });
-            }
-            endPtr += (+(str[endPtr] === ','));
+    // If the 1st char is not a digit by now, then it's not a valid TOML value at all
+    else if (!isDigit(c))
+        TomlError.x('invalid value', ctx, startPtr);
+    while (++ctx.p < ctx.s.length && (c = ctx.s.charCodeAt(ctx.p), !isEndOfValue(c, endChr))) {
+        if (!state)
+            state = 1; // Detects single-digit numbers we can use a fast parse path for
+        // The way the states are numbered is not random: underscores are always permitted in odd-numbered states and
+        // never permitted in even-numbered ones.
+        if (c === 0x5f /* _ */) {
+            if (!(state & 1))
+                TomlError.x('illegal underscore', ctx);
+            state += 11; // 11 is a marker that makes the state even and greater than 9; see the numbering + rationale above
+            hasUnderscores = true;
         }
-        return [parsed, endPtr];
+        // Transition to fractional part.
+        else if (state === 1 && c === 0x2e /* . */)
+            state = 2;
+        // Transition to exponent part.
+        else if ((state === 1 || state === 3) && (c === 0x65 /* e */ || c === 0x45 /* E */))
+            state = 4;
+        // + and - are permitted in state 4 only (handled before entering the function for state 0)
+        else if (state === 4 && (c === 0x2b /* + */ || c === 0x2d /* - */)) {
+            state = 6;
+        }
+        // All special cases have been handled; only digits are allowed here
+        else if (!isDigit(c))
+            TomlError.x(`illegal character in numeric literal`, ctx);
+        // Clear state flags
+        else if (state > 9)
+            state -= 11;
+        else if (!(state & 1))
+            state++;
     }
-    endPtr = skipUntil(str, ptr, ',', end);
-    let slice = sliceAndTrimEndOf(str, ptr, endPtr - (+(str[endPtr - 1] === ',')), end === ']');
-    if (!slice[0]) {
-        throw new TomlError('incomplete key-value declaration: no value specified', {
-            toml: str,
-            ptr: ptr
-        });
+    // Single-char number; we can fast-path these very easily.
+    if (!state) {
+        let val = (startChr - 0x30 /* 0 */) * (sign || 1);
+        return ctx.bi === true ? BigInt(val) : val;
     }
-    if (end && slice[1] > -1) {
-        endPtr = skipVoid(str, ptr + slice[1]);
-        endPtr += +(str[endPtr] === ',');
+    // Even-numbered states absolutely require a digit next; not even end of value is permitted
+    if (!(state & 1))
+        TomlError.x('unfinished numeric value', ctx, startPtr);
+    let str = ctx.s.slice(startPtr, ctx.p);
+    if (hasUnderscores)
+        str = str.replaceAll('_', ''); // perf: replaceAll 1.25x faster than replace with a regex
+    return state > 1
+        ? parseFloat(str)
+        : parseInteger(ctx, str, 10, startPtr);
+}
+function parseIntegerBaseN(ctx, startPtr, base, endChr) {
+    let c, underscore = 1;
+    while (++ctx.p < ctx.s.length && (c = ctx.s.charCodeAt(ctx.p), !isEndOfValue(c, endChr))) {
+        if (c === 0x5f /* _ */) {
+            if (underscore & 1)
+                TomlError.x('illegal underscore', ctx);
+            underscore = 3;
+        }
+        // We only need to check if the number is a valid digit, nothing else is permitted
+        else if (!isDigit(c, base))
+            TomlError.x(`illegal character in numeric literal`, ctx);
+        // Clear underscore flag
+        else if (underscore & 1)
+            underscore--;
     }
-    return [
-        parseValue(slice[0], str, ptr, integersAsBigInt),
-        endPtr,
-    ];
+    // Trailing underscore is not allowed
+    if (underscore & 1)
+        TomlError.x('unfinished numeric value', ctx);
+    let str = ctx.s.slice(startPtr + 2, ctx.p);
+    if (underscore)
+        str = str.replaceAll('_', ''); // perf: replaceAll 1.25x faster than replace with a regex
+    return parseInteger(ctx, str, base, startPtr);
+}
+function parseInteger(ctx, str, base, startPtr) {
+    if (ctx.bi !== true)
+        int: {
+            let val = parseInt(str, base);
+            if (!Number.isSafeInteger(val)) {
+                if (ctx.bi)
+                    break int;
+                TomlError.x('integer value cannot be represented losslessly', ctx, startPtr);
+            }
+            return val;
+        }
+    return base === 10 ? BigInt(str) : BigInt((base === 2 ? '0b' : base === 8 ? '0o' : '0x') + str);
+}
+function parseDate(ctx, c, endChr) {
+    let startPtr = ctx.p++, unsafeSeparator;
+    if (!isDigit(c) ||
+        !isDigit(ctx.s.charCodeAt(ctx.p++)) ||
+        !isDigit(ctx.s.charCodeAt(ctx.p++)) ||
+        !isDigit(ctx.s.charCodeAt(ctx.p++))) {
+        return parseNumber(ctx, ctx.p = startPtr, c, 0, endChr);
+    }
+    ctx.p += 5;
+    if (!isDigit(ctx.s.charCodeAt(ctx.p++)))
+        TomlError.x('invalid date-time: date part is malformed', ctx, startPtr);
+    if (ctx.p >= ctx.s.length || (((c = ctx.s.charCodeAt(ctx.p)) !== 0x20 || (unsafeSeparator = true, !isDigit(ctx.s.charCodeAt(ctx.p + 1)))) && c !== 0x54 /* T */ && c !== 0x74 /* t */)) {
+        let t = ctx.s.slice(startPtr, ctx.p);
+        return readDate(ctx, t, 3, false, startPtr);
+    }
+    if (ctx.s.charCodeAt(ctx.p += 3) !== 0x3a /* : */)
+        TomlError.x('invalid date-time: time part is malformed', ctx, startPtr);
+    if (ctx.s.charCodeAt(ctx.p += 3) === 0x3a /* : */)
+        ctx.p += 3;
+    if (ctx.s.charCodeAt(ctx.p) === 0x2e /* . */)
+        while (isDigit(ctx.s.charCodeAt(++ctx.p)))
+            ;
+    if (c = ctx.s.charCodeAt(ctx.p)) {
+        if (c === 0x5a /* Z */ || c === 0x7a /* z */) {
+            let t = ctx.s.slice(startPtr, ++ctx.p);
+            return readDate(ctx, t, 1, unsafeSeparator, startPtr, '[+00:00]');
+        }
+        if (c === 0x2b /* + */ || c === 0x2d /* - */) {
+            // Temporal's ZonedDateTime is weird asf when it comes to dealing with traditional offsets...
+            // It's 1.2x faster to allocate a new string to pass to ZDT than use Instant.toZonedDateTimeISO
+            let t = ctx.s.slice(startPtr, ctx.p += 6);
+            return readDate(ctx, t, 1, unsafeSeparator, startPtr, !ctx.ld && ('[' + ctx.s.slice(ctx.p - 6, ctx.p) + ']'));
+        }
+    }
+    let t = ctx.s.slice(startPtr, ctx.p);
+    return readDate(ctx, t, 2, unsafeSeparator, startPtr);
+}
+function parseTime(ctx, c, endChr) {
+    let start = ctx.p;
+    if (!isDigit(c) || !isDigit(ctx.s.charCodeAt(++ctx.p))) {
+        return parseNumber(ctx, --ctx.p, c, 0, endChr);
+    }
+    if (ctx.s.charCodeAt(ctx.p += 4) === 0x3a /* : */)
+        ctx.p += 3;
+    if (ctx.s.charCodeAt(ctx.p) === 0x2e /* . */)
+        while (isDigit(ctx.s.charCodeAt(++ctx.p)))
+            ;
+    let t = ctx.s.slice(start, ctx.p);
+    return readDate(ctx, t, 4, false, start);
+}
+function readDate(ctx, str, type, unsafeDelim, errPtr, temporalSuffix) {
+    if (ctx.ld) {
+        let date = new TomlDate(str, type, unsafeDelim);
+        if (!date.isValid())
+            TomlError.x('invalid date', ctx, errPtr);
+        return date;
+    }
+    try {
+        if (temporalSuffix)
+            str += temporalSuffix;
+        switch (type) {
+            case 1: return Temporal.ZonedDateTime.from(str);
+            case 2: return Temporal.PlainDateTime.from(str);
+            case 3: return Temporal.PlainDate.from(str);
+            case 4: return Temporal.PlainTime.from(str);
+        }
+    }
+    catch (e) {
+        TomlError.x(e instanceof Error ? e.message : '' + e, ctx, errPtr);
+    }
 }
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/smol-toml@1.5.2/node_modules/smol-toml/dist/struct.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/smol-toml@1.9.1/node_modules/smol-toml/dist/util.js
+/*!
+ * Copyright (c) Squirrel Chat et al., All rights reserved.
+ * SPDX-License-Identifier: BSD-3-Clause
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. Neither the name of the copyright holder nor the names of its contributors
+ *    may be used to endorse or promote products derived from this software without
+ *    specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/** @internal */
+function skipComment(ctx) {
+    for (; ctx.p < ctx.s.length; ctx.p++) {
+        let c = ctx.s.charCodeAt(ctx.p);
+        if (c === 0xa /* \n */)
+            break;
+        if (c === 0xd /* \r */ && ctx.s.charCodeAt(ctx.p + 1) === 0xa /* \n */) {
+            ctx.p++;
+            break;
+        }
+        if ((c < 0x20 && c !== 0x9 /* \t */) || c === 0x7f) {
+            TomlError.x('control characters are not allowed in comments', ctx);
+        }
+    }
+}
+/** @internal */
+function skipVoid(ctx, banNewLines, banComments) {
+    let c;
+    while (ctx.p < ctx.s.length) {
+        while (ctx.p < ctx.s.length && ((c = ctx.s.charCodeAt(ctx.p)) === 0x20 ||
+            c === 0x9 /* \t */ ||
+            (!banNewLines &&
+                (c === 0xa /* \n */ || (c === 0xd /* \r */ && ctx.s.charCodeAt(ctx.p + 1) === 0xa /* \n */)))))
+            ctx.p++;
+        if (banComments || c !== 0x23 /* # */)
+            break;
+        skipComment(ctx);
+    }
+}
+
+;// CONCATENATED MODULE: ./node_modules/.pnpm/smol-toml@1.9.1/node_modules/smol-toml/dist/struct.js
 /*!
  * Copyright (c) Squirrel Chat et al., All rights reserved.
  * SPDX-License-Identifier: BSD-3-Clause
@@ -86383,171 +86528,133 @@ function extractValue(str, ptr, end, depth, integersAsBigInt) {
 
 
 
-let KEY_PART_RE = /^[a-zA-Z0-9-_]+[ \t]*$/;
-function parseKey(str, ptr, end = '=') {
-    let dot = ptr - 1;
+/** @internal */
+function parseKey(ctx, end = 0x3d /* = */) {
+    // States:
+    // 0: before first char
+    // 1: parsing bare key
+    // 2: after key component
+    let startPtr;
+    let state = 0;
     let parsed = [];
-    let endPtr = str.indexOf(end, ptr);
-    if (endPtr < 0) {
-        throw new TomlError('incomplete key-value: cannot find end of key', {
-            toml: str,
-            ptr: ptr,
-        });
-    }
+    let sliceStart;
+    let c = ctx.s.charCodeAt(startPtr = ctx.p);
     do {
-        let c = str[ptr = ++dot];
-        // If it's whitespace, ignore
-        if (c !== ' ' && c !== '\t') {
-            // If it's a string
-            if (c === '"' || c === '\'') {
-                if (c === str[ptr + 1] && c === str[ptr + 2]) {
-                    throw new TomlError('multiline strings are not allowed in keys', {
-                        toml: str,
-                        ptr: ptr,
-                    });
-                }
-                let eos = getStringEnd(str, ptr);
-                if (eos < 0) {
-                    throw new TomlError('unfinished string encountered', {
-                        toml: str,
-                        ptr: ptr,
-                    });
-                }
-                dot = str.indexOf('.', eos);
-                let strEnd = str.slice(eos, dot < 0 || dot > endPtr ? endPtr : dot);
-                let newLine = indexOfNewline(strEnd);
-                if (newLine > -1) {
-                    throw new TomlError('newlines are not allowed in keys', {
-                        toml: str,
-                        ptr: ptr + dot + newLine,
-                    });
-                }
-                if (strEnd.trimStart()) {
-                    throw new TomlError('found extra tokens after the string part', {
-                        toml: str,
-                        ptr: eos,
-                    });
-                }
-                if (endPtr < eos) {
-                    endPtr = str.indexOf(end, eos);
-                    if (endPtr < 0) {
-                        throw new TomlError('incomplete key-value: cannot find end of key', {
-                            toml: str,
-                            ptr: ptr,
-                        });
-                    }
-                }
-                parsed.push(parseString(str, ptr, eos));
-            }
-            else {
-                // Normal raw key part consumption and validation
-                dot = str.indexOf('.', ptr);
-                let part = str.slice(ptr, dot < 0 || dot > endPtr ? endPtr : dot);
-                if (!KEY_PART_RE.test(part)) {
-                    throw new TomlError('only letter, numbers, dashes and underscores are allowed in keys', {
-                        toml: str,
-                        ptr: ptr,
-                    });
-                }
-                parsed.push(part.trimEnd());
+        // End of key
+        if (c === end) {
+            if (!state)
+                TomlError.x('unexpected end of key', ctx);
+            if (state === 1)
+                parsed.push(ctx.s.slice(sliceStart, ctx.p));
+            return ctx.p++, parsed;
+        }
+        // Dotted key separator
+        else if (c === 0x2e /* . */) {
+            if (!state)
+                TomlError.x('illegal empty bare key', ctx);
+            if (state === 1)
+                parsed.push(ctx.s.slice(sliceStart, ctx.p));
+            state = 0;
+        }
+        // Quoted key
+        else if (!state && (c === 0x22 /* " */ || c === 0x27 /* ' */)) {
+            if (c === ctx.s.charCodeAt(ctx.p + 1) && c === ctx.s.charCodeAt(ctx.p + 2))
+                TomlError.x('illegal quoted key: multiline strings are not allowed', ctx);
+            parsed.push(parseString(ctx));
+            state = 2;
+            ctx.p--;
+        }
+        // Whitespace; no-op in state 0 and 2, end of bare key in state 1
+        else if (c === 0x20 || c === 0x9 /* \t */) {
+            if (state === 1) {
+                parsed.push(ctx.s.slice(sliceStart, ctx.p));
+                state = 2;
             }
         }
-        // Until there's no more dot
-    } while (dot + 1 && dot < endPtr);
-    return [parsed, skipVoid(str, endPtr + 1, true, true)];
+        // If state is post-key, no character is allowed; otherwise ensure it's a bare-key component
+        else if (state === 2 || (c < 0x30 && c !== 0x2d /* - */) || (c > 0x39 && c < 0x41) || (c > 0x5a && c < 0x61 && c !== 0x5f /* _ */) || c > 0x7a) {
+            TomlError.x('illegal character in key', ctx);
+        }
+        // Illegal character
+        else if (!state) {
+            state = 1;
+            sliceStart = ctx.p;
+        }
+    } while (c = ctx.s.charCodeAt(++ctx.p));
+    TomlError.x('incomplete key-value: cannot find end of key', ctx, startPtr);
 }
-function parseInlineTable(str, ptr, depth, integersAsBigInt) {
-    let res = {};
+/** @internal */
+function parseInlineTable(ctx) {
+    let startPtr = ctx.p++;
+    let res = Object.create(null);
     let seen = new Set();
     let c;
-    let comma = 0;
-    ptr++;
-    while ((c = str[ptr++]) !== '}' && c) {
-        let err = { toml: str, ptr: ptr - 1 };
-        if (c === '\n') {
-            throw new TomlError('newlines are not allowed in inline tables', err);
+    while (ctx.p < ctx.s.length) {
+        skipVoid(ctx);
+        if ((c = ctx.s.charCodeAt(ctx.p)) === 0x7d /* } */) {
+            ctx.p++;
+            return res;
         }
-        else if (c === '#') {
-            throw new TomlError('inline tables cannot contain comments', err);
-        }
-        else if (c === ',') {
-            throw new TomlError('expected key-value, found comma', err);
-        }
-        else if (c !== ' ' && c !== '\t') {
-            let k;
-            let t = res;
-            let hasOwn = false;
-            let [key, keyEndPtr] = parseKey(str, ptr - 1);
-            for (let i = 0; i < key.length; i++) {
-                if (i)
-                    t = hasOwn ? t[k] : (t[k] = {});
-                k = key[i];
-                if ((hasOwn = Object.hasOwn(t, k)) && (typeof t[k] !== 'object' || seen.has(t[k]))) {
-                    throw new TomlError('trying to redefine an already defined value', {
-                        toml: str,
-                        ptr: ptr,
-                    });
-                }
-                if (!hasOwn && k === '__proto__') {
-                    Object.defineProperty(t, k, { enumerable: true, configurable: true, writable: true });
-                }
+        let k;
+        let t = res;
+        let hasOwn = false;
+        let errPtr = ctx.p;
+        let key = parseKey(ctx);
+        for (let i = 0; i < key.length; i++) {
+            if (i)
+                t = hasOwn ? t[k] : (t[k] = Object.create(null));
+            k = key[i];
+            if ((hasOwn = Object.hasOwn(t, k)) && (typeof t[k] !== 'object' || seen.has(t[k]))) {
+                TomlError.x('trying to redefine an already defined value', ctx, errPtr);
             }
-            if (hasOwn) {
-                throw new TomlError('trying to redefine an already defined value', {
-                    toml: str,
-                    ptr: ptr,
-                });
+            let unsafe = k === '__proto__';
+            if (ctx.uk && (unsafe || k === 'constructor')) {
+                t = ctx.uk !== 1 && TomlError.x('document contains an unsafe property', ctx, errPtr);
+                break;
             }
-            let [value, valueEndPtr] = extractValue(str, keyEndPtr, '}', depth - 1, integersAsBigInt);
+            if (!hasOwn && unsafe) {
+                Object.defineProperty(t, k, { enumerable: true, configurable: true, writable: true });
+            }
+        }
+        if (hasOwn) {
+            TomlError.x('trying to redefine an already defined value', ctx, errPtr);
+        }
+        skipVoid(ctx, true, true);
+        let value = extractValue(ctx, 0x7d /* } */);
+        if (t && typeof (t[k] = value) === 'object')
             seen.add(value);
-            t[k] = value;
-            ptr = valueEndPtr;
-            comma = str[ptr - 1] === ',' ? ptr - 1 : 0;
+        skipVoid(ctx);
+        if ((c = ctx.s.charCodeAt(ctx.p++)) === 0x7d /* } */) {
+            return res;
         }
+        if (c !== 0x2c /* , */)
+            TomlError.x('expected comma or end of structure', ctx, ctx.p - 1);
     }
-    if (comma) {
-        throw new TomlError('trailing commas are not allowed in inline tables', {
-            toml: str,
-            ptr: comma,
-        });
-    }
-    if (!c) {
-        throw new TomlError('unfinished table encountered', {
-            toml: str,
-            ptr: ptr,
-        });
-    }
-    return [res, ptr];
+    TomlError.x('unfinished table', ctx, startPtr);
 }
-function parseArray(str, ptr, depth, integersAsBigInt) {
+/** @internal */
+function parseArray(ctx) {
+    let startPtr = ctx.p++;
     let res = [];
     let c;
-    ptr++;
-    while ((c = str[ptr++]) !== ']' && c) {
-        if (c === ',') {
-            throw new TomlError('expected value, found comma', {
-                toml: str,
-                ptr: ptr - 1,
-            });
+    while (ctx.p < ctx.s.length) {
+        skipVoid(ctx);
+        if ((c = ctx.s.charCodeAt(ctx.p)) === 0x5d /* ] */) {
+            ctx.p++;
+            return res;
         }
-        else if (c === '#')
-            ptr = skipComment(str, ptr);
-        else if (c !== ' ' && c !== '\t' && c !== '\n' && c !== '\r') {
-            let e = extractValue(str, ptr - 1, ']', depth - 1, integersAsBigInt);
-            res.push(e[0]);
-            ptr = e[1];
+        res.push(extractValue(ctx, 0x5d /* ] */));
+        skipVoid(ctx);
+        if ((c = ctx.s.charCodeAt(ctx.p++)) === 0x5d /* ] */) {
+            return res;
         }
+        if (c !== 0x2c /* , */)
+            TomlError.x('expected comma or end of structure', ctx, ctx.p - 1);
     }
-    if (!c) {
-        throw new TomlError('unfinished array encountered', {
-            toml: str,
-            ptr: ptr,
-        });
-    }
-    return [res, ptr];
+    TomlError.x('unfinished array', ctx, startPtr);
 }
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/smol-toml@1.5.2/node_modules/smol-toml/dist/parse.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/smol-toml@1.9.1/node_modules/smol-toml/dist/parse.js
 /*!
  * Copyright (c) Squirrel Chat et al., All rights reserved.
  * SPDX-License-Identifier: BSD-3-Clause
@@ -86579,7 +86686,7 @@ function parseArray(str, ptr, depth, integersAsBigInt) {
 
 
 
-function peekTable(key, table, meta, type) {
+function peekTable(ctx, key, table, meta, type) {
     let t = table;
     let m = meta;
     let k;
@@ -86587,7 +86694,7 @@ function peekTable(key, table, meta, type) {
     let state;
     for (let i = 0; i < key.length; i++) {
         if (i) {
-            t = hasOwn ? t[k] : (t[k] = {});
+            t = hasOwn ? t[k] : (t[k] = Object.create(null));
             m = (state = m[k]).c;
             if (type === 0 /* Type.DOTTED */ && (state.t === 1 /* Type.EXPLICIT */ || state.t === 2 /* Type.ARRAY */)) {
                 return null;
@@ -86603,17 +86710,19 @@ function peekTable(key, table, meta, type) {
             return null;
         }
         if (!hasOwn) {
-            if (k === '__proto__') {
+            let unsafe = k === '__proto__';
+            if (ctx.uk && (unsafe || k === 'constructor'))
+                return false;
+            if (unsafe) {
                 Object.defineProperty(t, k, { enumerable: true, configurable: true, writable: true });
                 Object.defineProperty(m, k, { enumerable: true, configurable: true, writable: true });
             }
             m[k] = {
                 t: i < key.length - 1 && type === 2 /* Type.ARRAY */
-                    ? 3 /* Type.ARRAY_DOTTED */
-                    : type,
+                    ? 3 /* Type.ARRAY_DOTTED */ : type,
                 d: false,
                 i: 0,
-                c: {},
+                c: Object.create(null),
             };
         }
     }
@@ -86627,8 +86736,8 @@ function peekTable(key, table, meta, type) {
             state.d = true;
             t[k] = [];
         }
-        t[k].push(t = {});
-        state.c[state.i++] = (state = { t: 1 /* Type.EXPLICIT */, d: false, i: 0, c: {} });
+        t[k].push(t = Object.create(null));
+        state.c[state.i++] = (state = { t: 1 /* Type.EXPLICIT */, d: false, i: 0, c: Object.create(null) });
     }
     if (state.d) {
         // Redefining a table!
@@ -86636,68 +86745,82 @@ function peekTable(key, table, meta, type) {
     }
     state.d = true;
     if (type === 1 /* Type.EXPLICIT */) {
-        t = hasOwn ? t[k] : (t[k] = {});
+        t = hasOwn ? t[k] : (t[k] = Object.create(null));
     }
     else if (type === 0 /* Type.DOTTED */ && hasOwn) {
         return null;
     }
     return [k, t, state.c];
 }
-function parse(toml, { maxDepth = 1000, integersAsBigInt } = {}) {
-    let res = {};
-    let meta = {};
+function validateTablePeek(ctx, peek, ptr) {
+    if (peek === null || ctx.uk === 2)
+        TomlError.x(peek === null
+            ? 'trying to redefine an already defined table or value'
+            : 'document contains an unsafe property', ctx, ptr);
+}
+function parse(toml, options = {}) {
+    let ctx = {
+        s: toml,
+        p: 0,
+        d: options.maxDepth ?? 1000,
+        bi: options.integersAsBigInt ?? false,
+        ld: options.useLegacyDate ?? true,
+        uk: options.unsafeKeyBehaviour === 'throw' ? 2 : options.unsafeKeyBehaviour === 'drop' ? 1 : 0,
+    };
+    let res = Object.create(null);
+    let meta = Object.create(null);
+    let tmp;
+    let skipping = false;
     let tbl = res;
     let m = meta;
-    for (let ptr = skipVoid(toml, 0); ptr < toml.length;) {
-        if (toml[ptr] === '[') {
-            let isTableArray = toml[++ptr] === '[';
-            let k = parseKey(toml, ptr += +isTableArray, ']');
+    // BOM is allowed, skip.
+    // JS is UTF-16, so we have to check for the UTF-16 BOM instead of the UTF-8 BOM sequence!
+    if (toml.charCodeAt(0) === 0xfeff)
+        ctx.p++;
+    skipVoid(ctx);
+    while (ctx.p < toml.length) {
+        if (toml.charCodeAt(ctx.p) === 0x5b /* [ */) {
+            let isTableArray = toml.charCodeAt(++ctx.p) === 0x5b; /* [ */
+            tmp = ctx.p += +isTableArray;
+            skipping = false;
+            let k = parseKey(ctx, 0x5d /* ] */);
             if (isTableArray) {
-                if (toml[k[1] - 1] !== ']') {
-                    throw new TomlError('expected end of table declaration', {
-                        toml: toml,
-                        ptr: k[1] - 1,
-                    });
+                if (toml.charCodeAt(ctx.p) !== 0x5d /* ] */) {
+                    TomlError.x('expected end of table array declaration', ctx);
                 }
-                k[1]++;
+                ctx.p++;
             }
-            let p = peekTable(k[0], res, meta, isTableArray ? 2 /* Type.ARRAY */ : 1 /* Type.EXPLICIT */);
+            let p = peekTable(ctx, k, res, meta, isTableArray ? 2 /* Type.ARRAY */ : 1 /* Type.EXPLICIT */);
             if (!p) {
-                throw new TomlError('trying to redefine an already defined table or value', {
-                    toml: toml,
-                    ptr: ptr,
-                });
+                validateTablePeek(ctx, p, tmp);
+                skipping = true;
             }
-            m = p[2];
-            tbl = p[1];
-            ptr = k[1];
+            else {
+                m = p[2];
+                tbl = p[1];
+            }
         }
         else {
-            let k = parseKey(toml, ptr);
-            let p = peekTable(k[0], tbl, m, 0 /* Type.DOTTED */);
-            if (!p) {
-                throw new TomlError('trying to redefine an already defined table or value', {
-                    toml: toml,
-                    ptr: ptr,
-                });
-            }
-            let v = extractValue(toml, k[1], void 0, maxDepth, integersAsBigInt);
-            p[1][p[0]] = v[0];
-            ptr = v[1];
+            tmp = ctx.p;
+            let k = parseKey(ctx);
+            let p = peekTable(ctx, k, tbl, m, 0 /* Type.DOTTED */);
+            if (!p && !skipping)
+                validateTablePeek(ctx, p, tmp);
+            skipVoid(ctx, true, true);
+            let v = extractValue(ctx, void 0);
+            if (p && !skipping)
+                p[1][p[0]] = v;
         }
-        ptr = skipVoid(toml, ptr, true);
-        if (toml[ptr] && toml[ptr] !== '\n' && toml[ptr] !== '\r') {
-            throw new TomlError('each key-value declaration must be followed by an end-of-line', {
-                toml: toml,
-                ptr: ptr
-            });
+        skipVoid(ctx, true);
+        if (ctx.p < toml.length && (tmp = toml.charCodeAt(ctx.p)) !== 0xa /* \n */ && (tmp !== 0xd /* \r */ || toml.charCodeAt(ctx.p + 1) !== 0xa /* \n */)) {
+            TomlError.x('each key-value declaration must be followed by an end-of-line', ctx);
         }
-        ptr = skipVoid(toml, ptr);
+        skipVoid(ctx);
     }
     return res;
 }
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/smol-toml@1.5.2/node_modules/smol-toml/dist/stringify.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/smol-toml@1.9.1/node_modules/smol-toml/dist/stringify.js
 /*!
  * Copyright (c) Squirrel Chat et al., All rights reserved.
  * SPDX-License-Identifier: BSD-3-Clause
@@ -86726,13 +86849,30 @@ function parse(toml, { maxDepth = 1000, integersAsBigInt } = {}) {
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 let BARE_KEY = /^[a-z0-9-_]+$/i;
+let HAS_WELLFORMED = !!(''.isWellFormed);
 function extendedTypeOf(obj) {
     let type = typeof obj;
     if (type === 'object') {
         if (Array.isArray(obj))
             return 'array';
-        if (obj instanceof Date)
+        if (typeof obj.getUTCDate === 'function' && obj instanceof Date)
             return 'date';
+        if (globalThis.Temporal) {
+            if (obj.until) {
+                if (obj instanceof Temporal.ZonedDateTime)
+                    return 'temporal/tz+uc';
+                if (obj instanceof Temporal.PlainDateTime || obj instanceof Temporal.PlainDate)
+                    return 'temporal/uc';
+                if (obj instanceof Temporal.PlainTime || obj instanceof Temporal.Instant)
+                    return 'temporal';
+                if (obj instanceof Temporal.PlainYearMonth)
+                    return 'temporal/x';
+            }
+            else if ((obj.toPlainDate && obj instanceof Temporal.PlainMonthDay) ||
+                (obj.negated && obj instanceof Temporal.Duration)) {
+                return 'temporal/x';
+            }
+        }
     }
     return type;
 }
@@ -86743,44 +86883,81 @@ function isArrayOfTables(obj) {
     }
     return obj.length != 0;
 }
-function formatString(s) {
-    return JSON.stringify(s).replace(/\x7f/g, '\\u007f');
+function formatWellFormedStringUnchecked(s) {
+    return JSON.stringify(s).replaceAll('\x7f', '\\u007f');
 }
-function stringifyValue(val, type, depth, numberAsFloat) {
+function formatString(s) {
+    return formatWellFormedStringUnchecked(HAS_WELLFORMED ? s.toWellFormed() : s);
+}
+function formatKey(s) {
+    if (BARE_KEY.test(s))
+        return s;
+    if (HAS_WELLFORMED && !s.isWellFormed())
+        throw new RangeError('key contains illegal lone surrogates');
+    return formatWellFormedStringUnchecked(s);
+}
+function stringifyValue(val, type, depth, numberAsFloat, strictTemporal) {
     if (depth === 0) {
         throw new Error('Could not stringify the object: maximum object depth exceeded');
     }
-    if (type === 'number') {
-        if (isNaN(val))
-            return 'nan';
-        if (val === Infinity)
-            return 'inf';
-        if (val === -Infinity)
-            return '-inf';
-        if (numberAsFloat && Number.isInteger(val))
-            return val.toFixed(1);
-        return val.toString();
-    }
-    if (type === 'bigint' || type === 'boolean') {
-        return val.toString();
-    }
-    if (type === 'string') {
-        return formatString(val);
-    }
-    if (type === 'date') {
-        if (isNaN(val.getTime())) {
-            throw new TypeError('cannot serialize invalid date');
-        }
-        return val.toISOString();
-    }
-    if (type === 'object') {
-        return stringifyInlineTable(val, depth, numberAsFloat);
-    }
-    if (type === 'array') {
-        return stringifyArray(val, depth, numberAsFloat);
+    switch (type) {
+        // @ts-expect-error -- intentional fallthrough case
+        case 'number':
+            if (isNaN(val))
+                return 'nan';
+            if (val === Infinity)
+                return 'inf';
+            if (val === -Infinity)
+                return '-inf';
+            if (Number.isInteger(val) && (numberAsFloat || !Number.isSafeInteger(val)))
+                return val.toFixed(1);
+        case 'bigint':
+        case 'boolean':
+        case 'temporal':
+            return val.toString();
+        case 'string':
+            return formatString(val);
+        case 'date':
+            if (isNaN(val.getTime()))
+                throw new TypeError('cannot serialize invalid date');
+            return val.toISOString();
+        case 'object':
+            return stringifyInlineTable(val, depth, numberAsFloat, strictTemporal);
+        case 'array':
+            return stringifyArray(val, depth, numberAsFloat, strictTemporal);
+        // @ts-expect-error -- intentional fallthrough case
+        case 'temporal/tz+uc':
+            if (strictTemporal) {
+                let tz = val.timeZoneId;
+                let tzc = tz.charCodeAt(0);
+                if (
+                // Classic offset
+                tzc !== 0x2b /* + */ && tzc !== 0x2d /* - */ &&
+                    (
+                    // Fast pre-check pass; see below for the actually accepted values
+                    (tzc !== 0x55 /* U */ && tzc !== 0x47 /* G */ && tzc !== 0x5a /* Z */ && tzc !== 0x45 /* E */) ||
+                        (
+                        // UTC and its aliases; Temporal implementations don't all canonicalise unfortunately
+                        tz !== 'UTC' && tz !== 'UCT' && tz !== 'Universal' && tz !== 'Zulu' &&
+                            // GMT is a TZ but it's for all intents and purposes equivalent to UTC. Safe to downgrade.
+                            !tz.startsWith('GMT') && tz !== 'Greenwich' &&
+                            // Etc/* are all safe to downgrade to offset (either UTC, GMT, or offset)
+                            !tz.startsWith('Etc/')))) {
+                    throw new TypeError('Temporal objects with an IANA timezone are not allowed in Temporal strict mode');
+                }
+            }
+        case 'temporal/uc':
+            if (strictTemporal && val.calendarId !== 'iso8601')
+                throw new TypeError('Temporal objects with a non-default calendar are not allowed in Temporal strict mode');
+            return val.toString({
+                calendarName: 'never',
+                timeZoneName: 'never',
+            });
+        case 'temporal/x':
+            throw new TypeError('Unsupported ' + val[Symbol.toStringTag]);
     }
 }
-function stringifyInlineTable(obj, depth, numberAsFloat) {
+function stringifyInlineTable(obj, depth, numberAsFloat, strictTemporal) {
     let keys = Object.keys(obj);
     if (keys.length === 0)
         return '{}';
@@ -86789,13 +86966,11 @@ function stringifyInlineTable(obj, depth, numberAsFloat) {
         let k = keys[i];
         if (i)
             res += ', ';
-        res += BARE_KEY.test(k) ? k : formatString(k);
-        res += ' = ';
-        res += stringifyValue(obj[k], extendedTypeOf(obj[k]), depth - 1, numberAsFloat);
+        res += formatKey(k) + ' = ' + stringifyValue(obj[k], extendedTypeOf(obj[k]), depth - 1, numberAsFloat, strictTemporal);
     }
     return res + ' }';
 }
-function stringifyArray(array, depth, numberAsFloat) {
+function stringifyArray(array, depth, numberAsFloat, strictTemporal) {
     if (array.length === 0)
         return '[]';
     let res = '[ ';
@@ -86805,22 +86980,22 @@ function stringifyArray(array, depth, numberAsFloat) {
         if (array[i] === null || array[i] === void 0) {
             throw new TypeError('arrays cannot contain null or undefined values');
         }
-        res += stringifyValue(array[i], extendedTypeOf(array[i]), depth - 1, numberAsFloat);
+        res += stringifyValue(array[i], extendedTypeOf(array[i]), depth - 1, numberAsFloat, strictTemporal);
     }
     return res + ' ]';
 }
-function stringifyArrayTable(array, key, depth, numberAsFloat) {
+function stringifyArrayTable(array, key, depth, numberAsFloat, strictTemporal) {
     if (depth === 0) {
         throw new Error('Could not stringify the object: maximum object depth exceeded');
     }
     let res = '';
     for (let i = 0; i < array.length; i++) {
         res += `${res && '\n'}[[${key}]]\n`;
-        res += stringifyTable(0, array[i], key, depth, numberAsFloat);
+        res += stringifyTable(0, array[i], key, depth, numberAsFloat, strictTemporal);
     }
     return res;
 }
-function stringifyTable(tableKey, obj, prefix, depth, numberAsFloat) {
+function stringifyTable(tableKey, obj, prefix, depth, numberAsFloat, strictTemporal) {
     if (depth === 0) {
         throw new Error('Could not stringify the object: maximum object depth exceeded');
     }
@@ -86834,18 +87009,18 @@ function stringifyTable(tableKey, obj, prefix, depth, numberAsFloat) {
             if (type === 'symbol' || type === 'function') {
                 throw new TypeError(`cannot serialize values of type '${type}'`);
             }
-            let key = BARE_KEY.test(k) ? k : formatString(k);
+            let key = formatKey(k);
             if (type === 'array' && isArrayOfTables(obj[k])) {
-                tables += (tables && '\n') + stringifyArrayTable(obj[k], prefix ? `${prefix}.${key}` : key, depth - 1, numberAsFloat);
+                tables += (tables && '\n') + stringifyArrayTable(obj[k], prefix ? `${prefix}.${key}` : key, depth - 1, numberAsFloat, strictTemporal);
             }
             else if (type === 'object') {
                 let tblKey = prefix ? `${prefix}.${key}` : key;
-                tables += (tables && '\n') + stringifyTable(tblKey, obj[k], tblKey, depth - 1, numberAsFloat);
+                tables += (tables && '\n') + stringifyTable(tblKey, obj[k], tblKey, depth - 1, numberAsFloat, strictTemporal);
             }
             else {
                 preamble += key;
                 preamble += ' = ';
-                preamble += stringifyValue(obj[k], type, depth, numberAsFloat);
+                preamble += stringifyValue(obj[k], type, depth, numberAsFloat, strictTemporal);
                 preamble += '\n';
             }
         }
@@ -86856,17 +87031,17 @@ function stringifyTable(tableKey, obj, prefix, depth, numberAsFloat) {
         ? `${preamble}\n${tables}`
         : preamble || tables;
 }
-function stringify(obj, { maxDepth = 1000, numbersAsFloat = false } = {}) {
+function stringify(obj, { maxDepth = 1000, numbersAsFloat = false, strictTemporal = false } = {}) {
     if (extendedTypeOf(obj) !== 'object') {
         throw new TypeError('stringify can only be called with an object');
     }
-    let str = stringifyTable(0, obj, '', maxDepth, numbersAsFloat);
+    let str = stringifyTable(0, obj, '', maxDepth, numbersAsFloat, strictTemporal);
     if (str[str.length - 1] !== '\n')
         return str + '\n';
     return str;
 }
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/smol-toml@1.5.2/node_modules/smol-toml/dist/index.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/smol-toml@1.9.1/node_modules/smol-toml/dist/index.js
 /*!
  * Copyright (c) Squirrel Chat et al., All rights reserved.
  * SPDX-License-Identifier: BSD-3-Clause
@@ -86898,8 +87073,9 @@ function stringify(obj, { maxDepth = 1000, numbersAsFloat = false } = {}) {
 
 
 
-/* harmony default export */ const dist = ({ parse: parse, stringify: stringify, TomlDate: TomlDate, TomlError: TomlError });
 
+/** @deprecated use `import * as ... from 'smol-toml'` instead */
+/* harmony default export */ const dist = ({ parse: parse, stringify: stringify, TomlDate: TomlDate, TomlError: TomlError });
 
 ;// CONCATENATED MODULE: ./node_modules/.pnpm/is-plain-obj@4.1.0/node_modules/is-plain-obj/index.js
 function isPlainObject(value) {
@@ -90813,7 +90989,7 @@ const normalizeExitPayload = (rawExitCode, rawSignal) => {
 ;// CONCATENATED MODULE: ./node_modules/.pnpm/parse-ms@4.0.0/node_modules/parse-ms/index.js
 const toZeroIfInfinity = value => Number.isFinite(value) ? value : 0;
 
-function parseNumber(milliseconds) {
+function parse_ms_parseNumber(milliseconds) {
 	return {
 		days: Math.trunc(milliseconds / 86_400_000),
 		hours: Math.trunc(milliseconds / 3_600_000 % 24),
@@ -90841,7 +91017,7 @@ function parseMilliseconds(milliseconds) {
 	switch (typeof milliseconds) {
 		case 'number': {
 			if (Number.isFinite(milliseconds)) {
-				return parseNumber(milliseconds);
+				return parse_ms_parseNumber(milliseconds);
 			}
 
 			break;
@@ -95870,6 +96046,17 @@ function readCustomConfig(customPath) {
     throw new Error(`Couldn't parse \`${customPath}\` as ${ext.substring(1)}.`);
 }
 class TauriConfig {
+    // Required values
+    identifier;
+    // Optional values
+    productName;
+    mainBinaryName;
+    version;
+    frontendDist;
+    beforeBuildCommand;
+    rpmRelease;
+    wixLanguage;
+    unzippedSigs;
     constructor(identifier) {
         this.identifier = identifier;
     }
@@ -103873,7 +104060,7 @@ exports.XML_CHARKEY = "_";
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.stringifyXML = stringifyXML;
 exports.parseXML = parseXML;
-const fast_xml_parser_1 = __nccwpck_require__(62209);
+const fast_xml_parser_1 = __nccwpck_require__(52271);
 const xml_common_js_1 = __nccwpck_require__(3610);
 function getCommonOptions(options) {
     var _a;
@@ -111270,23 +111457,6 @@ class UserDelegationKeyCredential {
 }
 exports.UserDelegationKeyCredential = UserDelegationKeyCredential;
 //# sourceMappingURL=UserDelegationKeyCredential.js.map
-
-/***/ }),
-
-/***/ 13430:
-/***/ ((__unused_webpack_module, exports) => {
-
-
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT License.
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.KnownEncryptionAlgorithmType = void 0;
-/** Known values of {@link EncryptionAlgorithmType} that the service accepts. */
-var KnownEncryptionAlgorithmType;
-(function (KnownEncryptionAlgorithmType) {
-    KnownEncryptionAlgorithmType["AES256"] = "AES256";
-})(KnownEncryptionAlgorithmType || (exports.KnownEncryptionAlgorithmType = KnownEncryptionAlgorithmType = {}));
-//# sourceMappingURL=generatedModels.js.map
 
 /***/ }),
 
@@ -121558,125 +121728,6 @@ exports.listType = {
 
 /***/ }),
 
-/***/ 36242:
-/***/ ((__unused_webpack_module, exports) => {
-
-
-/*
- * Copyright (c) Microsoft Corporation.
- * Licensed under the MIT License.
- *
- * Code generated by Microsoft (R) AutoRest Code Generator.
- * Changes may cause incorrect behavior and will be lost if the code is regenerated.
- */
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-//# sourceMappingURL=appendBlob.js.map
-
-/***/ }),
-
-/***/ 42294:
-/***/ ((__unused_webpack_module, exports) => {
-
-
-/*
- * Copyright (c) Microsoft Corporation.
- * Licensed under the MIT License.
- *
- * Code generated by Microsoft (R) AutoRest Code Generator.
- * Changes may cause incorrect behavior and will be lost if the code is regenerated.
- */
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-//# sourceMappingURL=blob.js.map
-
-/***/ }),
-
-/***/ 26003:
-/***/ ((__unused_webpack_module, exports) => {
-
-
-/*
- * Copyright (c) Microsoft Corporation.
- * Licensed under the MIT License.
- *
- * Code generated by Microsoft (R) AutoRest Code Generator.
- * Changes may cause incorrect behavior and will be lost if the code is regenerated.
- */
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-//# sourceMappingURL=blockBlob.js.map
-
-/***/ }),
-
-/***/ 2718:
-/***/ ((__unused_webpack_module, exports) => {
-
-
-/*
- * Copyright (c) Microsoft Corporation.
- * Licensed under the MIT License.
- *
- * Code generated by Microsoft (R) AutoRest Code Generator.
- * Changes may cause incorrect behavior and will be lost if the code is regenerated.
- */
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-//# sourceMappingURL=container.js.map
-
-/***/ }),
-
-/***/ 52597:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
-
-
-/*
- * Copyright (c) Microsoft Corporation.
- * Licensed under the MIT License.
- *
- * Code generated by Microsoft (R) AutoRest Code Generator.
- * Changes may cause incorrect behavior and will be lost if the code is regenerated.
- */
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-const tslib_1 = __nccwpck_require__(67892);
-tslib_1.__exportStar(__nccwpck_require__(87126), exports);
-tslib_1.__exportStar(__nccwpck_require__(2718), exports);
-tslib_1.__exportStar(__nccwpck_require__(42294), exports);
-tslib_1.__exportStar(__nccwpck_require__(85517), exports);
-tslib_1.__exportStar(__nccwpck_require__(36242), exports);
-tslib_1.__exportStar(__nccwpck_require__(26003), exports);
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-
-/***/ 85517:
-/***/ ((__unused_webpack_module, exports) => {
-
-
-/*
- * Copyright (c) Microsoft Corporation.
- * Licensed under the MIT License.
- *
- * Code generated by Microsoft (R) AutoRest Code Generator.
- * Changes may cause incorrect behavior and will be lost if the code is regenerated.
- */
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-//# sourceMappingURL=pageBlob.js.map
-
-/***/ }),
-
-/***/ 87126:
-/***/ ((__unused_webpack_module, exports) => {
-
-
-/*
- * Copyright (c) Microsoft Corporation.
- * Licensed under the MIT License.
- *
- * Code generated by Microsoft (R) AutoRest Code Generator.
- * Changes may cause incorrect behavior and will be lost if the code is regenerated.
- */
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-//# sourceMappingURL=service.js.map
-
-/***/ }),
-
 /***/ 74910:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
@@ -124875,6 +124926,125 @@ const filterBlobsOperationSpec = {
 
 /***/ }),
 
+/***/ 36242:
+/***/ ((__unused_webpack_module, exports) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation.
+ * Licensed under the MIT License.
+ *
+ * Code generated by Microsoft (R) AutoRest Code Generator.
+ * Changes may cause incorrect behavior and will be lost if the code is regenerated.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+//# sourceMappingURL=appendBlob.js.map
+
+/***/ }),
+
+/***/ 42294:
+/***/ ((__unused_webpack_module, exports) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation.
+ * Licensed under the MIT License.
+ *
+ * Code generated by Microsoft (R) AutoRest Code Generator.
+ * Changes may cause incorrect behavior and will be lost if the code is regenerated.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+//# sourceMappingURL=blob.js.map
+
+/***/ }),
+
+/***/ 26003:
+/***/ ((__unused_webpack_module, exports) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation.
+ * Licensed under the MIT License.
+ *
+ * Code generated by Microsoft (R) AutoRest Code Generator.
+ * Changes may cause incorrect behavior and will be lost if the code is regenerated.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+//# sourceMappingURL=blockBlob.js.map
+
+/***/ }),
+
+/***/ 2718:
+/***/ ((__unused_webpack_module, exports) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation.
+ * Licensed under the MIT License.
+ *
+ * Code generated by Microsoft (R) AutoRest Code Generator.
+ * Changes may cause incorrect behavior and will be lost if the code is regenerated.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+//# sourceMappingURL=container.js.map
+
+/***/ }),
+
+/***/ 52597:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation.
+ * Licensed under the MIT License.
+ *
+ * Code generated by Microsoft (R) AutoRest Code Generator.
+ * Changes may cause incorrect behavior and will be lost if the code is regenerated.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const tslib_1 = __nccwpck_require__(67892);
+tslib_1.__exportStar(__nccwpck_require__(87126), exports);
+tslib_1.__exportStar(__nccwpck_require__(2718), exports);
+tslib_1.__exportStar(__nccwpck_require__(42294), exports);
+tslib_1.__exportStar(__nccwpck_require__(85517), exports);
+tslib_1.__exportStar(__nccwpck_require__(36242), exports);
+tslib_1.__exportStar(__nccwpck_require__(26003), exports);
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ 85517:
+/***/ ((__unused_webpack_module, exports) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation.
+ * Licensed under the MIT License.
+ *
+ * Code generated by Microsoft (R) AutoRest Code Generator.
+ * Changes may cause incorrect behavior and will be lost if the code is regenerated.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+//# sourceMappingURL=pageBlob.js.map
+
+/***/ }),
+
+/***/ 87126:
+/***/ ((__unused_webpack_module, exports) => {
+
+
+/*
+ * Copyright (c) Microsoft Corporation.
+ * Licensed under the MIT License.
+ *
+ * Code generated by Microsoft (R) AutoRest Code Generator.
+ * Changes may cause incorrect behavior and will be lost if the code is regenerated.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+//# sourceMappingURL=service.js.map
+
+/***/ }),
+
 /***/ 36244:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
@@ -124944,6 +125114,23 @@ class StorageClient extends coreHttpCompat.ExtendedServiceClient {
 }
 exports.StorageClient = StorageClient;
 //# sourceMappingURL=storageClient.js.map
+
+/***/ }),
+
+/***/ 13430:
+/***/ ((__unused_webpack_module, exports) => {
+
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.KnownEncryptionAlgorithmType = void 0;
+/** Known values of {@link EncryptionAlgorithmType} that the service accepts. */
+var KnownEncryptionAlgorithmType;
+(function (KnownEncryptionAlgorithmType) {
+    KnownEncryptionAlgorithmType["AES256"] = "AES256";
+})(KnownEncryptionAlgorithmType || (exports.KnownEncryptionAlgorithmType = KnownEncryptionAlgorithmType = {}));
+//# sourceMappingURL=generatedModels.js.map
 
 /***/ }),
 
@@ -147314,10 +147501,10 @@ module.exports = index;
 
 /***/ }),
 
-/***/ 62209:
+/***/ 52271:
 /***/ ((module) => {
 
-(()=>{"use strict";var t={d:(e,i)=>{for(var n in i)t.o(i,n)&&!t.o(e,n)&&Object.defineProperty(e,n,{enumerable:!0,get:i[n]})},o:(t,e)=>Object.prototype.hasOwnProperty.call(t,e),r:t=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(t,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(t,"__esModule",{value:!0})}},e={};t.r(e),t.d(e,{XMLBuilder:()=>lt,XMLParser:()=>tt,XMLValidator:()=>pt});const i=":A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD",n=new RegExp("^["+i+"]["+i+"\\-.\\d\\u00B7\\u0300-\\u036F\\u203F-\\u2040]*$");function s(t,e){const i=[];let n=e.exec(t);for(;n;){const s=[];s.startIndex=e.lastIndex-n[0].length;const r=n.length;for(let t=0;t<r;t++)s.push(n[t]);i.push(s),n=e.exec(t)}return i}const r=function(t){return!(null==n.exec(t))},o={allowBooleanAttributes:!1,unpairedTags:[]};function a(t,e){e=Object.assign({},o,e);const i=[];let n=!1,s=!1;"\ufeff"===t[0]&&(t=t.substr(1));for(let o=0;o<t.length;o++)if("<"===t[o]&&"?"===t[o+1]){if(o+=2,o=u(t,o),o.err)return o}else{if("<"!==t[o]){if(l(t[o]))continue;return x("InvalidChar","char '"+t[o]+"' is not expected.",b(t,o))}{let a=o;if(o++,"!"===t[o]){o=h(t,o);continue}{let d=!1;"/"===t[o]&&(d=!0,o++);let p="";for(;o<t.length&&">"!==t[o]&&" "!==t[o]&&"\t"!==t[o]&&"\n"!==t[o]&&"\r"!==t[o];o++)p+=t[o];if(p=p.trim(),"/"===p[p.length-1]&&(p=p.substring(0,p.length-1),o--),!r(p)){let e;return e=0===p.trim().length?"Invalid space after '<'.":"Tag '"+p+"' is an invalid name.",x("InvalidTag",e,b(t,o))}const c=f(t,o);if(!1===c)return x("InvalidAttr","Attributes for '"+p+"' have open quote.",b(t,o));let N=c.value;if(o=c.index,"/"===N[N.length-1]){const i=o-N.length;N=N.substring(0,N.length-1);const s=g(N,e);if(!0!==s)return x(s.err.code,s.err.msg,b(t,i+s.err.line));n=!0}else if(d){if(!c.tagClosed)return x("InvalidTag","Closing tag '"+p+"' doesn't have proper closing.",b(t,o));if(N.trim().length>0)return x("InvalidTag","Closing tag '"+p+"' can't have attributes or invalid starting.",b(t,a));if(0===i.length)return x("InvalidTag","Closing tag '"+p+"' has not been opened.",b(t,a));{const e=i.pop();if(p!==e.tagName){let i=b(t,e.tagStartPos);return x("InvalidTag","Expected closing tag '"+e.tagName+"' (opened in line "+i.line+", col "+i.col+") instead of closing tag '"+p+"'.",b(t,a))}0==i.length&&(s=!0)}}else{const r=g(N,e);if(!0!==r)return x(r.err.code,r.err.msg,b(t,o-N.length+r.err.line));if(!0===s)return x("InvalidXml","Multiple possible root nodes found.",b(t,o));-1!==e.unpairedTags.indexOf(p)||i.push({tagName:p,tagStartPos:a}),n=!0}for(o++;o<t.length;o++)if("<"===t[o]){if("!"===t[o+1]){o++,o=h(t,o);continue}if("?"!==t[o+1])break;if(o=u(t,++o),o.err)return o}else if("&"===t[o]){const e=m(t,o);if(-1==e)return x("InvalidChar","char '&' is not expected.",b(t,o));o=e}else if(!0===s&&!l(t[o]))return x("InvalidXml","Extra text at the end",b(t,o));"<"===t[o]&&o--}}}return n?1==i.length?x("InvalidTag","Unclosed tag '"+i[0].tagName+"'.",b(t,i[0].tagStartPos)):!(i.length>0)||x("InvalidXml","Invalid '"+JSON.stringify(i.map((t=>t.tagName)),null,4).replace(/\r?\n/g,"")+"' found.",{line:1,col:1}):x("InvalidXml","Start tag expected.",1)}function l(t){return" "===t||"\t"===t||"\n"===t||"\r"===t}function u(t,e){const i=e;for(;e<t.length;e++)if("?"!=t[e]&&" "!=t[e]);else{const n=t.substr(i,e-i);if(e>5&&"xml"===n)return x("InvalidXml","XML declaration allowed only at the start of the document.",b(t,e));if("?"==t[e]&&">"==t[e+1]){e++;break}}return e}function h(t,e){if(t.length>e+5&&"-"===t[e+1]&&"-"===t[e+2]){for(e+=3;e<t.length;e++)if("-"===t[e]&&"-"===t[e+1]&&">"===t[e+2]){e+=2;break}}else if(t.length>e+8&&"D"===t[e+1]&&"O"===t[e+2]&&"C"===t[e+3]&&"T"===t[e+4]&&"Y"===t[e+5]&&"P"===t[e+6]&&"E"===t[e+7]){let i=1;for(e+=8;e<t.length;e++)if("<"===t[e])i++;else if(">"===t[e]&&(i--,0===i))break}else if(t.length>e+9&&"["===t[e+1]&&"C"===t[e+2]&&"D"===t[e+3]&&"A"===t[e+4]&&"T"===t[e+5]&&"A"===t[e+6]&&"["===t[e+7])for(e+=8;e<t.length;e++)if("]"===t[e]&&"]"===t[e+1]&&">"===t[e+2]){e+=2;break}return e}const d='"',p="'";function f(t,e){let i="",n="",s=!1;for(;e<t.length;e++){if(t[e]===d||t[e]===p)""===n?n=t[e]:n!==t[e]||(n="");else if(">"===t[e]&&""===n){s=!0;break}i+=t[e]}return""===n&&{value:i,index:e,tagClosed:s}}const c=new RegExp("(\\s*)([^\\s=]+)(\\s*=)?(\\s*(['\"])(([\\s\\S])*?)\\5)?","g");function g(t,e){const i=s(t,c),n={};for(let t=0;t<i.length;t++){if(0===i[t][1].length)return x("InvalidAttr","Attribute '"+i[t][2]+"' has no space in starting.",E(i[t]));if(void 0!==i[t][3]&&void 0===i[t][4])return x("InvalidAttr","Attribute '"+i[t][2]+"' is without value.",E(i[t]));if(void 0===i[t][3]&&!e.allowBooleanAttributes)return x("InvalidAttr","boolean attribute '"+i[t][2]+"' is not allowed.",E(i[t]));const s=i[t][2];if(!N(s))return x("InvalidAttr","Attribute '"+s+"' is an invalid name.",E(i[t]));if(n.hasOwnProperty(s))return x("InvalidAttr","Attribute '"+s+"' is repeated.",E(i[t]));n[s]=1}return!0}function m(t,e){if(";"===t[++e])return-1;if("#"===t[e])return function(t,e){let i=/\d/;for("x"===t[e]&&(e++,i=/[\da-fA-F]/);e<t.length;e++){if(";"===t[e])return e;if(!t[e].match(i))break}return-1}(t,++e);let i=0;for(;e<t.length;e++,i++)if(!(t[e].match(/\w/)&&i<20)){if(";"===t[e])break;return-1}return e}function x(t,e,i){return{err:{code:t,msg:e,line:i.line||i,col:i.col}}}function N(t){return r(t)}function b(t,e){const i=t.substring(0,e).split(/\r?\n/);return{line:i.length,col:i[i.length-1].length+1}}function E(t){return t.startIndex+t[1].length}const v={preserveOrder:!1,attributeNamePrefix:"@_",attributesGroupName:!1,textNodeName:"#text",ignoreAttributes:!0,removeNSPrefix:!1,allowBooleanAttributes:!1,parseTagValue:!0,parseAttributeValue:!1,trimValues:!0,cdataPropName:!1,numberParseOptions:{hex:!0,leadingZeros:!0,eNotation:!0},tagValueProcessor:function(t,e){return e},attributeValueProcessor:function(t,e){return e},stopNodes:[],alwaysCreateTextNode:!1,isArray:()=>!1,commentPropName:!1,unpairedTags:[],processEntities:!0,htmlEntities:!1,ignoreDeclaration:!1,ignorePiTags:!1,transformTagName:!1,transformAttributeName:!1,updateTag:function(t,e,i){return t},captureMetaData:!1};let T;T="function"!=typeof Symbol?"@@xmlMetadata":Symbol("XML Node Metadata");class y{constructor(t){this.tagname=t,this.child=[],this[":@"]={}}add(t,e){"__proto__"===t&&(t="#__proto__"),this.child.push({[t]:e})}addChild(t,e){"__proto__"===t.tagname&&(t.tagname="#__proto__"),t[":@"]&&Object.keys(t[":@"]).length>0?this.child.push({[t.tagname]:t.child,":@":t[":@"]}):this.child.push({[t.tagname]:t.child}),void 0!==e&&(this.child[this.child.length-1][T]={startIndex:e})}static getMetaDataSymbol(){return T}}class w{constructor(t){this.suppressValidationErr=!t}readDocType(t,e){const i={};if("O"!==t[e+3]||"C"!==t[e+4]||"T"!==t[e+5]||"Y"!==t[e+6]||"P"!==t[e+7]||"E"!==t[e+8])throw new Error("Invalid Tag instead of DOCTYPE");{e+=9;let n=1,s=!1,r=!1,o="";for(;e<t.length;e++)if("<"!==t[e]||r)if(">"===t[e]){if(r?"-"===t[e-1]&&"-"===t[e-2]&&(r=!1,n--):n--,0===n)break}else"["===t[e]?s=!0:o+=t[e];else{if(s&&P(t,"!ENTITY",e)){let n,s;e+=7,[n,s,e]=this.readEntityExp(t,e+1,this.suppressValidationErr),-1===s.indexOf("&")&&(i[n]={regx:RegExp(`&${n};`,"g"),val:s})}else if(s&&P(t,"!ELEMENT",e)){e+=8;const{index:i}=this.readElementExp(t,e+1);e=i}else if(s&&P(t,"!ATTLIST",e))e+=8;else if(s&&P(t,"!NOTATION",e)){e+=9;const{index:i}=this.readNotationExp(t,e+1,this.suppressValidationErr);e=i}else{if(!P(t,"!--",e))throw new Error("Invalid DOCTYPE");r=!0}n++,o=""}if(0!==n)throw new Error("Unclosed DOCTYPE")}return{entities:i,i:e}}readEntityExp(t,e){e=I(t,e);let i="";for(;e<t.length&&!/\s/.test(t[e])&&'"'!==t[e]&&"'"!==t[e];)i+=t[e],e++;if(O(i),e=I(t,e),!this.suppressValidationErr){if("SYSTEM"===t.substring(e,e+6).toUpperCase())throw new Error("External entities are not supported");if("%"===t[e])throw new Error("Parameter entities are not supported")}let n="";return[e,n]=this.readIdentifierVal(t,e,"entity"),[i,n,--e]}readNotationExp(t,e){e=I(t,e);let i="";for(;e<t.length&&!/\s/.test(t[e]);)i+=t[e],e++;!this.suppressValidationErr&&O(i),e=I(t,e);const n=t.substring(e,e+6).toUpperCase();if(!this.suppressValidationErr&&"SYSTEM"!==n&&"PUBLIC"!==n)throw new Error(`Expected SYSTEM or PUBLIC, found "${n}"`);e+=n.length,e=I(t,e);let s=null,r=null;if("PUBLIC"===n)[e,s]=this.readIdentifierVal(t,e,"publicIdentifier"),'"'!==t[e=I(t,e)]&&"'"!==t[e]||([e,r]=this.readIdentifierVal(t,e,"systemIdentifier"));else if("SYSTEM"===n&&([e,r]=this.readIdentifierVal(t,e,"systemIdentifier"),!this.suppressValidationErr&&!r))throw new Error("Missing mandatory system identifier for SYSTEM notation");return{notationName:i,publicIdentifier:s,systemIdentifier:r,index:--e}}readIdentifierVal(t,e,i){let n="";const s=t[e];if('"'!==s&&"'"!==s)throw new Error(`Expected quoted string, found "${s}"`);for(e++;e<t.length&&t[e]!==s;)n+=t[e],e++;if(t[e]!==s)throw new Error(`Unterminated ${i} value`);return[++e,n]}readElementExp(t,e){e=I(t,e);let i="";for(;e<t.length&&!/\s/.test(t[e]);)i+=t[e],e++;if(!this.suppressValidationErr&&!r(i))throw new Error(`Invalid element name: "${i}"`);let n="";if("E"===t[e=I(t,e)]&&P(t,"MPTY",e))e+=4;else if("A"===t[e]&&P(t,"NY",e))e+=2;else if("("===t[e]){for(e++;e<t.length&&")"!==t[e];)n+=t[e],e++;if(")"!==t[e])throw new Error("Unterminated content model")}else if(!this.suppressValidationErr)throw new Error(`Invalid Element Expression, found "${t[e]}"`);return{elementName:i,contentModel:n.trim(),index:e}}readAttlistExp(t,e){e=I(t,e);let i="";for(;e<t.length&&!/\s/.test(t[e]);)i+=t[e],e++;O(i),e=I(t,e);let n="";for(;e<t.length&&!/\s/.test(t[e]);)n+=t[e],e++;if(!O(n))throw new Error(`Invalid attribute name: "${n}"`);e=I(t,e);let s="";if("NOTATION"===t.substring(e,e+8).toUpperCase()){if(s="NOTATION","("!==t[e=I(t,e+=8)])throw new Error(`Expected '(', found "${t[e]}"`);e++;let i=[];for(;e<t.length&&")"!==t[e];){let n="";for(;e<t.length&&"|"!==t[e]&&")"!==t[e];)n+=t[e],e++;if(n=n.trim(),!O(n))throw new Error(`Invalid notation name: "${n}"`);i.push(n),"|"===t[e]&&(e++,e=I(t,e))}if(")"!==t[e])throw new Error("Unterminated list of notations");e++,s+=" ("+i.join("|")+")"}else{for(;e<t.length&&!/\s/.test(t[e]);)s+=t[e],e++;const i=["CDATA","ID","IDREF","IDREFS","ENTITY","ENTITIES","NMTOKEN","NMTOKENS"];if(!this.suppressValidationErr&&!i.includes(s.toUpperCase()))throw new Error(`Invalid attribute type: "${s}"`)}e=I(t,e);let r="";return"#REQUIRED"===t.substring(e,e+8).toUpperCase()?(r="#REQUIRED",e+=8):"#IMPLIED"===t.substring(e,e+7).toUpperCase()?(r="#IMPLIED",e+=7):[e,r]=this.readIdentifierVal(t,e,"ATTLIST"),{elementName:i,attributeName:n,attributeType:s,defaultValue:r,index:e}}}const I=(t,e)=>{for(;e<t.length&&/\s/.test(t[e]);)e++;return e};function P(t,e,i){for(let n=0;n<e.length;n++)if(e[n]!==t[i+n+1])return!1;return!0}function O(t){if(r(t))return t;throw new Error(`Invalid entity name ${t}`)}const A=/^[-+]?0x[a-fA-F0-9]+$/,S=/^([\-\+])?(0*)([0-9]*(\.[0-9]*)?)$/,C={hex:!0,leadingZeros:!0,decimalPoint:".",eNotation:!0};const V=/^([-+])?(0*)(\d*(\.\d*)?[eE][-\+]?\d+)$/;function $(t){return"function"==typeof t?t:Array.isArray(t)?e=>{for(const i of t){if("string"==typeof i&&e===i)return!0;if(i instanceof RegExp&&i.test(e))return!0}}:()=>!1}class D{constructor(t){if(this.options=t,this.currentNode=null,this.tagsNodeStack=[],this.docTypeEntities={},this.lastEntities={apos:{regex:/&(apos|#39|#x27);/g,val:"'"},gt:{regex:/&(gt|#62|#x3E);/g,val:">"},lt:{regex:/&(lt|#60|#x3C);/g,val:"<"},quot:{regex:/&(quot|#34|#x22);/g,val:'"'}},this.ampEntity={regex:/&(amp|#38|#x26);/g,val:"&"},this.htmlEntities={space:{regex:/&(nbsp|#160);/g,val:" "},cent:{regex:/&(cent|#162);/g,val:"¢"},pound:{regex:/&(pound|#163);/g,val:"£"},yen:{regex:/&(yen|#165);/g,val:"¥"},euro:{regex:/&(euro|#8364);/g,val:"€"},copyright:{regex:/&(copy|#169);/g,val:"©"},reg:{regex:/&(reg|#174);/g,val:"®"},inr:{regex:/&(inr|#8377);/g,val:"₹"},num_dec:{regex:/&#([0-9]{1,7});/g,val:(t,e)=>String.fromCodePoint(Number.parseInt(e,10))},num_hex:{regex:/&#x([0-9a-fA-F]{1,6});/g,val:(t,e)=>String.fromCodePoint(Number.parseInt(e,16))}},this.addExternalEntities=j,this.parseXml=L,this.parseTextData=M,this.resolveNameSpace=F,this.buildAttributesMap=k,this.isItStopNode=Y,this.replaceEntitiesValue=B,this.readStopNodeData=W,this.saveTextToParentTag=R,this.addChild=U,this.ignoreAttributesFn=$(this.options.ignoreAttributes),this.options.stopNodes&&this.options.stopNodes.length>0){this.stopNodesExact=new Set,this.stopNodesWildcard=new Set;for(let t=0;t<this.options.stopNodes.length;t++){const e=this.options.stopNodes[t];"string"==typeof e&&(e.startsWith("*.")?this.stopNodesWildcard.add(e.substring(2)):this.stopNodesExact.add(e))}}}}function j(t){const e=Object.keys(t);for(let i=0;i<e.length;i++){const n=e[i];this.lastEntities[n]={regex:new RegExp("&"+n+";","g"),val:t[n]}}}function M(t,e,i,n,s,r,o){if(void 0!==t&&(this.options.trimValues&&!n&&(t=t.trim()),t.length>0)){o||(t=this.replaceEntitiesValue(t));const n=this.options.tagValueProcessor(e,t,i,s,r);return null==n?t:typeof n!=typeof t||n!==t?n:this.options.trimValues||t.trim()===t?q(t,this.options.parseTagValue,this.options.numberParseOptions):t}}function F(t){if(this.options.removeNSPrefix){const e=t.split(":"),i="/"===t.charAt(0)?"/":"";if("xmlns"===e[0])return"";2===e.length&&(t=i+e[1])}return t}const _=new RegExp("([^\\s=]+)\\s*(=\\s*(['\"])([\\s\\S]*?)\\3)?","gm");function k(t,e,i){if(!0!==this.options.ignoreAttributes&&"string"==typeof t){const i=s(t,_),n=i.length,r={};for(let t=0;t<n;t++){const n=this.resolveNameSpace(i[t][1]);if(this.ignoreAttributesFn(n,e))continue;let s=i[t][4],o=this.options.attributeNamePrefix+n;if(n.length)if(this.options.transformAttributeName&&(o=this.options.transformAttributeName(o)),"__proto__"===o&&(o="#__proto__"),void 0!==s){this.options.trimValues&&(s=s.trim()),s=this.replaceEntitiesValue(s);const t=this.options.attributeValueProcessor(n,s,e);r[o]=null==t?s:typeof t!=typeof s||t!==s?t:q(s,this.options.parseAttributeValue,this.options.numberParseOptions)}else this.options.allowBooleanAttributes&&(r[o]=!0)}if(!Object.keys(r).length)return;if(this.options.attributesGroupName){const t={};return t[this.options.attributesGroupName]=r,t}return r}}const L=function(t){t=t.replace(/\r\n?/g,"\n");const e=new y("!xml");let i=e,n="",s="";const r=new w(this.options.processEntities);for(let o=0;o<t.length;o++)if("<"===t[o])if("/"===t[o+1]){const e=G(t,">",o,"Closing Tag is not closed.");let r=t.substring(o+2,e).trim();if(this.options.removeNSPrefix){const t=r.indexOf(":");-1!==t&&(r=r.substr(t+1))}this.options.transformTagName&&(r=this.options.transformTagName(r)),i&&(n=this.saveTextToParentTag(n,i,s));const a=s.substring(s.lastIndexOf(".")+1);if(r&&-1!==this.options.unpairedTags.indexOf(r))throw new Error(`Unpaired tag can not be used as closing tag: </${r}>`);let l=0;a&&-1!==this.options.unpairedTags.indexOf(a)?(l=s.lastIndexOf(".",s.lastIndexOf(".")-1),this.tagsNodeStack.pop()):l=s.lastIndexOf("."),s=s.substring(0,l),i=this.tagsNodeStack.pop(),n="",o=e}else if("?"===t[o+1]){let e=X(t,o,!1,"?>");if(!e)throw new Error("Pi Tag is not closed.");if(n=this.saveTextToParentTag(n,i,s),this.options.ignoreDeclaration&&"?xml"===e.tagName||this.options.ignorePiTags);else{const t=new y(e.tagName);t.add(this.options.textNodeName,""),e.tagName!==e.tagExp&&e.attrExpPresent&&(t[":@"]=this.buildAttributesMap(e.tagExp,s,e.tagName)),this.addChild(i,t,s,o)}o=e.closeIndex+1}else if("!--"===t.substr(o+1,3)){const e=G(t,"--\x3e",o+4,"Comment is not closed.");if(this.options.commentPropName){const r=t.substring(o+4,e-2);n=this.saveTextToParentTag(n,i,s),i.add(this.options.commentPropName,[{[this.options.textNodeName]:r}])}o=e}else if("!D"===t.substr(o+1,2)){const e=r.readDocType(t,o);this.docTypeEntities=e.entities,o=e.i}else if("!["===t.substr(o+1,2)){const e=G(t,"]]>",o,"CDATA is not closed.")-2,r=t.substring(o+9,e);n=this.saveTextToParentTag(n,i,s);let a=this.parseTextData(r,i.tagname,s,!0,!1,!0,!0);null==a&&(a=""),this.options.cdataPropName?i.add(this.options.cdataPropName,[{[this.options.textNodeName]:r}]):i.add(this.options.textNodeName,a),o=e+2}else{let r=X(t,o,this.options.removeNSPrefix),a=r.tagName;const l=r.rawTagName;let u=r.tagExp,h=r.attrExpPresent,d=r.closeIndex;this.options.transformTagName&&(a=this.options.transformTagName(a)),i&&n&&"!xml"!==i.tagname&&(n=this.saveTextToParentTag(n,i,s,!1));const p=i;p&&-1!==this.options.unpairedTags.indexOf(p.tagname)&&(i=this.tagsNodeStack.pop(),s=s.substring(0,s.lastIndexOf("."))),a!==e.tagname&&(s+=s?"."+a:a);const f=o;if(this.isItStopNode(this.stopNodesExact,this.stopNodesWildcard,s,a)){let e="";if(u.length>0&&u.lastIndexOf("/")===u.length-1)"/"===a[a.length-1]?(a=a.substr(0,a.length-1),s=s.substr(0,s.length-1),u=a):u=u.substr(0,u.length-1),o=r.closeIndex;else if(-1!==this.options.unpairedTags.indexOf(a))o=r.closeIndex;else{const i=this.readStopNodeData(t,l,d+1);if(!i)throw new Error(`Unexpected end of ${l}`);o=i.i,e=i.tagContent}const n=new y(a);a!==u&&h&&(n[":@"]=this.buildAttributesMap(u,s,a)),e&&(e=this.parseTextData(e,a,s,!0,h,!0,!0)),s=s.substr(0,s.lastIndexOf(".")),n.add(this.options.textNodeName,e),this.addChild(i,n,s,f)}else{if(u.length>0&&u.lastIndexOf("/")===u.length-1){"/"===a[a.length-1]?(a=a.substr(0,a.length-1),s=s.substr(0,s.length-1),u=a):u=u.substr(0,u.length-1),this.options.transformTagName&&(a=this.options.transformTagName(a));const t=new y(a);a!==u&&h&&(t[":@"]=this.buildAttributesMap(u,s,a)),this.addChild(i,t,s,f),s=s.substr(0,s.lastIndexOf("."))}else{const t=new y(a);this.tagsNodeStack.push(i),a!==u&&h&&(t[":@"]=this.buildAttributesMap(u,s,a)),this.addChild(i,t,s,f),i=t}n="",o=d}}else n+=t[o];return e.child};function U(t,e,i,n){this.options.captureMetaData||(n=void 0);const s=this.options.updateTag(e.tagname,i,e[":@"]);!1===s||("string"==typeof s?(e.tagname=s,t.addChild(e,n)):t.addChild(e,n))}const B=function(t){if(this.options.processEntities){for(let e in this.docTypeEntities){const i=this.docTypeEntities[e];t=t.replace(i.regx,i.val)}for(let e in this.lastEntities){const i=this.lastEntities[e];t=t.replace(i.regex,i.val)}if(this.options.htmlEntities)for(let e in this.htmlEntities){const i=this.htmlEntities[e];t=t.replace(i.regex,i.val)}t=t.replace(this.ampEntity.regex,this.ampEntity.val)}return t};function R(t,e,i,n){return t&&(void 0===n&&(n=0===e.child.length),void 0!==(t=this.parseTextData(t,e.tagname,i,!1,!!e[":@"]&&0!==Object.keys(e[":@"]).length,n))&&""!==t&&e.add(this.options.textNodeName,t),t=""),t}function Y(t,e,i,n){return!(!e||!e.has(n))||!(!t||!t.has(i))}function G(t,e,i,n){const s=t.indexOf(e,i);if(-1===s)throw new Error(n);return s+e.length-1}function X(t,e,i,n=">"){const s=function(t,e,i=">"){let n,s="";for(let r=e;r<t.length;r++){let e=t[r];if(n)e===n&&(n="");else if('"'===e||"'"===e)n=e;else if(e===i[0]){if(!i[1])return{data:s,index:r};if(t[r+1]===i[1])return{data:s,index:r}}else"\t"===e&&(e=" ");s+=e}}(t,e+1,n);if(!s)return;let r=s.data;const o=s.index,a=r.search(/\s/);let l=r,u=!0;-1!==a&&(l=r.substring(0,a),r=r.substring(a+1).trimStart());const h=l;if(i){const t=l.indexOf(":");-1!==t&&(l=l.substr(t+1),u=l!==s.data.substr(t+1))}return{tagName:l,tagExp:r,closeIndex:o,attrExpPresent:u,rawTagName:h}}function W(t,e,i){const n=i;let s=1;for(;i<t.length;i++)if("<"===t[i])if("/"===t[i+1]){const r=G(t,">",i,`${e} is not closed`);if(t.substring(i+2,r).trim()===e&&(s--,0===s))return{tagContent:t.substring(n,i),i:r};i=r}else if("?"===t[i+1])i=G(t,"?>",i+1,"StopNode is not closed.");else if("!--"===t.substr(i+1,3))i=G(t,"--\x3e",i+3,"StopNode is not closed.");else if("!["===t.substr(i+1,2))i=G(t,"]]>",i,"StopNode is not closed.")-2;else{const n=X(t,i,">");n&&((n&&n.tagName)===e&&"/"!==n.tagExp[n.tagExp.length-1]&&s++,i=n.closeIndex)}}function q(t,e,i){if(e&&"string"==typeof t){const e=t.trim();return"true"===e||"false"!==e&&function(t,e={}){if(e=Object.assign({},C,e),!t||"string"!=typeof t)return t;let i=t.trim();if(void 0!==e.skipLike&&e.skipLike.test(i))return t;if("0"===t)return 0;if(e.hex&&A.test(i))return function(t){if(parseInt)return parseInt(t,16);if(Number.parseInt)return Number.parseInt(t,16);if(window&&window.parseInt)return window.parseInt(t,16);throw new Error("parseInt, Number.parseInt, window.parseInt are not supported")}(i);if(-1!==i.search(/.+[eE].+/))return function(t,e,i){if(!i.eNotation)return t;const n=e.match(V);if(n){let s=n[1]||"";const r=-1===n[3].indexOf("e")?"E":"e",o=n[2],a=s?t[o.length+1]===r:t[o.length]===r;return o.length>1&&a?t:1!==o.length||!n[3].startsWith(`.${r}`)&&n[3][0]!==r?i.leadingZeros&&!a?(e=(n[1]||"")+n[3],Number(e)):t:Number(e)}return t}(t,i,e);{const s=S.exec(i);if(s){const r=s[1]||"",o=s[2];let a=(n=s[3])&&-1!==n.indexOf(".")?("."===(n=n.replace(/0+$/,""))?n="0":"."===n[0]?n="0"+n:"."===n[n.length-1]&&(n=n.substring(0,n.length-1)),n):n;const l=r?"."===t[o.length+1]:"."===t[o.length];if(!e.leadingZeros&&(o.length>1||1===o.length&&!l))return t;{const n=Number(i),s=String(n);if(0===n||-0===n)return n;if(-1!==s.search(/[eE]/))return e.eNotation?n:t;if(-1!==i.indexOf("."))return"0"===s||s===a||s===`${r}${a}`?n:t;let l=o?a:i;return o?l===s||r+l===s?n:t:l===s||l===r+s?n:t}}return t}var n}(t,i)}return void 0!==t?t:""}const Z=y.getMetaDataSymbol();function K(t,e){return Q(t,e)}function Q(t,e,i){let n;const s={};for(let r=0;r<t.length;r++){const o=t[r],a=z(o);let l="";if(l=void 0===i?a:i+"."+a,a===e.textNodeName)void 0===n?n=o[a]:n+=""+o[a];else{if(void 0===a)continue;if(o[a]){let t=Q(o[a],e,l);const i=H(t,e);void 0!==o[Z]&&(t[Z]=o[Z]),o[":@"]?J(t,o[":@"],l,e):1!==Object.keys(t).length||void 0===t[e.textNodeName]||e.alwaysCreateTextNode?0===Object.keys(t).length&&(e.alwaysCreateTextNode?t[e.textNodeName]="":t=""):t=t[e.textNodeName],void 0!==s[a]&&s.hasOwnProperty(a)?(Array.isArray(s[a])||(s[a]=[s[a]]),s[a].push(t)):e.isArray(a,l,i)?s[a]=[t]:s[a]=t}}}return"string"==typeof n?n.length>0&&(s[e.textNodeName]=n):void 0!==n&&(s[e.textNodeName]=n),s}function z(t){const e=Object.keys(t);for(let t=0;t<e.length;t++){const i=e[t];if(":@"!==i)return i}}function J(t,e,i,n){if(e){const s=Object.keys(e),r=s.length;for(let o=0;o<r;o++){const r=s[o];n.isArray(r,i+"."+r,!0,!0)?t[r]=[e[r]]:t[r]=e[r]}}}function H(t,e){const{textNodeName:i}=e,n=Object.keys(t).length;return 0===n||!(1!==n||!t[i]&&"boolean"!=typeof t[i]&&0!==t[i])}class tt{constructor(t){this.externalEntities={},this.options=function(t){return Object.assign({},v,t)}(t)}parse(t,e){if("string"!=typeof t&&t.toString)t=t.toString();else if("string"!=typeof t)throw new Error("XML data is accepted in String or Bytes[] form.");if(e){!0===e&&(e={});const i=a(t,e);if(!0!==i)throw Error(`${i.err.msg}:${i.err.line}:${i.err.col}`)}const i=new D(this.options);i.addExternalEntities(this.externalEntities);const n=i.parseXml(t);return this.options.preserveOrder||void 0===n?n:K(n,this.options)}addEntity(t,e){if(-1!==e.indexOf("&"))throw new Error("Entity value can't have '&'");if(-1!==t.indexOf("&")||-1!==t.indexOf(";"))throw new Error("An entity must be set without '&' and ';'. Eg. use '#xD' for '&#xD;'");if("&"===e)throw new Error("An entity with value '&' is not permitted");this.externalEntities[t]=e}static getMetaDataSymbol(){return y.getMetaDataSymbol()}}function et(t,e){let i="";return e.format&&e.indentBy.length>0&&(i="\n"),it(t,e,"",i)}function it(t,e,i,n){let s="",r=!1;for(let o=0;o<t.length;o++){const a=t[o],l=nt(a);if(void 0===l)continue;let u="";if(u=0===i.length?l:`${i}.${l}`,l===e.textNodeName){let t=a[l];rt(u,e)||(t=e.tagValueProcessor(l,t),t=ot(t,e)),r&&(s+=n),s+=t,r=!1;continue}if(l===e.cdataPropName){r&&(s+=n),s+=`<![CDATA[${a[l][0][e.textNodeName]}]]>`,r=!1;continue}if(l===e.commentPropName){s+=n+`\x3c!--${a[l][0][e.textNodeName]}--\x3e`,r=!0;continue}if("?"===l[0]){const t=st(a[":@"],e),i="?xml"===l?"":n;let o=a[l][0][e.textNodeName];o=0!==o.length?" "+o:"",s+=i+`<${l}${o}${t}?>`,r=!0;continue}let h=n;""!==h&&(h+=e.indentBy);const d=n+`<${l}${st(a[":@"],e)}`,p=it(a[l],e,u,h);-1!==e.unpairedTags.indexOf(l)?e.suppressUnpairedNode?s+=d+">":s+=d+"/>":p&&0!==p.length||!e.suppressEmptyNode?p&&p.endsWith(">")?s+=d+`>${p}${n}</${l}>`:(s+=d+">",p&&""!==n&&(p.includes("/>")||p.includes("</"))?s+=n+e.indentBy+p+n:s+=p,s+=`</${l}>`):s+=d+"/>",r=!0}return s}function nt(t){const e=Object.keys(t);for(let i=0;i<e.length;i++){const n=e[i];if(t.hasOwnProperty(n)&&":@"!==n)return n}}function st(t,e){let i="";if(t&&!e.ignoreAttributes)for(let n in t){if(!t.hasOwnProperty(n))continue;let s=e.attributeValueProcessor(n,t[n]);s=ot(s,e),!0===s&&e.suppressBooleanAttributes?i+=` ${n.substr(e.attributeNamePrefix.length)}`:i+=` ${n.substr(e.attributeNamePrefix.length)}="${s}"`}return i}function rt(t,e){let i=(t=t.substr(0,t.length-e.textNodeName.length-1)).substr(t.lastIndexOf(".")+1);for(let n in e.stopNodes)if(e.stopNodes[n]===t||e.stopNodes[n]==="*."+i)return!0;return!1}function ot(t,e){if(t&&t.length>0&&e.processEntities)for(let i=0;i<e.entities.length;i++){const n=e.entities[i];t=t.replace(n.regex,n.val)}return t}const at={attributeNamePrefix:"@_",attributesGroupName:!1,textNodeName:"#text",ignoreAttributes:!0,cdataPropName:!1,format:!1,indentBy:"  ",suppressEmptyNode:!1,suppressUnpairedNode:!0,suppressBooleanAttributes:!0,tagValueProcessor:function(t,e){return e},attributeValueProcessor:function(t,e){return e},preserveOrder:!1,commentPropName:!1,unpairedTags:[],entities:[{regex:new RegExp("&","g"),val:"&amp;"},{regex:new RegExp(">","g"),val:"&gt;"},{regex:new RegExp("<","g"),val:"&lt;"},{regex:new RegExp("'","g"),val:"&apos;"},{regex:new RegExp('"',"g"),val:"&quot;"}],processEntities:!0,stopNodes:[],oneListGroup:!1};function lt(t){this.options=Object.assign({},at,t),!0===this.options.ignoreAttributes||this.options.attributesGroupName?this.isAttribute=function(){return!1}:(this.ignoreAttributesFn=$(this.options.ignoreAttributes),this.attrPrefixLen=this.options.attributeNamePrefix.length,this.isAttribute=dt),this.processTextOrObjNode=ut,this.options.format?(this.indentate=ht,this.tagEndChar=">\n",this.newLine="\n"):(this.indentate=function(){return""},this.tagEndChar=">",this.newLine="")}function ut(t,e,i,n){const s=this.j2x(t,i+1,n.concat(e));return void 0!==t[this.options.textNodeName]&&1===Object.keys(t).length?this.buildTextValNode(t[this.options.textNodeName],e,s.attrStr,i):this.buildObjectNode(s.val,e,s.attrStr,i)}function ht(t){return this.options.indentBy.repeat(t)}function dt(t){return!(!t.startsWith(this.options.attributeNamePrefix)||t===this.options.textNodeName)&&t.substr(this.attrPrefixLen)}lt.prototype.build=function(t){return this.options.preserveOrder?et(t,this.options):(Array.isArray(t)&&this.options.arrayNodeName&&this.options.arrayNodeName.length>1&&(t={[this.options.arrayNodeName]:t}),this.j2x(t,0,[]).val)},lt.prototype.j2x=function(t,e,i){let n="",s="";const r=i.join(".");for(let o in t)if(Object.prototype.hasOwnProperty.call(t,o))if(void 0===t[o])this.isAttribute(o)&&(s+="");else if(null===t[o])this.isAttribute(o)||o===this.options.cdataPropName?s+="":"?"===o[0]?s+=this.indentate(e)+"<"+o+"?"+this.tagEndChar:s+=this.indentate(e)+"<"+o+"/"+this.tagEndChar;else if(t[o]instanceof Date)s+=this.buildTextValNode(t[o],o,"",e);else if("object"!=typeof t[o]){const i=this.isAttribute(o);if(i&&!this.ignoreAttributesFn(i,r))n+=this.buildAttrPairStr(i,""+t[o]);else if(!i)if(o===this.options.textNodeName){let e=this.options.tagValueProcessor(o,""+t[o]);s+=this.replaceEntitiesValue(e)}else s+=this.buildTextValNode(t[o],o,"",e)}else if(Array.isArray(t[o])){const n=t[o].length;let r="",a="";for(let l=0;l<n;l++){const n=t[o][l];if(void 0===n);else if(null===n)"?"===o[0]?s+=this.indentate(e)+"<"+o+"?"+this.tagEndChar:s+=this.indentate(e)+"<"+o+"/"+this.tagEndChar;else if("object"==typeof n)if(this.options.oneListGroup){const t=this.j2x(n,e+1,i.concat(o));r+=t.val,this.options.attributesGroupName&&n.hasOwnProperty(this.options.attributesGroupName)&&(a+=t.attrStr)}else r+=this.processTextOrObjNode(n,o,e,i);else if(this.options.oneListGroup){let t=this.options.tagValueProcessor(o,n);t=this.replaceEntitiesValue(t),r+=t}else r+=this.buildTextValNode(n,o,"",e)}this.options.oneListGroup&&(r=this.buildObjectNode(r,o,a,e)),s+=r}else if(this.options.attributesGroupName&&o===this.options.attributesGroupName){const e=Object.keys(t[o]),i=e.length;for(let s=0;s<i;s++)n+=this.buildAttrPairStr(e[s],""+t[o][e[s]])}else s+=this.processTextOrObjNode(t[o],o,e,i);return{attrStr:n,val:s}},lt.prototype.buildAttrPairStr=function(t,e){return e=this.options.attributeValueProcessor(t,""+e),e=this.replaceEntitiesValue(e),this.options.suppressBooleanAttributes&&"true"===e?" "+t:" "+t+'="'+e+'"'},lt.prototype.buildObjectNode=function(t,e,i,n){if(""===t)return"?"===e[0]?this.indentate(n)+"<"+e+i+"?"+this.tagEndChar:this.indentate(n)+"<"+e+i+this.closeTag(e)+this.tagEndChar;{let s="</"+e+this.tagEndChar,r="";return"?"===e[0]&&(r="?",s=""),!i&&""!==i||-1!==t.indexOf("<")?!1!==this.options.commentPropName&&e===this.options.commentPropName&&0===r.length?this.indentate(n)+`\x3c!--${t}--\x3e`+this.newLine:this.indentate(n)+"<"+e+i+r+this.tagEndChar+t+this.indentate(n)+s:this.indentate(n)+"<"+e+i+r+">"+t+s}},lt.prototype.closeTag=function(t){let e="";return-1!==this.options.unpairedTags.indexOf(t)?this.options.suppressUnpairedNode||(e="/"):e=this.options.suppressEmptyNode?"/":`></${t}`,e},lt.prototype.buildTextValNode=function(t,e,i,n){if(!1!==this.options.cdataPropName&&e===this.options.cdataPropName)return this.indentate(n)+`<![CDATA[${t}]]>`+this.newLine;if(!1!==this.options.commentPropName&&e===this.options.commentPropName)return this.indentate(n)+`\x3c!--${t}--\x3e`+this.newLine;if("?"===e[0])return this.indentate(n)+"<"+e+i+"?"+this.tagEndChar;{let s=this.options.tagValueProcessor(e,t);return s=this.replaceEntitiesValue(s),""===s?this.indentate(n)+"<"+e+i+this.closeTag(e)+this.tagEndChar:this.indentate(n)+"<"+e+i+">"+s+"</"+e+this.tagEndChar}},lt.prototype.replaceEntitiesValue=function(t){if(t&&t.length>0&&this.options.processEntities)for(let e=0;e<this.options.entities.length;e++){const i=this.options.entities[e];t=t.replace(i.regex,i.val)}return t};const pt={validate:a};module.exports=e})();
+(()=>{"use strict";var t={d:(e,n)=>{for(var i in n)t.o(n,i)&&!t.o(e,i)&&Object.defineProperty(e,i,{enumerable:!0,get:n[i]})},o:(t,e)=>Object.prototype.hasOwnProperty.call(t,e),r:t=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(t,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(t,"__esModule",{value:!0})}},e={};t.r(e),t.d(e,{XMLBuilder:()=>$e,XMLParser:()=>ce,XMLValidator:()=>Oe});const n=":A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD",i=new RegExp("^["+n+"]["+n+"\\-.\\d\\u00B7\\u0300-\\u036F\\u203F-\\u2040]*$"),r=function(t){return!(null==i.exec(t))},s=["hasOwnProperty","toString","valueOf","__defineGetter__","__defineSetter__","__lookupGetter__","__lookupSetter__"],o=["__proto__","constructor","prototype"],a={allowBooleanAttributes:!1,unpairedTags:[]};function l(t,e){e=Object.assign({},a,e);const n=[];let i=!1,r=!1;"\ufeff"===t[0]&&(t=t.substr(1));for(let s=0;s<t.length;s++)if("<"===t[s]&&"?"===t[s+1]){if(s+=2,s=p(t,s),s.err)return s}else{if("<"!==t[s]){if(c(t[s]))continue;return x("InvalidChar","char '"+t[s]+"' is not expected.",N(t,s))}{let o=s;if(s++,"!"===t[s]){s=h(t,s);continue}{let a=!1;"/"===t[s]&&(a=!0,s++);let l="";for(;s<t.length&&">"!==t[s]&&" "!==t[s]&&"\t"!==t[s]&&"\n"!==t[s]&&"\r"!==t[s];s++)l+=t[s];if(l=l.trim(),"/"===l[l.length-1]&&(l=l.substring(0,l.length-1),s--),!y(l)){let e;return e=0===l.trim().length?"Invalid space after '<'.":"Tag '"+l+"' is an invalid name.",x("InvalidTag",e,N(t,s))}const d=f(t,s);if(!1===d)return x("InvalidAttr","Attributes for '"+l+"' have open quote.",N(t,s));let u=d.value;if(s=d.index,"/"===u[u.length-1]){const n=s-u.length;u=u.substring(0,u.length-1);const r=g(u,e);if(!0!==r)return x(r.err.code,r.err.msg,N(t,n+r.err.line));i=!0}else if(a){if(!d.tagClosed)return x("InvalidTag","Closing tag '"+l+"' doesn't have proper closing.",N(t,s));if(u.trim().length>0)return x("InvalidTag","Closing tag '"+l+"' can't have attributes or invalid starting.",N(t,o));if(0===n.length)return x("InvalidTag","Closing tag '"+l+"' has not been opened.",N(t,o));{const e=n.pop();if(l!==e.tagName){let n=N(t,e.tagStartPos);return x("InvalidTag","Expected closing tag '"+e.tagName+"' (opened in line "+n.line+", col "+n.col+") instead of closing tag '"+l+"'.",N(t,o))}0==n.length&&(r=!0)}}else{const a=g(u,e);if(!0!==a)return x(a.err.code,a.err.msg,N(t,s-u.length+a.err.line));if(!0===r)return x("InvalidXml","Multiple possible root nodes found.",N(t,s));-1!==e.unpairedTags.indexOf(l)||n.push({tagName:l,tagStartPos:o}),i=!0}for(s++;s<t.length;s++)if("<"===t[s]){if("!"===t[s+1]){s++,s=h(t,s);continue}if("?"!==t[s+1])break;if(s=p(t,++s),s.err)return s}else if("&"===t[s]){const e=m(t,s);if(-1==e)return x("InvalidChar","char '&' is not expected.",N(t,s));s=e}else if(!0===r&&!c(t[s]))return x("InvalidXml","Extra text at the end",N(t,s));"<"===t[s]&&s--}}}return i?1==n.length?x("InvalidTag","Unclosed tag '"+n[0].tagName+"'.",N(t,n[0].tagStartPos)):!(n.length>0)||x("InvalidXml","Invalid '"+JSON.stringify(n.map(t=>t.tagName),null,4).replace(/\r?\n/g,"")+"' found.",{line:1,col:1}):x("InvalidXml","Start tag expected.",1)}function c(t){return" "===t||"\t"===t||"\n"===t||"\r"===t}function p(t,e){const n=e;for(;e<t.length;e++)if("?"==t[e]||" "==t[e]){const i=t.substr(n,e-n);if(e>5&&"xml"===i)return x("InvalidXml","XML declaration allowed only at the start of the document.",N(t,e));if("?"==t[e]&&">"==t[e+1]){e++;break}continue}return e}function h(t,e){if(t.length>e+5&&"-"===t[e+1]&&"-"===t[e+2]){for(e+=3;e<t.length;e++)if("-"===t[e]&&"-"===t[e+1]&&">"===t[e+2]){e+=2;break}}else if(t.length>e+8&&"D"===t[e+1]&&"O"===t[e+2]&&"C"===t[e+3]&&"T"===t[e+4]&&"Y"===t[e+5]&&"P"===t[e+6]&&"E"===t[e+7]){let n=1;for(e+=8;e<t.length;e++)if("<"===t[e])n++;else if(">"===t[e]&&(n--,0===n))break}else if(t.length>e+9&&"["===t[e+1]&&"C"===t[e+2]&&"D"===t[e+3]&&"A"===t[e+4]&&"T"===t[e+5]&&"A"===t[e+6]&&"["===t[e+7])for(e+=8;e<t.length;e++)if("]"===t[e]&&"]"===t[e+1]&&">"===t[e+2]){e+=2;break}return e}const d='"',u="'";function f(t,e){let n="",i="",r=!1;for(;e<t.length;e++){if(t[e]===d||t[e]===u)""===i?i=t[e]:i!==t[e]||(i="");else if(">"===t[e]&&""===i){r=!0;break}n+=t[e]}return""===i&&{value:n,index:e,tagClosed:r}}function g(t,e){const n=function(t){const e=[],n=t.length;let i=0;for(;i<n;){const r=i;for(;i<n&&c(t[i]);)i++;if(i>=n)break;if("="===t[i]){i++;continue}const s=t.slice(r,i),o=i;for(;i<n&&!c(t[i])&&"="!==t[i];)i++;const a=t.slice(o,i);let l,p,h,d=i;for(;d<n&&c(t[d]);)d++;d<n&&"="===t[d]&&(l=t.slice(i,d+1),i=d+1);let u=i;for(;u<n&&c(t[u]);)u++;if(u<n&&('"'===t[u]||"'"===t[u])){const e=u+1,n=t.indexOf(t[u],e);-1!==n&&(p=t[u],h=t.slice(e,n),i=n+1)}const f={startIndex:r};f[1]=s,f[2]=a,f[3]=l,f[4]=void 0!==p||void 0,f[5]=p,f[6]=h,e.push(f)}return e}(t),i={};for(let t=0;t<n.length;t++){if(0===n[t][1].length)return x("InvalidAttr","Attribute '"+n[t][2]+"' has no space in starting.",E(n[t]));if(void 0!==n[t][3]&&void 0===n[t][4])return x("InvalidAttr","Attribute '"+n[t][2]+"' is without value.",E(n[t]));if(void 0===n[t][3]&&!e.allowBooleanAttributes)return x("InvalidAttr","boolean attribute '"+n[t][2]+"' is not allowed.",E(n[t]));const r=n[t][2];if(!b(r))return x("InvalidAttr","Attribute '"+r+"' is an invalid name.",E(n[t]));if(Object.prototype.hasOwnProperty.call(i,r))return x("InvalidAttr","Attribute '"+r+"' is repeated.",E(n[t]));i[r]=1}return!0}function m(t,e){if(";"===t[++e])return-1;if("#"===t[e])return function(t,e){let n=/\d/;for("x"===t[e]&&(e++,n=/[\da-fA-F]/);e<t.length;e++){if(";"===t[e])return e;if(!t[e].match(n))break}return-1}(t,++e);let n=0;for(;e<t.length;e++,n++)if(!(t[e].match(/\w/)&&n<20)){if(";"===t[e])break;return-1}return e}function x(t,e,n){return{err:{code:t,msg:e,line:n.line||n,col:n.col}}}function b(t){return r(t)}function y(t){return r(t)}function N(t,e){const n=t.substring(0,e).split(/\r?\n/);return{line:n.length,col:n[n.length-1].length+1}}function E(t){return t.startIndex+t[1].length}const w=t=>s.includes(t)?"__"+t:t,v={preserveOrder:!1,attributeNamePrefix:"@_",attributesGroupName:!1,textNodeName:"#text",ignoreAttributes:!0,removeNSPrefix:!1,allowBooleanAttributes:!1,parseTagValue:!0,parseAttributeValue:!1,trimValues:!0,cdataPropName:!1,numberParseOptions:{hex:!0,leadingZeros:!0,eNotation:!0,unicode:!1},tagValueProcessor:function(t,e){return e},attributeValueProcessor:function(t,e){return e},stopNodes:[],alwaysCreateTextNode:!1,isArray:()=>!1,commentPropName:!1,unpairedTags:[],processEntities:!0,htmlEntities:!1,entityDecoder:null,ignoreDeclaration:!1,ignorePiTags:!1,transformTagName:!1,transformAttributeName:!1,updateTag:function(t,e,n){return t},captureMetaData:!1,maxNestedTags:100,strictReservedNames:!0,jPath:!0,onDangerousProperty:w};function S(t,e){if("string"!=typeof t)return;const n=t.toLowerCase();if(s.some(t=>n===t.toLowerCase()))throw new Error(`[SECURITY] Invalid ${e}: "${t}" is a reserved JavaScript keyword that could cause prototype pollution`);if(o.some(t=>n===t.toLowerCase()))throw new Error(`[SECURITY] Invalid ${e}: "${t}" is a reserved JavaScript keyword that could cause prototype pollution`)}function A(t,e){return"boolean"==typeof t?{enabled:t,maxEntitySize:1e4,maxExpansionDepth:1e4,maxTotalExpansions:1/0,maxExpandedLength:1e5,maxEntityCount:1e3,allowedTags:null,tagFilter:null,appliesTo:"all"}:"object"==typeof t&&null!==t?{enabled:!1!==t.enabled,maxEntitySize:Math.max(1,t.maxEntitySize??1e4),maxExpansionDepth:Math.max(1,t.maxExpansionDepth??1e4),maxTotalExpansions:Math.max(1,t.maxTotalExpansions??1/0),maxExpandedLength:Math.max(1,t.maxExpandedLength??1e5),maxEntityCount:Math.max(1,t.maxEntityCount??1e3),allowedTags:t.allowedTags??null,tagFilter:t.tagFilter??null,appliesTo:t.appliesTo??"all"}:A(!0)}const T=function(t){const e=Object.assign({},v,t),n=[{value:e.attributeNamePrefix,name:"attributeNamePrefix"},{value:e.attributesGroupName,name:"attributesGroupName"},{value:e.textNodeName,name:"textNodeName"},{value:e.cdataPropName,name:"cdataPropName"},{value:e.commentPropName,name:"commentPropName"}];for(const{value:t,name:e}of n)t&&S(t,e);return null===e.onDangerousProperty&&(e.onDangerousProperty=w),e.processEntities=A(e.processEntities,e.htmlEntities),e.unpairedTagsSet=new Set(e.unpairedTags),e.stopNodes&&Array.isArray(e.stopNodes)&&(e.stopNodes=e.stopNodes.map(t=>"string"==typeof t&&t.startsWith("*.")?".."+t.substring(2):t)),e};let _;_="function"!=typeof Symbol?"@@xmlMetadata":Symbol("XML Node Metadata");class C{constructor(t){this.tagname=t,this.child=[],this[":@"]=Object.create(null)}add(t,e){"__proto__"===t&&(t="#__proto__"),this.child.push({[t]:e})}addChild(t,e){"__proto__"===t.tagname&&(t.tagname="#__proto__"),t[":@"]&&Object.keys(t[":@"]).length>0?this.child.push({[t.tagname]:t.child,":@":t[":@"]}):this.child.push({[t.tagname]:t.child}),this.addStartIndex(e)}addStartIndex(t){void 0!==t&&(this.child[this.child.length-1][_]={startIndex:t})}addEndIndex(t){const e=this.child[this.child.length-1];void 0!==e&&void 0!==e[_]&&void 0===e[_].endIndex&&(e[_].endIndex=t)}static getMetaDataSymbol(){return _}}const $=":A-Za-z_À-ÖØ-öø-˿Ͱ-ͽͿ-҆҈-῿‌-‍⁰-↏Ⰰ-⿯、-퟿豈-﷏ﷰ-�",O=":A-Za-z_À-˿Ͱ-ͽͿ-҆҈-῿‌-‍⁰-↏Ⰰ-⿯、-퟿豈-﷏ﷰ-�𐀀-󯿿",P=O+"\\-\\.\\d·̀-ͯ҇‿-⁀",j=(t,e,n="")=>{const i=`[${t.replace(":","")}][${e.replace(":","")}]*`;return{name:new RegExp(`^[${t}][${e}]*$`,n),ncName:new RegExp(`^${i}$`,n),qName:new RegExp(`^${i}(?::${i})?$`,n),nmToken:new RegExp(`^[${e}]+$`,n),nmTokens:new RegExp(`^[${e}]+(?:\\s+[${e}]+)*$`,n)}},I=j($,$+"\\-\\.\\d·̀-ͯ‿-⁀"),k=j(O,P,"u"),L=":A-Za-z_",D=j(L,L+"\\-\\.\\d"),M=(t="1.0",e=!1)=>e?D:"1.1"===t?k:I,R=(t,{xmlVersion:e="1.0",asciiOnly:n=!1}={})=>M(e,n).qName.test(t),V=["name","ncName","qName","nmToken","nmTokens"],q=(t,{xmlVersion:e="1.0",asciiOnly:n=!1,maxCacheSize:i=2048}={})=>{if(!V.includes(t))throw new TypeError(`Unknown production "${t}". Must be one of: ${V.join(", ")}`);const r=M(e,n)[t];let s=new Map;const o=t=>{const e=s.get(t);if(void 0!==e)return e;const n=r.test(t);return s.size<i&&s.set(t,n),n};return o.reset=()=>{s=new Map},o};class F{constructor(t,e){this.suppressValidationErr=!t,this.options=t,this.xmlVersion=e||1}setXmlVersion(t=1){this.xmlVersion=t}readDocType(t,e){const n=Object.create(null);let i=0;if("O"!==t[e+3]||"C"!==t[e+4]||"T"!==t[e+5]||"Y"!==t[e+6]||"P"!==t[e+7]||"E"!==t[e+8])throw new Error("Invalid Tag instead of DOCTYPE");{e+=9;let r=1,s=!1,o=!1,a=null,l="";for(;e<t.length;e++)if(null===a)if(s||o||'"'!==t[e]&&"'"!==t[e])if("<"!==t[e]||o)if(">"===t[e]){if(o?"-"===t[e-1]&&"-"===t[e-2]&&(o=!1,r--):r--,0===r)break}else"["===t[e]?s=!0:l+=t[e];else{if(s&&B(t,"!ENTITY",e)){let r,s;if(e+=7,[r,s,e]=this.readEntityExp(t,e+1,this.suppressValidationErr),-1===s.indexOf("&")){if(!1!==this.options.enabled&&null!=this.options.maxEntityCount&&i>=this.options.maxEntityCount)throw new Error(`Entity count (${i+1}) exceeds maximum allowed (${this.options.maxEntityCount})`);n[r]=s,i++}}else if(s&&B(t,"!ELEMENT",e)){e+=8;const{index:n}=this.readElementExp(t,e+1);e=n}else if(s&&B(t,"!ATTLIST",e))e+=8;else if(s&&B(t,"!NOTATION",e)){e+=9;const{index:n}=this.readNotationExp(t,e+1,this.suppressValidationErr);e=n}else{if(!B(t,"!--",e))throw new Error("Invalid DOCTYPE");o=!0}r++,l=""}else a=t[e],l+=t[e];else t[e]===a&&(a=null),l+=t[e];if(null!==a||0!==r)throw new Error("Unclosed DOCTYPE")}return{entities:n,i:e}}readEntityExp(t,e){const n=e=U(t,e);for(;e<t.length&&!/\s/.test(t[e])&&'"'!==t[e]&&"'"!==t[e];)e++;let i=t.substring(n,e);if(G(i,{xmlVersion:this.xmlVersion}),e=U(t,e),!this.suppressValidationErr){if("SYSTEM"===t.substring(e,e+6).toUpperCase())throw new Error("External entities are not supported");if("%"===t[e])throw new Error("Parameter entities are not supported")}let r="";if([e,r]=this.readIdentifierVal(t,e,"entity"),!1!==this.options.enabled&&null!=this.options.maxEntitySize&&r.length>this.options.maxEntitySize)throw new Error(`Entity "${i}" size (${r.length}) exceeds maximum allowed size (${this.options.maxEntitySize})`);return[i,r,--e]}readNotationExp(t,e){const n=e=U(t,e);for(;e<t.length&&!/\s/.test(t[e]);)e++;let i=t.substring(n,e);!this.suppressValidationErr&&G(i,{xmlVersion:this.xmlVersion}),e=U(t,e);const r=t.substring(e,e+6).toUpperCase();if(!this.suppressValidationErr&&"SYSTEM"!==r&&"PUBLIC"!==r)throw new Error(`Expected SYSTEM or PUBLIC, found "${r}"`);e+=r.length,e=U(t,e);let s=null,o=null;if("PUBLIC"===r)[e,s]=this.readIdentifierVal(t,e,"publicIdentifier"),'"'!==t[e=U(t,e)]&&"'"!==t[e]||([e,o]=this.readIdentifierVal(t,e,"systemIdentifier"));else if("SYSTEM"===r&&([e,o]=this.readIdentifierVal(t,e,"systemIdentifier"),!this.suppressValidationErr&&!o))throw new Error("Missing mandatory system identifier for SYSTEM notation");return{notationName:i,publicIdentifier:s,systemIdentifier:o,index:--e}}readIdentifierVal(t,e,n){let i="";const r=t[e];if('"'!==r&&"'"!==r)throw new Error(`Expected quoted string, found "${r}"`);const s=++e;for(;e<t.length&&t[e]!==r;)e++;if(i=t.substring(s,e),t[e]!==r)throw new Error(`Unterminated ${n} value`);return[++e,i]}readElementExp(t,e){const n=e=U(t,e);for(;e<t.length&&!/\s/.test(t[e]);)e++;let i=t.substring(n,e);if(!this.suppressValidationErr&&!R(i,{xmlVersion:this.xmlVersion}))throw new Error(`Invalid element name: "${i}"`);let r="";if("E"===t[e=U(t,e)]&&B(t,"MPTY",e))e+=4;else if("A"===t[e]&&B(t,"NY",e))e+=2;else if("("===t[e]){const n=++e;for(;e<t.length&&")"!==t[e];)e++;if(r=t.substring(n,e),")"!==t[e])throw new Error("Unterminated content model")}else if(!this.suppressValidationErr)throw new Error(`Invalid Element Expression, found "${t[e]}"`);return{elementName:i,contentModel:r.trim(),index:e}}readAttlistExp(t,e){let n=e=U(t,e);for(;e<t.length&&!/\s/.test(t[e]);)e++;let i=t.substring(n,e);for(G(i,{xmlVersion:this.xmlVersion}),n=e=U(t,e);e<t.length&&!/\s/.test(t[e]);)e++;let r=t.substring(n,e);if(!G(r,{xmlVersion:this.xmlVersion}))throw new Error(`Invalid attribute name: "${r}"`);e=U(t,e);let s="";if("NOTATION"===t.substring(e,e+8).toUpperCase()){if(s="NOTATION","("!==t[e=U(t,e+=8)])throw new Error(`Expected '(', found "${t[e]}"`);e++;let n=[];for(;e<t.length&&")"!==t[e];){const i=e;for(;e<t.length&&"|"!==t[e]&&")"!==t[e];)e++;let r=t.substring(i,e);if(r=r.trim(),!G(r,{xmlVersion:this.xmlVersion}))throw new Error(`Invalid notation name: "${r}"`);n.push(r),"|"===t[e]&&(e++,e=U(t,e))}if(")"!==t[e])throw new Error("Unterminated list of notations");e++,s+=" ("+n.join("|")+")"}else{const n=e;for(;e<t.length&&!/\s/.test(t[e]);)e++;s+=t.substring(n,e);const i=["CDATA","ID","IDREF","IDREFS","ENTITY","ENTITIES","NMTOKEN","NMTOKENS"];if(!this.suppressValidationErr&&!i.includes(s.toUpperCase()))throw new Error(`Invalid attribute type: "${s}"`)}e=U(t,e);let o="";return"#REQUIRED"===t.substring(e,e+8).toUpperCase()?(o="#REQUIRED",e+=8):"#IMPLIED"===t.substring(e,e+7).toUpperCase()?(o="#IMPLIED",e+=7):[e,o]=this.readIdentifierVal(t,e,"ATTLIST"),{elementName:i,attributeName:r,attributeType:s,defaultValue:o,index:e}}}const U=(t,e)=>{for(;e<t.length&&/\s/.test(t[e]);)e++;return e};function B(t,e,n){for(let i=0;i<e.length;i++)if(e[i]!==t[n+i+1])return!1;return!0}function G(t,e){if(R(t,{xmlVersion:e}))return t;throw new Error(`Invalid entity name ${t}`)}const X=[48,1632,1776,2406,2534,2662,2790,2918,3046,3174,3302,3430,3558,3664,3792,3872,4160,4240,6112,6160,6470,6608,6784,6800,6992,7088,7232,7248,65296,120782,120792,120802,120812,120822,66720,68912,69734,69872,69942,70096,70384,70736,70864,71248,71360,71472,71904,72016,72688,72784,73040,73120,73552,92768,92864,93008,123200,123632,124144,125264,130032],W=new Map,z=1632,Y=new Uint8Array(63904).fill(255);for(const t of X)for(let e=0;e<10;e++){const n=t+e;n<=65535?Y[n-z]=e:W.set(n,e)}const H=new Set([8722,65293,65123]),Q=/^[-+]?0x[a-fA-F0-9]+$/,J=/^0b[01]+$/,Z=/^0o[0-7]+$/,K=/^([\-\+])?(0*)([0-9]*(\.[0-9]*)?)$/,tt={hex:!0,binary:!1,octal:!1,leadingZeros:!0,decimalPoint:".",eNotation:!0,infinity:"original",unicode:!1};function et(t,e={}){if(e=Object.assign({},tt,e),!t||"string"!=typeof t)return t;let n=t.trim();if(0===n.length)return t;if(void 0!==e.skipLike&&e.skipLike.test(n))return t;if("0"===n)return 0;if(e.unicode&&(n=function(t){if("string"!=typeof t)return t;const e=t.length;if(0===e)return t;let n=-1;for(let i=0;i<e;i++){const r=t.charCodeAt(i);if(!(r>=48&&r<=57||45===r))if(r<z){if(H.has(r)){n=i;break}}else if(r>=55296&&r<=56319){if(i+1<e){const e=t.charCodeAt(i+1);if(e>=56320&&e<=57343){const t=65536+(r-55296<<10)+(e-56320);if(W.has(t)){n=i;break}}}}else if(255!==Y[r-z]||H.has(r)){n=i;break}}if(-1===n)return t;const i=[];n>0&&i.push(t.slice(0,n));for(let r=n;r<e;r++){const n=t.charCodeAt(r);if(n>=48&&n<=57||45===n){i.push(t[r]);continue}if(n<z){i.push(H.has(n)?"-":t[r]);continue}if(n>=55296&&n<=56319){if(r+1<e){const e=t.charCodeAt(r+1);if(e>=56320&&e<=57343){const t=65536+(n-55296<<10)+(e-56320),s=W.get(t);if(void 0!==s){i.push(String.fromCharCode(s+48)),r++;continue}}}i.push(t[r]);continue}if(H.has(n)){i.push("-");continue}const s=Y[n-z];i.push(255!==s?String.fromCharCode(s+48):t[r])}return i.join("")}(n),"0"===n))return 0;if(e.hex&&Q.test(n))return it(n,16);if(e.binary&&J.test(n))return it(n,2);if(e.octal&&Z.test(n))return it(n,8);if(isFinite(n)){if(n.includes("e")||n.includes("E"))return function(t,e,n){if(!n.eNotation)return t;const i=e.match(nt);if(i){let r=i[1]||"";const s=-1===i[3].indexOf("e")?"E":"e",o=i[2],a=r?e[o.length+1]===s:e[o.length]===s;return o.length>1&&a?t:(1!==o.length||!i[3].startsWith(`.${s}`)&&i[3][0]!==s)&&o.length>0?n.leadingZeros&&!a?Number(e):t:Number(e)}return t}(t,n,e);{const i=K.exec(n);if(i){const r=i[1]||"",s=i[2];let o=function(t){if(t&&-1!==t.indexOf(".")){let e=t.length;for(;e>0&&48===t.charCodeAt(e-1);)e--;return"."===(t=t.slice(0,e))?t="0":"."===t[0]?t="0"+t:"."===t[t.length-1]&&(t=t.substring(0,t.length-1)),t}return t}(i[3]);const a=r?"."===n[s.length+1]:"."===n[s.length];if(!e.leadingZeros&&(s.length>1||1===s.length&&!a))return t;{const i=Number(n),a=String(i);if(0===i)return i;if(-1!==a.search(/[eE]/))return e.eNotation?i:t;if(-1!==n.indexOf("."))return"0"===a||a===o||a===`${r}${o}`?i:t;let l=s?o:n;return s?l===a||r+l===a?i:t:l===a||l===r+a?i:t}}return t}}{const i=Number(n);return Number.isNaN(i)?t:function(t,e,n){const i=e===1/0;switch(n.infinity.toLowerCase()){case"null":return null;case"infinity":return e;case"string":return i?"Infinity":"-Infinity";default:return t}}(t,i,e)}}const nt=/^([-+])?(0*)(\d*(\.\d*)?[eE][-\+]?\d+)$/;function it(t,e){const n=t.trim();if(2!==e&&8!==e||(t=n.substring(2)),parseInt)return parseInt(t,e);if(Number.parseInt)return Number.parseInt(t,e);if(window&&window.parseInt)return window.parseInt(t,e);throw new Error("parseInt, Number.parseInt, window.parseInt are not supported")}class rt{constructor(t){this._matcher=t}get separator(){return this._matcher.separator}getCurrentTag(){const t=this._matcher.path;return t.length>0?t[t.length-1].tag:void 0}getCurrentNamespace(){const t=this._matcher.path;return t.length>0?t[t.length-1].namespace:void 0}getAttrValue(t){const e=this._matcher.path;if(0!==e.length)return e[e.length-1].values?.[t]}hasAttr(t){const e=this._matcher.path;if(0===e.length)return!1;const n=e[e.length-1];return void 0!==n.values&&t in n.values}getAnyParentAttr(t){return this._matcher.getAnyParentAttr(t)}hasAnyParentAttr(t){return this._matcher.hasAnyParentAttr(t)}getPosition(){const t=this._matcher.path;return 0===t.length?-1:t[t.length-1].position??0}getCounter(){const t=this._matcher.path;return 0===t.length?-1:t[t.length-1].counter??0}getIndex(){return this.getPosition()}getDepth(){return this._matcher.path.length}toString(t,e=!0){return this._matcher.toString(t,e)}toArray(){return this._matcher.path.map(t=>t.tag)}matches(t){return this._matcher.matches(t)}matchesAny(t){return t.matchesAny(this._matcher)}}class st{constructor(t={}){this.separator=t.separator||".",this.path=[],this.siblingStacks=[],this._pathStringCache=null,this._view=new rt(this),this._keptAttrs=[]}push(t,e=null,n=null,i=null){this._pathStringCache=null,this.path.length>0&&(this.path[this.path.length-1].values=void 0);const r=this.path.length;let s=this.siblingStacks[r];s||(s={counts:new Map,total:0},this.siblingStacks[r]=s);const o=n?`${n}:${t}`:t,a=s.counts.get(o)||0,l=s.total;s.counts.set(o,a+1),s.total++;const c={tag:t,position:l,counter:a};null!=n&&(c.namespace=n),null!=e&&(c.values=e),this.path.push(c);const p=this.path.length,h=null!==i?i.keep:null;if(null!=h&&h.length>0&&e)for(let t=0;t<h.length;t++){const n=h[t];void 0!==e[n]&&this._keptAttrs.push({depth:p,name:n,value:e[n]})}}pop(){if(0===this.path.length)return;this._pathStringCache=null;const t=this.path.pop();this.siblingStacks.length>this.path.length+1&&(this.siblingStacks.length=this.path.length+1);const e=this.path.length+1;for(;this._keptAttrs.length>0&&this._keptAttrs[this._keptAttrs.length-1].depth>=e;)this._keptAttrs.pop();return t}updateCurrent(t){if(this.path.length>0){const e=this.path[this.path.length-1];null!=t&&(e.values=t)}}getCurrentTag(){return this.path.length>0?this.path[this.path.length-1].tag:void 0}getCurrentNamespace(){return this.path.length>0?this.path[this.path.length-1].namespace:void 0}getAttrValue(t){if(0!==this.path.length)return this.path[this.path.length-1].values?.[t]}hasAttr(t){if(0===this.path.length)return!1;const e=this.path[this.path.length-1];return void 0!==e.values&&t in e.values}getAnyParentAttr(t){const e=this._keptAttrs;for(let n=e.length-1;n>=0;n--)if(e[n].name===t)return e[n].value}hasAnyParentAttr(t){const e=this._keptAttrs;for(let n=e.length-1;n>=0;n--)if(e[n].name===t)return!0;return!1}getPosition(){return 0===this.path.length?-1:this.path[this.path.length-1].position??0}getCounter(){return 0===this.path.length?-1:this.path[this.path.length-1].counter??0}getIndex(){return this.getPosition()}getDepth(){return this.path.length}toString(t,e=!0){const n=t||this.separator;if(n===this.separator&&!0===e){if(null!==this._pathStringCache)return this._pathStringCache;const t=this.path.map(t=>t.namespace?`${t.namespace}:${t.tag}`:t.tag).join(n);return this._pathStringCache=t,t}return this.path.map(t=>e&&t.namespace?`${t.namespace}:${t.tag}`:t.tag).join(n)}toArray(){return this.path.map(t=>t.tag)}reset(){this._pathStringCache=null,this.path=[],this.siblingStacks=[],this._keptAttrs=[]}matches(t){const e=t.segments;return 0!==e.length&&(t.hasDeepWildcard()?this._matchWithDeepWildcard(e):this._matchSimple(e))}_matchSimple(t){if(this.path.length!==t.length)return!1;for(let e=0;e<t.length;e++)if(!this._matchSegment(t[e],this.path[e],e===this.path.length-1))return!1;return!0}_matchWithDeepWildcard(t){let e=this.path.length-1,n=t.length-1;for(;n>=0&&e>=0;){const i=t[n];if("deep-wildcard"===i.type){if(n--,n<0)return!0;const i=t[n];let r=!1;for(let t=e;t>=0;t--)if(this._matchSegment(i,this.path[t],t===this.path.length-1)){e=t-1,n--,r=!0;break}if(!r)return!1}else{if(!this._matchSegment(i,this.path[e],e===this.path.length-1))return!1;e--,n--}}return n<0}_matchSegment(t,e,n){if("*"!==t.tag&&t.tag!==e.tag)return!1;if(void 0!==t.namespace&&"*"!==t.namespace&&t.namespace!==e.namespace)return!1;if(void 0!==t.attrName){if(!n)return!1;if(!e.values||!(t.attrName in e.values))return!1;if(void 0!==t.attrValue&&String(e.values[t.attrName])!==String(t.attrValue))return!1}if(void 0!==t.position){if(!n)return!1;const i=e.counter??0;if("first"===t.position&&0!==i)return!1;if("odd"===t.position&&i%2!=1)return!1;if("even"===t.position&&i%2!=0)return!1;if("nth"===t.position&&i!==t.positionValue)return!1}return!0}matchesAny(t){return t.matchesAny(this)}snapshot(){return{path:this.path.map(t=>({...t})),siblingStacks:this.siblingStacks.map(t=>t?{counts:new Map(t.counts),total:t.total}:t),keptAttrs:this._keptAttrs.map(t=>({...t}))}}restore(t){this._pathStringCache=null,this.path=t.path.map(t=>({...t})),this.siblingStacks=t.siblingStacks.map(t=>t?{counts:new Map(t.counts),total:t.total}:t),this._keptAttrs=(t.keptAttrs||[]).map(t=>({...t}))}readOnly(){return this._view}}class ot{constructor(t,e={},n){this.pattern=t,this.separator=e.separator||".",this.segments=this._parse(t),this.data=n,this._hasDeepWildcard=this.segments.some(t=>"deep-wildcard"===t.type),this._hasAttributeCondition=this.segments.some(t=>void 0!==t.attrName),this._hasPositionSelector=this.segments.some(t=>void 0!==t.position)}_parse(t){const e=[];let n=0,i="";for(;n<t.length;)t[n]===this.separator?n+1<t.length&&t[n+1]===this.separator?(i.trim()&&(e.push(this._parseSegment(i.trim())),i=""),e.push({type:"deep-wildcard"}),n+=2):(i.trim()&&e.push(this._parseSegment(i.trim())),i="",n++):(i+=t[n],n++);return i.trim()&&e.push(this._parseSegment(i.trim())),e}_parseSegment(t){const e={type:"tag"};let n=null,i=t;const r=t.match(/^([^\[]+)(\[[^\]]*\])(.*)$/);if(r&&(i=r[1]+r[3],r[2])){const t=r[2].slice(1,-1);t&&(n=t)}let s,o,a=i;if(i.includes("::")){const e=i.indexOf("::");if(s=i.substring(0,e).trim(),a=i.substring(e+2).trim(),!s)throw new Error(`Invalid namespace in pattern: ${t}`)}let l=null;if(a.includes(":")){const t=a.lastIndexOf(":"),e=a.substring(0,t).trim(),n=a.substring(t+1).trim();["first","last","odd","even"].includes(n)||/^nth\(\d+\)$/.test(n)?(o=e,l=n):o=a}else o=a;if(!o)throw new Error(`Invalid segment pattern: ${t}`);if(e.tag=o,s&&(e.namespace=s),n)if(n.includes("=")){const t=n.indexOf("=");e.attrName=n.substring(0,t).trim(),e.attrValue=n.substring(t+1).trim()}else e.attrName=n.trim();if(l){const t=l.match(/^nth\((\d+)\)$/);t?(e.position="nth",e.positionValue=parseInt(t[1],10)):e.position=l}return e}get length(){return this.segments.length}hasDeepWildcard(){return this._hasDeepWildcard}hasAttributeCondition(){return this._hasAttributeCondition}hasPositionSelector(){return this._hasPositionSelector}toString(){return this.pattern}}class at{constructor(){this._byDepthAndTag=new Map,this._wildcardByDepth=new Map,this._deepWildcards=[],this._deepByTerminalTag=new Map,this._patterns=new Set,this._sealed=!1}add(t){if(this._sealed)throw new TypeError("ExpressionSet is sealed. Create a new ExpressionSet to add more expressions.");if(this._patterns.has(t.pattern))return this;if(this._patterns.add(t.pattern),t.hasDeepWildcard()){const e=t.segments[t.segments.length-1];if(e&&"deep-wildcard"!==e.type&&"*"!==e.tag){const n=e.tag;this._deepByTerminalTag.has(n)||this._deepByTerminalTag.set(n,[]),this._deepByTerminalTag.get(n).push(t)}else this._deepWildcards.push(t);return this}const e=t.length,n=t.segments[t.segments.length-1],i=n?.tag;if(i&&"*"!==i){const n=`${e}:${i}`;this._byDepthAndTag.has(n)||this._byDepthAndTag.set(n,[]),this._byDepthAndTag.get(n).push(t)}else this._wildcardByDepth.has(e)||this._wildcardByDepth.set(e,[]),this._wildcardByDepth.get(e).push(t);return this}addAll(t){for(const e of t)this.add(e);return this}has(t){return this._patterns.has(t.pattern)}get size(){return this._patterns.size}seal(){return this._sealed=!0,this}get isSealed(){return this._sealed}matchesAny(t){return null!==this.findMatch(t)}findMatch(t){const e=t.getDepth(),n=t.getCurrentTag(),i=`${e}:${n}`,r=this._byDepthAndTag.get(i);if(r)for(let e=0;e<r.length;e++)if(t.matches(r[e]))return r[e];const s=this._wildcardByDepth.get(e);if(s)for(let e=0;e<s.length;e++)if(t.matches(s[e]))return s[e];const o=this._deepByTerminalTag.get(n);if(o)for(let e=0;e<o.length;e++)if(t.matches(o[e]))return o[e];for(let e=0;e<this._deepWildcards.length;e++)if(t.matches(this._deepWildcards[e]))return this._deepWildcards[e];return null}}const lt={cent:"¢",pound:"£",curren:"¤",yen:"¥",euro:"€",dollar:"$",fnof:"ƒ",inr:"₹",af:"؋",birr:"ብር",peso:"₱",rub:"₽",won:"₩",yuan:"¥",cedil:"¸"},ct={amp:"&",apos:"'",gt:">",lt:"<",quot:'"'},pt={nbsp:" ",copy:"©",reg:"®",trade:"™",mdash:"—",ndash:"–",hellip:"…",laquo:"«",raquo:"»",lsquo:"‘",rsquo:"’",ldquo:"“",rdquo:"”",bull:"•",para:"¶",sect:"§",deg:"°",frac12:"½",frac14:"¼",frac34:"¾"},ht=Object.freeze({ALLOW:"allow",BLOCK:"block",THROW:"throw"}),dt=new Set("!?\\\\/[]$%{}^&*()<>|+");function ut(t){if("#"===t[0])throw new Error(`[EntityReplacer] Invalid character '#' in entity name: "${t}"`);for(const e of t)if(dt.has(e))throw new Error(`[EntityReplacer] Invalid character '${e}' in entity name: "${t}"`);return t}function ft(...t){const e=Object.create(null);for(const n of t)if(n)for(const t of Object.keys(n)){const i=n[t];if("string"==typeof i)e[t]=i;else if(i&&"object"==typeof i&&void 0!==i.val){const n=i.val;"string"==typeof n&&(e[t]=n)}}return e}const gt="external",mt="base",xt="all",bt=Object.freeze({allow:0,leave:1,remove:2,throw:3}),yt=new Set([9,10,13]);class Nt{constructor(t={}){var e;this._limit=t.limit||{},this._maxTotalExpansions=this._limit.maxTotalExpansions||0,this._maxExpandedLength=this._limit.maxExpandedLength||0,this._postCheck="function"==typeof t.postCheck?t.postCheck:t=>t,this._limitTiers=(e=this._limit.applyLimitsTo??gt)&&e!==gt?e===xt?new Set([xt]):e===mt?new Set([mt]):Array.isArray(e)?new Set(e):new Set([gt]):new Set([gt]),this._numericAllowed=t.numericAllowed??!0,this._baseMap=ft(ct,t.namedEntities||null),this._externalMap=Object.create(null),this._inputMap=Object.create(null),this._totalExpansions=0,this._expandedLength=0,this._removeSet=new Set(t.remove&&Array.isArray(t.remove)?t.remove:[]),this._leaveSet=new Set(t.leave&&Array.isArray(t.leave)?t.leave:[]);const n=function(t){if(!t)return{xmlVersion:1,onLevel:bt.allow,nullLevel:bt.remove};const e=1.1===t.xmlVersion?1.1:1,n=bt[t.onNCR]??bt.allow,i=bt[t.nullNCR]??bt.remove;return{xmlVersion:e,onLevel:n,nullLevel:Math.max(i,bt.remove)}}(t.ncr);this._ncrXmlVersion=n.xmlVersion,this._ncrOnLevel=n.onLevel,this._ncrNullLevel=n.nullLevel,this._onExternalEntity="function"==typeof t.onExternalEntity?t.onExternalEntity:null,this._onInputEntity="function"==typeof t.onInputEntity?t.onInputEntity:null}_applyRegistrationHook(t,e,n,i){if(!t)return!0;const r=t(e,n);if(r===ht.BLOCK)return!1;if(r===ht.THROW)throw new Error(`[EntityDecoder] Registration of ${i} entity "&${e};" was rejected by hook`);return!0}setExternalEntities(t){if(t)for(const e of Object.keys(t))ut(e);if(!this._onExternalEntity)return void(this._externalMap=ft(t));const e=ft(t),n=Object.create(null);for(const[t,i]of Object.entries(e))this._applyRegistrationHook(this._onExternalEntity,t,i,"external")&&(n[t]=i);this._externalMap=n}addExternalEntity(t,e){ut(t),"string"==typeof e&&-1===e.indexOf("&")&&this._applyRegistrationHook(this._onExternalEntity,t,e,"external")&&(this._externalMap[t]=e)}addInputEntities(t){if(this._totalExpansions=0,this._expandedLength=0,!this._onInputEntity)return void(this._inputMap=ft(t));const e=ft(t),n=Object.create(null);for(const[t,i]of Object.entries(e))this._applyRegistrationHook(this._onInputEntity,t,i,"input")&&(n[t]=i);this._inputMap=n}reset(){return this._inputMap=Object.create(null),this._totalExpansions=0,this._expandedLength=0,this}setXmlVersion(t){this._ncrXmlVersion=1.1===t?1.1:1}decode(t){if("string"!=typeof t||0===t.length)return t;if(-1===t.indexOf("&"))return t;const e=t,n=[],i=t.length;let r=0,s=0;const o=this._maxTotalExpansions>0,a=this._maxExpandedLength>0,l=o||a;for(;s<i;){if(38!==t.charCodeAt(s)){s++;continue}let e=s+1;for(;e<i&&59!==t.charCodeAt(e)&&e-s<=32;)e++;if(e>=i||59!==t.charCodeAt(e)){s++;continue}const c=t.slice(s+1,e);if(0===c.length){s++;continue}let p,h;if(this._removeSet.has(c))p="",void 0===h&&(h=gt);else{if(this._leaveSet.has(c)){s++;continue}if(35===c.charCodeAt(0)){const t=this._resolveNCR(c);if(void 0===t){s++;continue}p=t,h=mt}else{const t=this._resolveName(c);p=t?.value,h=t?.tier}}if(void 0!==p){if(s>r&&n.push(t.slice(r,s)),n.push(p),r=e+1,s=r,l&&this._tierCounts(h)){if(o&&(this._totalExpansions++,this._totalExpansions>this._maxTotalExpansions))throw new Error(`[EntityReplacer] Entity expansion count limit exceeded: ${this._totalExpansions} > ${this._maxTotalExpansions}`);if(a){const t=p.length-(c.length+2);if(t>0&&(this._expandedLength+=t,this._expandedLength>this._maxExpandedLength))throw new Error(`[EntityReplacer] Expanded content length limit exceeded: ${this._expandedLength} > ${this._maxExpandedLength}`)}}}else s++}r<i&&n.push(t.slice(r));const c=0===n.length?t:n.join("");return this._postCheck(c,e)}_tierCounts(t){return!!this._limitTiers.has(xt)||this._limitTiers.has(t)}_resolveName(t){return t in this._inputMap?{value:this._inputMap[t],tier:gt}:t in this._externalMap?{value:this._externalMap[t],tier:gt}:t in this._baseMap?{value:this._baseMap[t],tier:mt}:void 0}_classifyNCR(t){return 0===t?this._ncrNullLevel:t>=55296&&t<=57343||1===this._ncrXmlVersion&&t>=1&&t<=31&&!yt.has(t)?bt.remove:-1}_applyNCRAction(t,e,n){switch(t){case bt.allow:return String.fromCodePoint(n);case bt.remove:return"";case bt.leave:return;case bt.throw:throw new Error(`[EntityDecoder] Prohibited numeric character reference &${e}; (U+${n.toString(16).toUpperCase().padStart(4,"0")})`);default:return String.fromCodePoint(n)}}_resolveNCR(t){const e=t.charCodeAt(1);let n;if(n=120===e||88===e?parseInt(t.slice(2),16):parseInt(t.slice(1),10),Number.isNaN(n)||n<0||n>1114111)return;const i=this._classifyNCR(n);if(!this._numericAllowed&&i<bt.remove)return;const r=-1===i?this._ncrOnLevel:Math.max(this._ncrOnLevel,i);return this._applyNCRAction(r,t,n)}}const Et=[{id:"sql-block-comment-open",description:"SQL block comment open: /* ... */ — unusual in legitimate user text",pattern:/\/\*/},{id:"sql-union-select",description:"UNION SELECT — most common SQL injection aggregation attack",pattern:/\bUNION\s{1,20}(?:ALL\s{1,20})?SELECT\b/i},{id:"sql-drop-table",description:"DROP TABLE — destructive DDL injection",pattern:/\bDROP\s{1,20}TABLE\b/i},{id:"sql-drop-database",description:"DROP DATABASE — destructive DDL injection",pattern:/\bDROP\s{1,20}DATABASE\b/i},{id:"sql-insert-into",description:"INSERT INTO — data injection",pattern:/\bINSERT\s{1,20}INTO\b/i},{id:"sql-delete-from",description:"DELETE FROM — data deletion injection",pattern:/\bDELETE\s{1,20}FROM\b/i},{id:"sql-update-set",description:"UPDATE ... SET — data modification injection",pattern:/\bUPDATE\b[\s\S]{1,60}\bSET\b/i},{id:"sql-exec-xp",description:"EXEC xp_ — MSSQL extended stored procedure execution",pattern:/\bEXEC(?:UTE)?\s{1,20}xp_/i},{id:"sql-tautology-string",description:'Classic string tautology: \' OR \'1\'=\'1 or " OR "1"="1"',pattern:/'\s{0,10}OR\s{0,10}'[^']{0,20}'\s*=\s*'[^']{0,20}/i},{id:"sql-tautology-numeric",description:"Numeric tautology: OR 1=1",pattern:/\bOR\s{1,10}1\s*=\s*1\b/i},{id:"sql-always-true-zero",description:"Numeric tautology: OR 0=0",pattern:/\bOR\s{1,10}0\s*=\s*0\b/i},{id:"sql-sleep-benchmark",description:"Time-based blind injection: SLEEP() or BENCHMARK()",pattern:/\b(?:SLEEP|BENCHMARK)\s*\(/i},{id:"sql-waitfor-delay",description:"MSSQL time-based blind injection: WAITFOR DELAY",pattern:/\bWAITFOR\s{1,20}DELAY\b/i},{id:"sql-char-function",description:"CHAR() function — used to obfuscate injected strings",pattern:/\bCHAR\s*\(\s*\d{1,3}/i},{id:"sql-information-schema",description:"INFORMATION_SCHEMA — reconnaissance query for table/column enumeration",pattern:/\bINFORMATION_SCHEMA\b/i}],wt=[...Et,{id:"sql-line-comment",description:"SQL line comment: -- followed by whitespace or end of string",pattern:/--(?:\s|$)/},{id:"sql-stacked-query",description:"Stacked queries: semicolon immediately followed by a SQL keyword",pattern:/;\s{0,10}(?:SELECT|INSERT|UPDATE|DELETE|DROP|CREATE|ALTER|EXEC)\b/i},{id:"sql-hex-encoding",description:"Hex-encoded string injection: 0x41414141 style (MySQL)",pattern:/\b0x[0-9a-f]{4,}/i}],vt=Object.freeze({colon:":",Tab:"\t",NewLine:"\n"}),St=/&(?:#[xX]0*([0-9a-fA-F]{1,6});?|#0*([0-9]{1,7});?|([a-zA-Z][a-zA-Z0-9]{1,15});)/g,At=[{id:"html-script-open",description:"<script opening tag",pattern:/<script[\s>/]/i},{id:"html-script-close",description:"<\/script closing tag",pattern:/<\/script[\s>]/i},{id:"html-javascript-protocol",description:"javascript: URI scheme (with optional whitespace/encoding)",pattern:/j[\t\n\r ]*a[\t\n\r ]*v[\t\n\r ]*a[\t\n\r ]*s[\t\n\r ]*c[\t\n\r ]*r[\t\n\r ]*i[\t\n\r ]*p[\t\n\r ]*t[\t\n\r ]*:/i},{id:"html-vbscript-protocol",description:"vbscript: URI scheme",pattern:/vbscript[\t\n\r ]*:/i},{id:"html-data-html",description:"data:text/html URI — can execute scripts in browsers",pattern:/data[\t\n\r ]*:[\t\n\r ]*text\/html/i},{id:"html-data-xhtml",description:"data:application/xhtml+xml URI",pattern:/data[\t\n\r ]*:[\t\n\r ]*application\/xhtml/i},{id:"html-data-svg",description:"data:image/svg+xml URI — can execute scripts",pattern:/data[\t\n\r ]*:[\t\n\r ]*image\/svg\+xml/i},{id:"html-inline-event-handler",description:"Inline event handler attributes: onclick=, onerror=, onload=, etc.",pattern:/\bon\w{1,30}\s*=/i},{id:"html-entity-obfuscated-script",description:"HTML-entity-encoded <script (e.g. &#x3C;script or &lt;script)",pattern:/(?:&#x0*3[Cc];?|&#0*60;?|&lt;)\s*script/i},{id:"html-entity-obfuscated-javascript",description:'HTML-entity-encoded javascript: (partial — catches common &#106; or &#x6a; for "j")',pattern:/(?:&#x0*6[Aa];?|&#0*106;?)\s*(?:&#x0*61;?|a)[\s\S]{0,80}script\s*:/i},{id:"html-style-expression",description:"CSS expression() — IE-era code execution in style attributes",pattern:/style[\s\S]{0,20}expression\s*\(/i},{id:"html-object-embed",description:"<object or <embed tags that can load active content",pattern:/<(?:object|embed)[\s>/]/i},{id:"html-base-tag",description:"<base href= — can hijack all relative URLs on a page",pattern:/<base[\s>]/i},{id:"html-meta-refresh",description:'<meta http-equiv="refresh" — can redirect users',pattern:/<meta[\s\S]{0,40}http-equiv[\s\S]{0,20}refresh/i},{id:"html-srcdoc",description:"srcdoc= attribute on iframes — embeds HTML that can run scripts",pattern:/srcdoc\s*=/i},{id:"html-iframe",description:"<iframe tag",pattern:/<iframe[\s>/]/i},{id:"html-form",description:"<form tag — can be used for phishing / credential harvesting injection",pattern:/<form[\s>/]/i}],Tt=[{id:"xml-cdata-injection",description:"CDATA section injection: <![CDATA[ breaks out of text node context",pattern:/<!\[CDATA\[/i},{id:"xml-cdata-close",description:"CDATA close sequence: ]]> can terminate an enclosing CDATA section",pattern:/\]\]>/},{id:"xml-processing-instruction",description:"XML processing instruction: <?xml-stylesheet or <?php etc.",pattern:/<\?(?:xml[\- ]|php|asp)/i},{id:"xml-doctype-injection",description:"DOCTYPE declaration embedded in content — can define entities",pattern:/<!DOCTYPE(?:[\s[]|$)/i},{id:"xml-entity-system",description:"SYSTEM keyword — used in external entity declarations (XXE)",pattern:/\bSYSTEM\s+["']/i},{id:"xml-entity-public",description:"PUBLIC keyword — used in external entity declarations (XXE)",pattern:/\bPUBLIC\s+["']/i},{id:"xml-entity-declaration",description:"<!ENTITY declaration — defines entities, potential XXE or entity expansion",pattern:/<!ENTITY[\s%]/i},{id:"xml-billion-laughs",description:"Entity reference chaining / billion laughs: repeated &eX; style references",pattern:/(?:&\w{1,20};){3,}/},{id:"xml-namespace-confusion",description:"xmlns: attribute injection — can redefine namespaces to confuse parsers",pattern:/\bxmlns(?::\w{1,40})?\s*=/i},{id:"xml-comment-injection",description:"\x3c!-- comment injection — can hide content from some parsers",pattern:/<!--/},{id:"xml-comment-close",description:"--\x3e closes an enclosing XML comment",pattern:/-->/},{id:"xml-pi-close",description:"?> closes an enclosing processing instruction",pattern:/\?>/}],_t=[{id:"svg-script-element",description:"<script element inside SVG executes JavaScript",pattern:/<script[\s>/]/i},{id:"svg-xlink-href-javascript",description:"xlink:href with javascript: — classic SVG XSS via <a> or <use>",pattern:/xlink\s*:\s*href\s*=\s*["']?\s*javascript\s*:/i},{id:"svg-href-javascript",description:"href= with javascript: in SVG context (<a>, <animate>, etc.)",pattern:/href\s*=\s*["']?\s*javascript\s*:/i},{id:"svg-foreignobject",description:"<foreignObject embeds HTML inside SVG — can execute scripts",pattern:/<foreignObject[\s>/]/i},{id:"svg-use-external",description:"<use xlink:href or href pointing to external resource (non-fragment URL)",pattern:/<use[\s\S]{0,60}(?:xlink\s*:\s*)?href\s*=\s*(?:["'][^#]|[^"'#\s>])/i},{id:"svg-animate-href",description:'<animate attributeName="href" — can dynamically change href to javascript:',pattern:/<animate[\s\S]{0,80}attributeName\s*=\s*["'][\s]*href["']/i},{id:"svg-animate-xlinkhref",description:'<animate attributeName="xlink:href"',pattern:/<animate[\s\S]{0,80}attributeName\s*=\s*["'][\s]*xlink\s*:\s*href["']/i},{id:"svg-set-javascript",description:'<set to="javascript:..." — sets an attribute to a javascript: URI',pattern:/<set[\s\S]{0,80}to\s*=\s*["']?\s*javascript\s*:/i},{id:"svg-event-handler",description:"SVG-specific event handler attributes: onload=, onerror=, onactivate=, etc.",pattern:/\bon(?:load|error|activate|begin|end|repeat|focus|blur|click|mouse\w{1,20}|key\w{1,20})\s*=/i},{id:"svg-handler-generic",description:"Generic on* handler catch-all for SVG attributes",pattern:/\bon\w{1,30}\s*=/i},{id:"svg-filter-feimage",description:"<feImage href= — filter primitive that can load external resources",pattern:/<feImage[\s\S]{0,80}(?:xlink\s*:\s*)?href\s*=/i},{id:"svg-image-external",description:"<image xlink:href with http/https or javascript protocol",pattern:/<image[\s\S]{0,80}(?:xlink\s*:\s*)?href\s*=\s*["']?\s*(?:https?|javascript)\s*:/i},{id:"svg-style-javascript",description:"style= attribute containing javascript: (e.g. background:url(javascript:...))",pattern:/style\s*=[\s\S]{0,60}javascript\s*:/i}],Ct=[{id:"shell-path-traversal-unix",description:"Unix path traversal: ../  — climbing the directory tree",pattern:/\.\.\//},{id:"shell-path-traversal-windows",description:"Windows path traversal: ..\\ — climbing the directory tree",pattern:/\.\.\\/},{id:"shell-path-traversal-encoded",description:"URL-encoded path traversal: %2e%2e or %2f variants",pattern:/%2e%2e|%2f\.\.|\.\.%2f/i},{id:"shell-null-byte",description:"Null byte injection: \\x00 or %00 — truncates strings in C-backed functions",pattern:/\x00|%00/},{id:"shell-semicolon",description:"Semicolon command separator: cmd1; cmd2",pattern:/;/},{id:"shell-pipe",description:"Pipe operator: cmd1 | cmd2",pattern:/\|/},{id:"shell-and-operator",description:"AND operator: cmd1 && cmd2",pattern:/&&/},{id:"shell-or-operator",description:"OR operator: cmd1 || cmd2",pattern:/\|\|/},{id:"shell-backtick",description:"Backtick command substitution: `cmd`",pattern:/`/},{id:"shell-dollar-paren",description:"Dollar-paren command substitution: $(cmd)",pattern:/\$\(/},{id:"shell-dollar-brace",description:"Dollar-brace variable expansion: ${var} — can be abused for injection",pattern:/\$\{/},{id:"shell-redirect-out",description:"Output redirection: cmd > file or cmd >> file",pattern:/>{1,2}/},{id:"shell-redirect-in",description:"Input redirection: cmd < file",pattern:/</},{id:"shell-newline-injection",description:"Newline injection: \\n or \\r — can inject new shell commands",pattern:/[\n\r]/},{id:"shell-glob-star",description:"Glob expansion: * or ? — can expand to unintended files",pattern:/[/\\][*?]/},{id:"shell-absolute-root",description:"Absolute root path injection: string starting with / or \\ (Windows UNC)",pattern:/^(?:\/|\\\\)/},{id:"shell-windows-drive",description:"Windows drive letter path injection: C:\\ or D:/",pattern:/^[a-zA-Z]:[/\\]/},{id:"shell-curl-wget",description:"curl/wget with URL or flags — can exfiltrate data or download payloads",pattern:/\b(?:curl|wget)\s+(?:https?:\/\/|ftp:\/\/|-)/i}],$t=[{id:"redos-nested-quantifier-plus",description:"Nested + quantifier inside a group with outer quantifier: (a+)+, (.+b)*, etc.",pattern:/\([^)]*\+[^)]*\)[+*]/},{id:"redos-nested-quantifier-star",description:"Nested * quantifier: (a*)* or (a*)+ — catastrophic backtracking",pattern:/\([^)]*\*[^)]*\)[*+]/},{id:"redos-nested-groups",description:"Doubly nested quantified groups: ((a+)+) — guaranteed catastrophic",pattern:/\(\([^)]{0,40}\)[+*]\)[+*]/},{id:"redos-alternation-overlap",description:"Overlapping alternation under quantifier: (a|a)+ — ambiguous NFA paths",pattern:/\(([^|()]{1,20})\|(?:\1)(?:\|[^|()]{1,20}){0,5}\)[+*?]{1,2}/},{id:"redos-star-plus-concat",description:"(x*x)+ pattern — triggers super-linear backtracking",pattern:/\([^)]{0,10}\*[^)]{0,10}\)[+*]/},{id:"redos-dot-star-greedy",description:"(.*){n,} or (.+){n,} — repeated greedy dot quantifiers",pattern:/\(\.[*+]\)\{?\d/},{id:"redos-large-repetition",description:"Very large fixed or range repetition count {1000,} or {1000,n} — denial of service via backtracking",pattern:/\{\d{4,}(?:,\d*)?\}/},{id:"redos-catastrophic-alternation",description:"Long alternation with many similar branches — polynomial backtracking risk",pattern:/\([^)]{0,200}(?:\|[^|)]{0,50}){9,}\)/}],Ot="[\"'\\s]*:",Pt=[{id:"nosql-where-operator",description:"$where — executes arbitrary JavaScript server-side in MongoDB",pattern:new RegExp(`\\$where${Ot}`,"i")},{id:"nosql-ne-operator",description:'$ne — "not equal" operator used to bypass equality checks',pattern:new RegExp(`\\$ne${Ot}`,"i")},{id:"nosql-gt-operator",description:'$gt — "greater than" used to bypass password/value checks',pattern:new RegExp(`\\$gte?${Ot}`,"i")},{id:"nosql-lt-operator",description:'$lt / $lte — "less than" bypass variants',pattern:new RegExp(`\\$lte?${Ot}`,"i")},{id:"nosql-regex-operator",description:"$regex — can be used to extract data character by character (blind injection)",pattern:new RegExp(`\\$regex${Ot}`,"i")},{id:"nosql-or-operator",description:"$or — logical OR; used to create always-true conditions",pattern:new RegExp(`\\$or${Ot}\\s*\\[`,"i")},{id:"nosql-and-operator",description:"$and — logical AND operator injection",pattern:new RegExp(`\\$and${Ot}\\s*\\[`,"i")},{id:"nosql-nor-operator",description:"$nor — logical NOR operator injection",pattern:new RegExp(`\\$nor${Ot}\\s*\\[`,"i")},{id:"nosql-exists-operator",description:"$exists — can enumerate fields to determine schema",pattern:new RegExp(`\\$exists${Ot}`,"i")},{id:"nosql-in-operator",description:"$in — matches any value in a list; can enumerate values",pattern:new RegExp(`\\$in${Ot}\\s*\\[`,"i")},{id:"nosql-expr-operator",description:"$expr — allows aggregation expressions in queries (MongoDB 3.6+)",pattern:new RegExp(`\\$expr${Ot}`,"i")},{id:"nosql-function-operator",description:"$function — executes arbitrary JavaScript in MongoDB 4.4+",pattern:new RegExp(`\\$function${Ot}`,"i")},{id:"nosql-accumulator-operator",description:"$accumulator — custom aggregation with arbitrary JS execution",pattern:new RegExp(`\\$accumulator${Ot}`,"i")},{id:"nosql-proto-pollution",description:"__proto__ — prototype pollution via object key injection",pattern:/__proto__/},{id:"nosql-constructor-prototype",description:"constructor.prototype — alternative prototype pollution vector (dot notation or JSON key)",pattern:/constructor[\s"':.,{\[]*prototype/i},{id:"nosql-proto-bracket",description:'["__proto__"] — bracket-notation prototype pollution',pattern:/\[["']__proto__["']\]/}],jt=[{id:"log-crlf-injection",description:"CRLF injection: literal \\r or \\n embeds fake log lines",pattern:/[\r\n]/},{id:"log-url-encoded-crlf",description:"URL-encoded CRLF: %0d, %0a, %0D, %0A — decoded by some log parsers",pattern:/%0[dDaA]/},{id:"log-unicode-newline",description:"Unicode newline variants: U+2028 (line separator), U+2029 (paragraph separator)",pattern:/[\u2028\u2029]/},{id:"log-log4shell-jndi",description:"Log4Shell: ${jndi:...} triggers remote code execution in Apache Log4j",pattern:/\$\{jndi\s*:/i},{id:"log-log4shell-obfuscated",description:"Obfuscated Log4Shell: ${::-j}... lookup-bypass prefix used to evade WAF detection",pattern:/\$\{::-/},{id:"log-log4j-lookup",description:"Log4j lookup syntax: ${env:...}, ${sys:...}, ${ctx:...} — data exfiltration",pattern:/\$\{(?:env|sys|ctx|main|map|sd|web|docker|k8s|spring)\s*:/i},{id:"log-ssti-double-brace",description:"SSTI double-brace: {{expression}} — Jinja2, Twig, Handlebars, etc.",pattern:/\{\{[\s\S]{0,80}\}\}/},{id:"log-ssti-hash-brace",description:"SSTI hash-brace: #{expression} — Thymeleaf, Velocity, Ruby ERB",pattern:/#\{[\s\S]{0,80}\}/},{id:"log-ssti-dollar-brace",description:"SSTI/EL injection: ${expression with operators or method calls} — JSP EL, Freemarker, SpEL",pattern:/\$\{[^}]*(?:\.|\(|\*|\+|\bclass\b|\bruntime\b|\bprocess\b|\bexec\b)[^}]{0,80}\}/i},{id:"log-ssti-percent-tag",description:"SSTI ERB/ASP tag: <%= expression %> — Ruby ERB, ASP",pattern:/<%=[\s\S]{0,80}%>/},{id:"log-null-byte",description:"Null byte: \\x00 or %00 — can truncate log entries in C-backed loggers",pattern:/\x00|%00/},{id:"log-ansi-escape",description:"ANSI escape sequence: ESC[ — can manipulate terminal output when logs are tailed",pattern:/\x1b\[/}];function It(t,e){const n=e.label??"CUSTOM",i=function(t,e){if(!e.decodeEntities)return null;const n=-1===(i=t).indexOf("&")?i:i.replace(St,(t,e,n,i)=>{if(void 0!==i)return Object.prototype.hasOwnProperty.call(vt,i)?vt[i]:t;const r=void 0!==e?parseInt(e,16):parseInt(n,10);return!Number.isFinite(r)||r>1114111?t:String.fromCodePoint(r)});var i;return n===t?null:n}(t,e);for(const r of e)if(r.pattern.test(t)||null!==i&&r.pattern.test(i))return{context:n,id:r.id,description:r.description,pattern:r.pattern};return null}function kt(t,e){(function(t){if("string"!=typeof t)throw new TypeError("is-unsafe: first argument must be a string, got "+typeof t)})(t),function(t){if(!(t instanceof RegExp)){if(!Array.isArray(t))throw new TypeError("is-unsafe: second argument must be a PatternList (e.g. HTML), an array of PatternLists (e.g. [HTML, XML]), or a RegExp. Got: "+typeof t);if(0===t.length)throw new TypeError("is-unsafe: context must not be an empty array");if(Array.isArray(t[0]))for(const e of t)if(!Array.isArray(e)||0===e.length)throw new TypeError("is-unsafe: each context in the array must be a non-empty pattern array (PatternList)")}}(e);const{lists:n,regex:i}=function(t){return t instanceof RegExp?{lists:null,regex:t}:Array.isArray(t[0])?{lists:t,regex:null}:{lists:[t],regex:null}}(e);if(i)return i.test(t);for(const e of n)if(null!==It(t,e))return!0;return!1}function Lt(t,e){if(!t)return{};const n=e.attributesGroupName?t[e.attributesGroupName]:t;if(!n)return{};const i={};for(const t in n)t.startsWith(e.attributeNamePrefix)?i[t.substring(e.attributeNamePrefix.length)]=n[t]:i[t]=n[t];return i}function Dt(t){if(!t||"string"!=typeof t)return;const e=t.indexOf(":");if(-1!==e&&e>0){const n=t.substring(0,e);if("xmlns"!==n)return n}}At.label="HTML",Tt.label="XML",_t.label="SVG",At.decodeEntities=!0,Tt.decodeEntities=!0,_t.decodeEntities=!0,Et.label="SQL",wt.label="SQL-STRICT",Ct.label="SHELL",$t.label="REDOS",Pt.label="NOSQL",jt.label="LOG",Object.freeze({HTML:At,XML:Tt,SVG:_t,SQL:Et,"SQL-STRICT":wt,SHELL:Ct,REDOS:$t,NOSQL:Pt,LOG:jt});class Mt{constructor(t,e){var n;this.options=t,this.currentNode=null,this.tagsNodeStack=[],this.parseXml=Bt,this.parseTextData=Rt,this.resolveNameSpace=Vt,this.buildAttributesMap=Ut,this.isItStopNode=Yt,this.replaceEntitiesValue=Wt,this.readStopNodeData=Zt,this.saveTextToParentTag=zt,this.addChild=Xt,this.ignoreAttributesFn="function"==typeof(n=this.options.ignoreAttributes)?n:Array.isArray(n)?t=>{for(const e of n){if("string"==typeof e&&t===e)return!0;if(e instanceof RegExp&&e.test(t))return!0}}:()=>!1,this.entityExpansionCount=0,this.currentExpandedLength=0,this.doctypefound=!1;let i={...ct};this.options.entityDecoder?this.entityDecoder=this.options.entityDecoder:("object"==typeof this.options.htmlEntities?i=this.options.htmlEntities:!0===this.options.htmlEntities&&(i={...pt,...lt}),this.entityDecoder=new Nt({namedEntities:{...i,...e},numericAllowed:this.options.htmlEntities,limit:{maxTotalExpansions:this.options.processEntities.maxTotalExpansions,maxExpandedLength:this.options.processEntities.maxExpandedLength,applyLimitsTo:this.options.processEntities.appliesTo},onInputEntity:(t,e)=>kt(e,[At,Tt])?ht.BLOCK:ht.ALLOW})),this.matcher=new st,this.readonlyMatcher=this.matcher.readOnly(),this.isCurrentNodeStopNode=!1,this.stopNodeExpressionsSet=new at;const r=this.options.stopNodes;if(r&&r.length>0){for(let t=0;t<r.length;t++){const e=r[t];"string"==typeof e?this.stopNodeExpressionsSet.add(new ot(e)):e instanceof ot&&this.stopNodeExpressionsSet.add(e)}this.stopNodeExpressionsSet.seal()}}}function Rt(t,e,n,i,r,s,o){const a=this.options;if(void 0!==t&&(a.trimValues&&!i&&(t=t.trim()),t.length>0)){o||(t=this.replaceEntitiesValue(t,e,n));const i=a.jPath?n.toString():n,l=a.tagValueProcessor(e,t,i,r,s);return null==l?t:typeof l!=typeof t||l!==t?l:a.trimValues||t.trim()===t?Kt(t,a.parseTagValue,a.numberParseOptions):t}}function Vt(t){if(this.options.removeNSPrefix){const e=t.split(":"),n="/"===t.charAt(0)?"/":"";if("xmlns"===e[0])return"";2===e.length&&(t=n+e[1])}return t}const qt=/([^\s=]+)\s*(=\s*(?:"([^"]*)"|'([^']*)'))?/gm;function Ft(t){return void 0!==t[3]?t[3]:t[4]}function Ut(t,e,n,i=!1){const r=this.options;if(!0===i||!0!==r.ignoreAttributes&&"string"==typeof t){const i=function(t,e){const n=[];let i=e.exec(t);for(;i;){const r=[];r.startIndex=e.lastIndex-i[0].length;const s=i.length;for(let t=0;t<s;t++)r.push(i[t]);n.push(r),i=e.exec(t)}return n}(t,qt),s=i.length,o={},a=new Array(s);let l=!1;const c={};for(let t=0;t<s;t++){const e=this.resolveNameSpace(i[t][1]),s=Ft(i[t]);if(e.length&&void 0!==s){let i=s;r.trimValues&&(i=i.trim()),i=this.replaceEntitiesValue(i,n,this.readonlyMatcher),a[t]=i,c[e]=i,l=!0}}l&&"object"==typeof e&&e.updateCurrent&&e.updateCurrent(c);const p=r.jPath?e.toString():this.readonlyMatcher;let h=!1;for(let t=0;t<s;t++){const e=this.resolveNameSpace(i[t][1]);if(this.ignoreAttributesFn(e,p))continue;let n=r.attributeNamePrefix+e;if(e.length)if(r.transformAttributeName&&(n=r.transformAttributeName(n)),n=ee(n,r),void 0!==Ft(i[t])){const i=a[t],s=r.attributeValueProcessor(e,i,p);o[n]=null==s?i:typeof s!=typeof i||s!==i?s:Kt(i,r.parseAttributeValue,r.numberParseOptions),h=!0}else r.allowBooleanAttributes&&(o[n]=!0,h=!0)}if(!h)return;if(r.attributesGroupName&&!r.preserveOrder){const t={};return t[r.attributesGroupName]=o,t}return o}}const Bt=function(t){const e=this.options,n=e.captureMetaData?[]:void 0;t=t.replace(/\r\n?/g,e.captureMetaData?(t,e)=>(2===t.length&&n.push(e-n.length),"\n"):"\n");const i=new C("!xml");let r=i,s="";this.matcher.reset(),this.entityDecoder.reset(),this.entityExpansionCount=0,this.currentExpandedLength=0,this.doctypefound=!1;const o=new F(e.processEntities),a=t.length;for(let l=0;l<a;l++)if("<"===t[l]){const c=t.charCodeAt(l+1);if(47===c){const o=Ht(t,">",l,"Closing Tag is not closed.");let a=t.substring(l+2,o).trim();if(e.removeNSPrefix){const t=a.indexOf(":");-1!==t&&(a=a.substr(t+1))}a=te(e.transformTagName,a,"",e).tagName,r&&(s=this.saveTextToParentTag(s,r,this.readonlyMatcher));const c=this.matcher.getCurrentTag();if(a&&e.unpairedTagsSet.has(a))throw new Error(`Unpaired tag can not be used as closing tag: </${a}>`);c&&e.unpairedTagsSet.has(c)&&(this.matcher.pop(),this.tagsNodeStack.pop()),this.matcher.pop(),this.isCurrentNodeStopNode=!1,r=this.tagsNodeStack.pop()||i,e.captureMetaData&&r&&r.addEndIndex(Gt(o+1,n)),s="",l=o}else if(63===c){let i=Jt(t,l,!1,"?>");if(!i)throw new Error("Pi Tag is not closed.");s=this.saveTextToParentTag(s,r,this.readonlyMatcher);const a=this.buildAttributesMap(i.tagExp,this.matcher,i.tagName,!0);if(a){const t=a[this.options.attributeNamePrefix+"version"];this.entityDecoder.setXmlVersion(Number(t)||1),o.setXmlVersion(Number(t)||1)}if(e.ignoreDeclaration&&"?xml"===i.tagName||e.ignorePiTags);else{const t=new C(i.tagName);t.add(e.textNodeName,""),i.tagName!==i.tagExp&&i.attrExpPresent&&!0!==e.ignoreAttributes&&(t[":@"]=a);const s=e.captureMetaData?Gt(l,n):l;this.addChild(r,t,this.readonlyMatcher,s),e.captureMetaData&&r.addEndIndex(Gt(i.closeIndex+2,n))}l=i.closeIndex+1}else if(33===c&&45===t.charCodeAt(l+2)&&45===t.charCodeAt(l+3)){const n=Ht(t,"--\x3e",l+4,"Comment is not closed.");if(e.commentPropName){const i=t.substring(l+4,n-2);s=this.saveTextToParentTag(s,r,this.readonlyMatcher),r.add(e.commentPropName,[{[e.textNodeName]:i}])}l=n}else if(33===c&&68===t.charCodeAt(l+2)){if(this.doctypefound)throw new Error("Multiple DOCTYPE declarations found.");this.doctypefound=!0;const e=o.readDocType(t,l);this.entityDecoder.addInputEntities(e.entities),l=e.i}else if(33===c&&91===t.charCodeAt(l+2)){const n=Ht(t,"]]>",l,"CDATA is not closed.")-2,i=t.substring(l+9,n);s=this.saveTextToParentTag(s,r,this.readonlyMatcher);let o=this.parseTextData(i,r.tagname,this.readonlyMatcher,!0,!1,!0,!0);null==o&&(o=""),e.cdataPropName?r.add(e.cdataPropName,[{[e.textNodeName]:i}]):r.add(e.textNodeName,o),l=n+2}else{let o=Jt(t,l,e.removeNSPrefix);if(!o){const e=t.substring(Math.max(0,l-50),Math.min(a,l+50));throw new Error(`readTagExp returned undefined at position ${l}. Context: "${e}"`)}let c=o.tagName;const p=o.rawTagName;let h=o.tagExp,d=o.attrExpPresent,u=o.closeIndex;if(({tagName:c,tagExp:h}=te(e.transformTagName,c,h,e)),e.strictReservedNames&&(c===e.commentPropName||c===e.cdataPropName||c===e.textNodeName||c===e.attributesGroupName))throw new Error(`Invalid tag name: ${c}`);r&&s&&"!xml"!==r.tagname&&(s=this.saveTextToParentTag(s,r,this.readonlyMatcher,!1));const f=r;f&&e.unpairedTagsSet.has(f.tagname)&&(r=this.tagsNodeStack.pop(),this.matcher.pop());let g=!1;h.length>0&&h.lastIndexOf("/")===h.length-1&&(g=!0,"/"===c[c.length-1]?(c=c.substr(0,c.length-1),h=c):h=h.substr(0,h.length-1),d=c!==h);let m,x=null,b={};m=Dt(p),c!==i.tagname&&this.matcher.push(c,{},m),c!==h&&d&&(x=this.buildAttributesMap(h,this.matcher,c),x&&(b=Lt(x,e))),c!==i.tagname&&(this.isCurrentNodeStopNode=this.isItStopNode());const y=e.captureMetaData?Gt(l,n):l;if(this.isCurrentNodeStopNode){let i="";if(g)l=o.closeIndex;else if(e.unpairedTagsSet.has(c))l=o.closeIndex;else{const e=this.readStopNodeData(t,p,u+1);if(!e)throw new Error(`Unexpected end of ${p}`);l=e.i,i=e.tagContent}const s=new C(c);x&&(s[":@"]=x),s.add(e.textNodeName,i),this.matcher.pop(),this.isCurrentNodeStopNode=!1,this.addChild(r,s,this.readonlyMatcher,y),e.captureMetaData&&r.addEndIndex(Gt(l+1,n))}else{if(g){({tagName:c,tagExp:h}=te(e.transformTagName,c,h,e));const t=new C(c);x&&(t[":@"]=x),this.addChild(r,t,this.readonlyMatcher,y),e.captureMetaData&&r.addEndIndex(Gt(u+1,n)),this.matcher.pop(),this.isCurrentNodeStopNode=!1}else{if(e.unpairedTagsSet.has(c)){const t=new C(c);x&&(t[":@"]=x),this.addChild(r,t,this.readonlyMatcher,y),e.captureMetaData&&r.addEndIndex(Gt(o.closeIndex+1,n)),this.matcher.pop(),this.isCurrentNodeStopNode=!1,l=o.closeIndex;continue}{const t=new C(c);if(this.tagsNodeStack.length>e.maxNestedTags)throw new Error("Maximum nested tags exceeded");this.tagsNodeStack.push(r),x&&(t[":@"]=x),this.addChild(r,t,this.readonlyMatcher,y),r=t}}s="",l=u}}}else s+=t[l];return i.child};function Gt(t,e){let n=0,i=e.length;for(;n<i;){const r=Math.floor((n+i)/2);e[r]<t?n=r+1:i=r}return t+n}function Xt(t,e,n,i){this.options.captureMetaData||(i=void 0);const r=this.options.jPath?n.toString():n,s=this.options.updateTag(e.tagname,r,e[":@"]);!1===s||("string"==typeof s?(e.tagname=s,t.addChild(e,i)):t.addChild(e,i))}function Wt(t,e,n){const i=this.options.processEntities;if(!i||!i.enabled)return t;if(i.allowedTags){const r=this.options.jPath?n.toString():n;if(!(Array.isArray(i.allowedTags)?i.allowedTags.includes(e):i.allowedTags(e,r)))return t}if(i.tagFilter){const r=this.options.jPath?n.toString():n;if(!i.tagFilter(e,r))return t}return this.entityDecoder.decode(t)}function zt(t,e,n,i){return t&&(void 0===i&&(i=0===e.child.length),void 0!==(t=this.parseTextData(t,e.tagname,n,!1,!!e[":@"]&&0!==Object.keys(e[":@"]).length,i))&&""!==t&&e.add(this.options.textNodeName,t),t=""),t}function Yt(){return 0!==this.stopNodeExpressionsSet.size&&this.matcher.matchesAny(this.stopNodeExpressionsSet)}function Ht(t,e,n,i){const r=t.indexOf(e,n);if(-1===r)throw new Error(i);return r+e.length-1}function Qt(t,e,n,i){const r=t.indexOf(e,n);if(-1===r)throw new Error(i);return r}function Jt(t,e,n,i=">"){const r=function(t,e,n=">"){const i=t.length,r=n.charCodeAt(0),s=n.length>1?n.charCodeAt(1):-1;let o="",a=e;for(let n=e;n<i;n++){const e=t.charCodeAt(n);if(34===e||39===e){if(n=t.indexOf(t[n],n+1),-1===n)return}else if(e===r){if(-1===s)return o+=t.substring(a,n),{data:o,index:n};if(t.charCodeAt(n+1)===s)return o+=t.substring(a,n),{data:o,index:n}}else 9===e&&(o+=t.substring(a,n)+" ",a=n+1)}}(t,e+1,i);if(!r)return;let s=r.data;const o=r.index,a=s.search(/\s/);let l=s,c=!0;-1!==a&&(l=s.substring(0,a),s=s.substring(a+1).trimStart());const p=l;if(n){const t=l.indexOf(":");-1!==t&&(l=l.substr(t+1),c=l!==r.data.substr(t+1))}return{tagName:l,tagExp:s,closeIndex:o,attrExpPresent:c,rawTagName:p}}function Zt(t,e,n){const i=n;let r=1,s=!1,o=-1;const a=t.length;for(;n<a;n++)if("<"===t[n]){const a=t.charCodeAt(n+1);if(47===a){const s=Qt(t,">",n,`${e} is not closed`);if(t.substring(n+2,s).trim()===e&&(r--,0===r))return{tagContent:t.substring(i,n),i:s};n=s}else if(63===a)n=Ht(t,"?>",n+1,"StopNode is not closed.");else if(33===a&&45===t.charCodeAt(n+2)&&45===t.charCodeAt(n+3))n=Ht(t,"--\x3e",n+3,"StopNode is not closed.");else if(33===a&&91===t.charCodeAt(n+2))n=Ht(t,"]]>",n,"StopNode is not closed.")-2;else{const i=s?void 0:Jt(t,n,!1);if(i)i.tagName===e&&"/"!==i.tagExp[i.tagExp.length-1]&&r++,n=i.closeIndex;else{if(s=!0,o<n&&(o=t.indexOf(">",n),-1===o))return;const i=t.indexOf("<",n+1);if(-1===i||i>o){const i=t.substring(n+1,o),s=i.search(/\s/);(-1===s?i:i.substring(0,s))===e&&"/"!==i[i.length-1]&&r++,n=o}}}}}function Kt(t,e,n){if(e&&"string"==typeof t){const e=t.trim();return"true"===e||"false"!==e&&et(t,n)}return void 0!==t?t:""}function te(t,e,n,i){if(t){const i=t(e);n===e&&(n=i),e=i}return{tagName:e=ee(e,i),tagExp:n}}function ee(t,e){if(o.includes(t))throw new Error(`[SECURITY] Invalid name: "${t}" is a reserved JavaScript keyword that could cause prototype pollution`);return s.includes(t)?e.onDangerousProperty(t):t}const ne=C.getMetaDataSymbol();function ie(t,e){if(!t||"object"!=typeof t)return{};if(!e)return t;const n={};for(const i in t)i.startsWith(e)?n[i.substring(e.length)]=t[i]:n[i]=t[i];return n}function re(t,e,n,i){return se(t,e,n,i)}function se(t,e,n,i){let r;const s={};for(let o=0;o<t.length;o++){const a=t[o],l=oe(a);if(void 0!==l&&l!==e.textNodeName){const t=ie(a[":@"]||{},e.attributeNamePrefix);n.push(l,t)}if(l===e.textNodeName)void 0===r?r=a[l]:r+=""+a[l];else{if(void 0===l)continue;if(a[l]){let t=se(a[l],e,n,i);const r=le(t,e);if(0===Object.keys(t).length&&e.alwaysCreateTextNode&&(t[e.textNodeName]=""),a[":@"]?ae(t,a[":@"],i,e):1!==Object.keys(t).length||void 0===t[e.textNodeName]||e.alwaysCreateTextNode?0===Object.keys(t).length&&(e.alwaysCreateTextNode?t[e.textNodeName]="":t=""):t=t[e.textNodeName],void 0!==a[ne]&&"object"==typeof t&&null!==t&&(t[ne]=a[ne]),void 0!==s[l]&&Object.prototype.hasOwnProperty.call(s,l))Array.isArray(s[l])||(s[l]=[s[l]]),s[l].push(t);else{const n=e.jPath?i.toString():i;e.isArray(l,n,r)?s[l]=[t]:s[l]=t}void 0!==l&&l!==e.textNodeName&&n.pop()}}}return"string"==typeof r?r.length>0&&(s[e.textNodeName]=r):void 0!==r&&(s[e.textNodeName]=r),s}function oe(t){const e=Object.keys(t);for(let t=0;t<e.length;t++){const n=e[t];if(":@"!==n)return n}}function ae(t,e,n,i){if(e){const r=Object.keys(e),s=r.length;for(let o=0;o<s;o++){const s=r[o],a=s.startsWith(i.attributeNamePrefix)?s.substring(i.attributeNamePrefix.length):s,l=i.jPath?n.toString()+"."+a:n;i.isArray(s,l,!0,!0)?t[s]=[e[s]]:t[s]=e[s]}}}function le(t,e){const{textNodeName:n}=e,i=Object.keys(t).length;return 0===i||!(1!==i||!t[n]&&"boolean"!=typeof t[n]&&0!==t[n])}class ce{constructor(t){this.externalEntities={},this.options=T(t)}parse(t,e){if("string"!=typeof t&&t.toString)t=t instanceof Uint8Array&&("undefined"==typeof Buffer||!Buffer.isBuffer(t))?new TextDecoder("utf-8",{ignoreBOM:!0}).decode(t):t.toString();else if("string"!=typeof t)throw new Error("XML data is accepted in String or Bytes[] form.");if(e){!0===e&&(e={});const n=l(t,e);if(!0!==n)throw Error(`${n.err.msg}:${n.err.line}:${n.err.col}`)}const n=new Mt(this.options,this.externalEntities),i=n.parseXml(t);return this.options.preserveOrder||void 0===i?i:re(i,this.options,n.matcher,n.readonlyMatcher)}addEntity(t,e){if(-1!==e.indexOf("&"))throw new Error("Entity value can't have '&'");if(-1!==t.indexOf("&")||-1!==t.indexOf(";"))throw new Error("An entity must be set without '&' and ';'. Eg. use '#xD' for '&#xD;'");if("&"===e)throw new Error("An entity with value '&' is not permitted");this.externalEntities[t]=e}static getMetaDataSymbol(){return C.getMetaDataSymbol()}}function pe(t){return"number"==typeof t&&Object.is(t,-0)?"-0":String(t)}function he(t){return pe(t).replace(/--/g,"- -").replace(/--/g,"- -").replace(/-$/,"- ")}function de(t){return pe(t).replace(/\]\]>/g,"]]]]><![CDATA[>")}function ue(t){return pe(t).replace(/"/g,"&quot;").replace(/'/g,"&apos;")}function fe(t,e,n,i,r){if(!n.sanitizeName)return t;const s=!e&&"?"===t[0],o=s?t.slice(1):t;if(r(o))return t;const a=n.sanitizeName(o,{isAttribute:e,matcher:i.readOnly()});if("string"!=typeof a||!r(a))throw new Error(`sanitizeName returned an invalid XML name for "${o}"`);return s?"?"+a:a}function ge(t,e){let n="";e.format&&(n="\n");const i=[];if(e.stopNodes&&Array.isArray(e.stopNodes))for(let t=0;t<e.stopNodes.length;t++){const n=e.stopNodes[t];"string"==typeof n?i.push(new ot(n)):n instanceof ot&&i.push(n)}const r=function(t,e){if(!Array.isArray(t)||0===t.length)return"1.0";const n=t[0];if("?xml"===Ne(n)){const t=n[":@"];if(t){const n=e.attributeNamePrefix+"version";if(t[n])return t[n]}}return"1.0"}(t,e),s=q("qName",{xmlVersion:r});return me(t,e,n,new st,i,s)}function me(t,e,n,i,r,s){let o="",a=!1;if(e.maxNestedTags&&i.getDepth()>e.maxNestedTags)throw new Error("Maximum nested tags exceeded");if(!Array.isArray(t)){if(null!=t){let n=pe(t);return n=ve(n,e),n}return""}for(let l=0;l<t.length;l++){const c=t[l],p=Ne(c);if(void 0===p)continue;const h=p===e.textNodeName||p===e.cdataPropName||p===e.commentPropName?p:fe(p,!1,e,i,s),d=xe(c[":@"],e);i.push(h,d);const u=we(i,r);if(h===e.textNodeName){let t=c[p];u||(t=e.tagValueProcessor(h,t),t=ve(t,e)),t=pe(t),a&&(o+=n),o+=t,a=!1,i.pop();continue}if(h===e.cdataPropName){a&&(o+=n),o+=`<![CDATA[${de(c[p][0][e.textNodeName])}]]>`,a=!1,i.pop();continue}if(h===e.commentPropName){o+=n+`\x3c!--${he(c[p][0][e.textNodeName])}--\x3e`,a=!0,i.pop();continue}if("?"===h[0]){o+=("?xml"===h?"":n)+`<${h}${Ee(c[":@"],e,u,i,s)}?>`,a=!0,i.pop();continue}let f=n;""!==f&&(f+=e.indentBy);const g=n+`<${h}${Ee(c[":@"],e,u,i,s)}`;let m;m=u?be(c[p],e,i.getDepth()):me(c[p],e,f,i,r,s),-1!==e.unpairedTags.indexOf(h)?e.suppressUnpairedNode?o+=g+">":o+=g+"/>":m&&0!==m.length||!e.suppressEmptyNode?m&&m.endsWith(">")?o+=g+`>${m}${n}</${h}>`:(o+=g+">",m&&""!==n&&(m.includes("/>")||m.includes("</"))?o+=n+e.indentBy+m+n:o+=m,o+=`</${h}>`):o+=g+"/>",a=!0,i.pop()}return o}function xe(t,e){if(!t||e.ignoreAttributes)return null;const n={};let i=!1;for(let r in t)Object.prototype.hasOwnProperty.call(t,r)&&(n[r.startsWith(e.attributeNamePrefix)?r.substr(e.attributeNamePrefix.length):r]=ue(t[r]),i=!0);return i?n:null}function be(t,e,n=0){if(e.maxNestedTags&&n>e.maxNestedTags)throw new Error("Maximum nested tags exceeded");if(!Array.isArray(t))return null!=t?pe(t):"";let i="";for(let r=0;r<t.length;r++){const s=t[r],o=Ne(s);if(o===e.textNodeName)i+=pe(s[o]);else if(o===e.cdataPropName)i+=s[o][0][e.textNodeName];else if(o===e.commentPropName)i+=s[o][0][e.textNodeName];else{if(o&&"?"===o[0])continue;if(o){const t=ye(s[":@"],e),r=be(s[o],e,n+1);r&&0!==r.length?i+=`<${o}${t}>${r}</${o}>`:i+=`<${o}${t}/>`}}}return i}function ye(t,e){let n="";if(t&&!e.ignoreAttributes)for(let i in t){if(!Object.prototype.hasOwnProperty.call(t,i))continue;let r=t[i];!0===r&&e.suppressBooleanAttributes?n+=` ${i.substr(e.attributeNamePrefix.length)}`:n+=` ${i.substr(e.attributeNamePrefix.length)}="${ue(r)}"`}return n}function Ne(t){const e=Object.keys(t);for(let n=0;n<e.length;n++){const i=e[n];if(Object.prototype.hasOwnProperty.call(t,i)&&":@"!==i)return i}}function Ee(t,e,n,i,r){let s="";if(t&&!e.ignoreAttributes)for(let o in t){if(!Object.prototype.hasOwnProperty.call(t,o))continue;const a=o.substr(e.attributeNamePrefix.length),l=n?a:fe(a,!0,e,i,r);let c;n?c=t[o]:(c=e.attributeValueProcessor(o,t[o]),c=ve(c,e)),!0===c&&e.suppressBooleanAttributes?s+=` ${l}`:s+=` ${l}="${ue(c)}"`}return s}function we(t,e){if(!e||0===e.length)return!1;for(let n=0;n<e.length;n++)if(t.matches(e[n]))return!0;return!1}function ve(t,e){if(t&&t.length>0&&e.processEntities)for(let n=0;n<e.entities.length;n++){const i=e.entities[n];t=t.replace(i.regex,i.val)}return t}const Se={attributeNamePrefix:"@_",attributesGroupName:!1,textNodeName:"#text",ignoreAttributes:!0,cdataPropName:!1,format:!1,indentBy:"  ",suppressEmptyNode:!1,suppressUnpairedNode:!0,suppressBooleanAttributes:!0,tagValueProcessor:function(t,e){return e},attributeValueProcessor:function(t,e){return e},preserveOrder:!1,commentPropName:!1,unpairedTags:[],entities:[{regex:new RegExp("&","g"),val:"&amp;"},{regex:new RegExp(">","g"),val:"&gt;"},{regex:new RegExp("<","g"),val:"&lt;"},{regex:new RegExp("'","g"),val:"&apos;"},{regex:new RegExp('"',"g"),val:"&quot;"}],processEntities:!0,stopNodes:[],oneListGroup:!1,maxNestedTags:100,jPath:!0,sanitizeName:!1};function Ae(t){if(this.options=Object.assign({},Se,t),this.options.stopNodes&&Array.isArray(this.options.stopNodes)&&(this.options.stopNodes=this.options.stopNodes.map(t=>"string"==typeof t&&t.startsWith("*.")?".."+t.substring(2):t)),this.stopNodeExpressions=[],this.options.stopNodes&&Array.isArray(this.options.stopNodes))for(let t=0;t<this.options.stopNodes.length;t++){const e=this.options.stopNodes[t];"string"==typeof e?this.stopNodeExpressions.push(new ot(e)):e instanceof ot&&this.stopNodeExpressions.push(e)}var e;!0===this.options.ignoreAttributes||this.options.attributesGroupName?this.isAttribute=function(){return!1}:(this.ignoreAttributesFn="function"==typeof(e=this.options.ignoreAttributes)?e:Array.isArray(e)?t=>{for(const n of e){if("string"==typeof n&&t===n)return!0;if(n instanceof RegExp&&n.test(t))return!0}}:()=>!1,this.attrPrefixLen=this.options.attributeNamePrefix.length,this.isAttribute=Ce),this.processTextOrObjNode=Te,this.options.format?(this.indentate=_e,this.tagEndChar=">\n",this.newLine="\n"):(this.indentate=function(){return""},this.tagEndChar=">",this.newLine="")}function Te(t,e,n,i,r){const s=this.extractAttributes(t);if(i.push(e,s),this.checkStopNode(i)){const r=this.buildRawContent(t,i.getDepth()),s=this.buildAttributesForStopNode(t);return i.pop(),this.buildObjectNode(r,e,s,n)}const o=this.j2x(t,n+1,i,r);return i.pop(),"?"===e[0]?this.buildTextValNode("",e,o.attrStr,n,i):void 0!==t[this.options.textNodeName]&&1===Object.keys(t).length?this.buildTextValNode(t[this.options.textNodeName],e,o.attrStr,n,i):this.buildObjectNode(o.val,e,o.attrStr,n)}function _e(t){return this.options.indentBy.repeat(t)}function Ce(t){return!(!t.startsWith(this.options.attributeNamePrefix)||t===this.options.textNodeName)&&t.substr(this.attrPrefixLen)}Ae.prototype.build=function(t){if(this.options.preserveOrder)return ge(t,this.options);{Array.isArray(t)&&this.options.arrayNodeName&&this.options.arrayNodeName.length>1&&(t={[this.options.arrayNodeName]:t});const e=new st,n=function(t,e){const n=t["?xml"];if(n&&"object"==typeof n){if(e.attributesGroupName&&n[e.attributesGroupName]){const t=n[e.attributesGroupName][e.attributeNamePrefix+"version"];if(t)return t}const t=n[e.attributeNamePrefix+"version"];if(t)return t}return"1.0"}(t,this.options),i=q("qName",{xmlVersion:n});return this.j2x(t,0,e,i).val}},Ae.prototype.j2x=function(t,e,n,i){let r="",s="";if(this.options.maxNestedTags&&n.getDepth()>=this.options.maxNestedTags)throw new Error("Maximum nested tags exceeded");const o=this.options.jPath?n.toString():n,a=this.checkStopNode(n);for(let l in t){if(!Object.prototype.hasOwnProperty.call(t,l))continue;const c=l===this.options.textNodeName||l===this.options.cdataPropName||l===this.options.commentPropName||this.options.attributesGroupName&&l===this.options.attributesGroupName||this.isAttribute(l)?l:fe(l,!1,this.options,n,i);if(void 0===t[l])this.isAttribute(l)&&(s+="");else if(null===t[l])this.isAttribute(l)||c===this.options.cdataPropName||c===this.options.commentPropName?s+="":"?"===c[0]?s+=this.indentate(e)+"<"+c+"?"+this.tagEndChar:s+=this.indentate(e)+"<"+c+"/"+this.tagEndChar;else if(t[l]instanceof Date)s+=this.buildTextValNode(t[l],c,"",e,n);else if("object"!=typeof t[l]){const p=this.isAttribute(l);if(p&&!this.ignoreAttributesFn(p,o)){const e=fe(p,!0,this.options,n,i);r+=this.buildAttrPairStr(e,pe(t[l]),a)}else if(!p)if(l===this.options.textNodeName){let e=this.options.tagValueProcessor(l,pe(t[l]));s+=this.replaceEntitiesValue(e)}else{n.push(c);const i=this.checkStopNode(n);if(n.pop(),i){const n=pe(t[l]);s+=""===n?this.indentate(e)+"<"+c+this.closeTag(c)+this.tagEndChar:this.indentate(e)+"<"+c+">"+n+"</"+c+this.tagEndChar}else s+=this.buildTextValNode(t[l],c,"",e,n)}}else if(Array.isArray(t[l])){const r=t[l].length;let o="",a="";for(let p=0;p<r;p++){const r=t[l][p];if(void 0===r);else if(null===r)"?"===c[0]?s+=this.indentate(e)+"<"+c+"?"+this.tagEndChar:s+=this.indentate(e)+"<"+c+"/"+this.tagEndChar;else if("object"==typeof r)if(this.options.oneListGroup){n.push(c);const t=this.j2x(r,e+1,n,i);n.pop(),o+=t.val,this.options.attributesGroupName&&r.hasOwnProperty(this.options.attributesGroupName)&&(a+=t.attrStr)}else o+=this.processTextOrObjNode(r,c,e,n,i);else if(this.options.oneListGroup){let t=this.options.tagValueProcessor(c,r);t=this.replaceEntitiesValue(t),t=pe(t),o+=t}else{n.push(c);const t=this.checkStopNode(n);if(n.pop(),t){const t=pe(r);o+=""===t?this.indentate(e)+"<"+c+this.closeTag(c)+this.tagEndChar:this.indentate(e)+"<"+c+">"+t+"</"+c+this.tagEndChar}else o+=this.buildTextValNode(r,c,"",e,n)}}this.options.oneListGroup&&(o=this.buildObjectNode(o,c,a,e)),s+=o}else if(this.options.attributesGroupName&&l===this.options.attributesGroupName){const e=Object.keys(t[l]),s=e.length;for(let o=0;o<s;o++){const s=fe(e[o],!0,this.options,n,i);r+=this.buildAttrPairStr(s,pe(t[l][e[o]]),a)}}else s+=this.processTextOrObjNode(t[l],c,e,n,i)}return{attrStr:r,val:s}},Ae.prototype.buildAttrPairStr=function(t,e,n){return n||(e=this.options.attributeValueProcessor(t,pe(e)),e=this.replaceEntitiesValue(e)),this.options.suppressBooleanAttributes&&"true"===e?" "+t:" "+t+'="'+ue(e)+'"'},Ae.prototype.extractAttributes=function(t){if(!t||"object"!=typeof t)return null;const e={};let n=!1;if(this.options.attributesGroupName&&t[this.options.attributesGroupName]){const i=t[this.options.attributesGroupName];for(let t in i)Object.prototype.hasOwnProperty.call(i,t)&&(e[t.startsWith(this.options.attributeNamePrefix)?t.substring(this.options.attributeNamePrefix.length):t]=ue(i[t]),n=!0)}else for(let i in t){if(!Object.prototype.hasOwnProperty.call(t,i))continue;const r=this.isAttribute(i);r&&(e[r]=ue(t[i]),n=!0)}return n?e:null},Ae.prototype.buildRawContent=function(t,e=0){if(this.options.maxNestedTags&&e>=this.options.maxNestedTags)throw new Error("Maximum nested tags exceeded");if("string"==typeof t)return t;if("object"!=typeof t||null===t)return String(t);if(void 0!==t[this.options.textNodeName])return t[this.options.textNodeName];let n="";for(let i in t){if(!Object.prototype.hasOwnProperty.call(t,i))continue;if(this.isAttribute(i))continue;if(this.options.attributesGroupName&&i===this.options.attributesGroupName)continue;const r=t[i];if(i===this.options.textNodeName)n+=r;else if(Array.isArray(r)){for(let t of r)if("string"==typeof t||"number"==typeof t)n+=`<${i}>${t}</${i}>`;else if("object"==typeof t&&null!==t){const r=this.buildRawContent(t,e+1),s=this.buildAttributesForStopNode(t);n+=""===r?`<${i}${s}/>`:`<${i}${s}>${r}</${i}>`}}else if("object"==typeof r&&null!==r){const t=this.buildRawContent(r,e+1),s=this.buildAttributesForStopNode(r);n+=""===t?`<${i}${s}/>`:`<${i}${s}>${t}</${i}>`}else n+=`<${i}>${r}</${i}>`}return n},Ae.prototype.buildAttributesForStopNode=function(t){if(!t||"object"!=typeof t)return"";let e="";if(this.options.attributesGroupName&&t[this.options.attributesGroupName]){const n=t[this.options.attributesGroupName];for(let t in n){if(!Object.prototype.hasOwnProperty.call(n,t))continue;const i=t.startsWith(this.options.attributeNamePrefix)?t.substring(this.options.attributeNamePrefix.length):t,r=n[t];!0===r&&this.options.suppressBooleanAttributes?e+=" "+i:e+=" "+i+'="'+ue(r)+'"'}}else for(let n in t){if(!Object.prototype.hasOwnProperty.call(t,n))continue;const i=this.isAttribute(n);if(i){const r=t[n];!0===r&&this.options.suppressBooleanAttributes?e+=" "+i:e+=" "+i+'="'+ue(r)+'"'}}return e},Ae.prototype.buildObjectNode=function(t,e,n,i){if(""===t)return"?"===e[0]?this.indentate(i)+"<"+e+n+"?"+this.tagEndChar:this.indentate(i)+"<"+e+n+this.closeTag(e)+this.tagEndChar;if("?"===e[0])return this.indentate(i)+"<"+e+n+"?"+this.tagEndChar;{let r="</"+e+this.tagEndChar,s="";return"?"===e[0]&&(s="?",r=""),!n&&""!==n||-1!==t.indexOf("<")?!1!==this.options.commentPropName&&e===this.options.commentPropName&&0===s.length?this.indentate(i)+`\x3c!--${he(t)}--\x3e`+this.newLine:this.indentate(i)+"<"+e+n+s+this.tagEndChar+t+this.indentate(i)+r:this.indentate(i)+"<"+e+n+s+">"+t+r}},Ae.prototype.closeTag=function(t){let e="";return-1!==this.options.unpairedTags.indexOf(t)?this.options.suppressUnpairedNode||(e="/"):e=this.options.suppressEmptyNode?"/":`></${t}`,e},Ae.prototype.checkStopNode=function(t){if(!this.stopNodeExpressions||0===this.stopNodeExpressions.length)return!1;for(let e=0;e<this.stopNodeExpressions.length;e++)if(t.matches(this.stopNodeExpressions[e]))return!0;return!1},Ae.prototype.buildTextValNode=function(t,e,n,i,r){if(!1!==this.options.cdataPropName&&e===this.options.cdataPropName){const e=de(t);return this.indentate(i)+`<![CDATA[${e}]]>`+this.newLine}if(!1!==this.options.commentPropName&&e===this.options.commentPropName){const e=he(t);return this.indentate(i)+`\x3c!--${e}--\x3e`+this.newLine}if("?"===e[0])return this.indentate(i)+"<"+e+n+"?"+this.tagEndChar;{let r=this.options.tagValueProcessor(e,t);return r=this.replaceEntitiesValue(r),r=pe(r),""===r?this.indentate(i)+"<"+e+n+this.closeTag(e)+this.tagEndChar:this.indentate(i)+"<"+e+n+">"+r+"</"+e+this.tagEndChar}},Ae.prototype.replaceEntitiesValue=function(t){if(t&&t.length>0&&this.options.processEntities)for(let e=0;e<this.options.entities.length;e++){const n=this.options.entities[e];t=t.replace(n.regex,n.val)}return t};const $e=Ae,Oe={validate:l};module.exports=e})();
 
 /***/ }),
 
